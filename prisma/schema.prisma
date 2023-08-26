@@ -1,17 +1,100 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-    provider = "prisma-client-js"
-}
-
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  username          String    @unique
+  email             String    @unique
+  password          String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  characters        Character[]
+  campaigns         Campaign[]
+  forumPosts        ForumPost[]
+  likes             Like[]
+  comments          Comment[]
+}
+
+model Character {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  race               String
+  class              String
+  level              Int
+  background         String
+  alignment          String
+  experiencePoints   Int
+  maxHitPoints       Int
+  currentHitPoints   Int
+  tempHitPoints      Int
+  armorClass         Int
+  initiative         Int
+  speed              Int
+  inspiration        Boolean
+  proficiencyBonus   Int
+  personalityTraits  String
+  ideals             String
+  bonds              String
+  flaws              String
+  features           String
+  languages          String
+  skills             Json
+  savingThrows       Json
+  abilities          Json
+  spells             Json
+  equipment          Json
+  userId             Int
+  user               User      @relation(fields: [userId], references: [id])
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model Campaign {
+  id                Int       @id @default(autoincrement())
+  name              String
+  description       String
+  dmUserId          Int
+  dm                User      @relation(fields: [dmUserId], references: [id])
+  players           User[]    @relation("CampaignPlayers")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model ForumPost {
+  id                Int       @id @default(autoincrement())
+  content           String
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  likes             Like[]
+  comments          Comment[]
+}
+
+model Like {
+  id                Int       @id @default(autoincrement())
+  postId            Int
+  post              ForumPost @relation(fields: [postId], references: [id])
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+  createdAt         DateTime  @default(now())
+}
+
+model Comment {
+  id                Int       @id @default(autoincrement())
+  content           String
+  postId            Int
+  post              ForumPost @relation(fields: [postId], references: [id])
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+  createdAt         DateTime  @default(now())
 }

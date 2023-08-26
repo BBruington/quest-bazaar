@@ -10,5 +10,6 @@ export const rollDice = ( numDice: number, dieType: number, bonus = 0) => {
     results.rolls.push(result);
   }
   results.total += bonus;
+  console.log(results)
   return results;
 }
