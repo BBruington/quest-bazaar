@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { rollDice } from "helpers/rollDice";
 import { api } from "~/utils/api";
 import { UserButton } from "@clerk/nextjs";
 
@@ -14,7 +13,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center space-y-3 justify-center ">
-        <button onClick={() => rollDice(3, 20)}>Roll d20</button>
         <UserButton />
       </main>
     </>

@@ -47,6 +47,7 @@ model Character {
   flaws              String
   features           String
   languages          String
+  abilityScores      Json
   skills             Json
   savingThrows       Json
   abilities          Json
