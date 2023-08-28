@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-, "helpers/rollDice.ts"  ],
+,   "helpers/rollDice.ts"  ],
   "exclude": ["node_modules"]
 }

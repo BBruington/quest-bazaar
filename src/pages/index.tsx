@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { api } from "~/utils/api";
 import { UserButton } from "@clerk/nextjs";
+import CharacterCreation from "~/components/characterCreation";
 
 export default function Home() {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -13,7 +14,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center space-y-3 justify-center ">
-        <UserButton />
+        <CharacterCreation />
+        {/* <UserButton /> */}
       </main>
     </>
   );
