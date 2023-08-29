@@ -14,7 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center space-y-3 justify-center ">
-        <CharacterCreation />
+        {/* <CharacterCreation /> */}
         {/* <UserButton /> */}
       </main>
     </>

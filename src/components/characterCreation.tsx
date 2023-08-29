@@ -14,7 +14,7 @@ export default function CharacterCreation() {
         type="text"
         placeholder="Character Name"
         value={character.name}
-        onChange={(e) => setCharacter({...character, name: e.target.value})}
+        onChange={(e) => setCharacter({...character})}
       />
     </>
   )
