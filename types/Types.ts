@@ -21,10 +21,10 @@ export const UserSchema = z.object({
 })
 
 export type UserRelations = {
-  characters: z.array(),
-  campaigns: z.array(),
-  forumPosts: z.array(),
-  likes: z.array(),
-  comments: z.array(),
-  campaign: z.array()
+  // characters: z.array(),
+  // campaigns: z.array(),
+  // forumPosts: z.array(),
+  // likes: z.array(),
+  // comments: z.array(),
+  // campaign: z.array()
 }

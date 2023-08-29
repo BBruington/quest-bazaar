@@ -11,7 +11,7 @@ generator client {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(cuid())
   username   String?     @unique
   email      String      @unique
   createdAt  DateTime    @default(now())
@@ -25,7 +25,7 @@ model User {
 }
 
 model Character {
-  id                Int      @id @default(autoincrement())
+  id                String      @id @default(cuid())
   name              String
   race              String
   class             String
@@ -53,17 +53,17 @@ model Character {
   abilities         Json
   spells            Json
   equipment         Json
-  userId            Int
+  userId            String
   user              User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
 
 model Campaign {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(cuid())
   name        String
   description String
-  dmUserId    Int
+  dmUserId    String
   dm          User     @relation(fields: [dmUserId], references: [id])
   players     User[]   @relation("CampaignPlayers")
   createdAt   DateTime @default(now())
@@ -71,9 +71,8 @@ model Campaign {
 }
 
 model UserPost {
-  id        Int       @id @default(autoincrement())
-  content   String
-  userId    Int
+  id        String      @id @default(cuid())
+  userId    String
   user      User      @relation(fields: [userId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -82,20 +81,20 @@ model UserPost {
 }
 
 model Like {
-  id        Int       @id @default(autoincrement())
-  postId    Int
+  id        String      @id @default(cuid())
+  postId    String
   post      ForumPost @relation(fields: [postId], references: [id])
-  userId    Int
+  userId    String
   user      User      @relation(fields: [userId], references: [id])
   createdAt DateTime  @default(now())
 }
 
 model Comment {
-  id        Int       @id @default(autoincrement())
+  id        String      @id @default(cuid())
   content   String
-  postId    Int
+  postId    String
   post      ForumPost @relation(fields: [postId], references: [id])
-  userId    Int
+  userId    String
   user      User      @relation(fields: [userId], references: [id])
   createdAt DateTime  @default(now())
 }
