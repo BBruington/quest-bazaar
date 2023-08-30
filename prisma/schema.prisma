@@ -4,6 +4,7 @@
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 generator client {
@@ -25,7 +26,7 @@ model User {
 }
 
 model Character {
-  id                String      @id @default(cuid())
+  id                String   @id @default(cuid())
   name              String
   race              String
   class             String
@@ -60,18 +61,18 @@ model Character {
 }
 
 model Campaign {
-  id          String      @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String
   dmUserId    String
-  dm          User     @relation(fields: [dmUserId], references: [id])
+  dm          User?     @relation(fields: [dmUserId], references: [id])
   players     User[]   @relation("CampaignPlayers")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model UserPost {
-  id        String      @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
   user      User      @relation(fields: [userId], references: [id])
   createdAt DateTime  @default(now())
@@ -81,20 +82,20 @@ model UserPost {
 }
 
 model Like {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   postId    String
-  post      ForumPost @relation(fields: [postId], references: [id])
+  post      UserPost @relation(fields: [postId], references: [id])
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
-  createdAt DateTime  @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Comment {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   content   String
   postId    String
-  post      ForumPost @relation(fields: [postId], references: [id])
+  post      UserPost @relation(fields: [postId], references: [id])
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
-  createdAt DateTime  @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
