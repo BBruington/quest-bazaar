@@ -22,7 +22,7 @@ model User {
   userPosts  UserPost[]
   likes      Like[]
   comments   Comment[]
-  campaign   Campaign[]
+  Campaign   Campaign[]
 }
 
 model Character {
@@ -65,7 +65,7 @@ model Campaign {
   name        String
   description String
   dmUserId    String
-  dm          User?     @relation(fields: [dmUserId], references: [id])
+  dm          User?    @relation(fields: [dmUserId], references: [id])
   players     User[]   @relation("CampaignPlayers")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
