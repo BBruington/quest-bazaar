@@ -15,6 +15,25 @@ export const userRouter = createTRPCRouter({
     return user;
   }),
 
+  queryUserCampaigns: publicProcedure.input(z.object({
+    email: z.string(),
+  })).query( async ({ ctx, input }) => {
+    const userCampaigns = await ctx.prisma.user.findUnique({
+      where: {email: input.email},
+      include: {
+        campaignplayer: true,
+        campaigndm: true,
+      },
+    });
+
+    if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
+    
+    return {
+      ...userCampaigns.campaigndm,
+      ...userCampaigns.campaignplayer
+    }
+  }),
+
   createUser: publicProcedure.input(z.object({
     email: z.string(),
     username: z.string().optional(),

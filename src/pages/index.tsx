@@ -6,7 +6,7 @@ import { useState } from "react";
 
 
 export default function Home() {
-  const {data, isLoading} = api.user.queryUser.useQuery({email: "furi@gmail.com"})
+  const {data, isLoading} = api.user.queryUserCampaigns.useQuery({email: "furi@gmail.com"})
   const queryUserByEmail = () => {
     console.log(data)
   }
