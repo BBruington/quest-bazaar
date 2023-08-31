@@ -1,4 +1,4 @@
-// import { prisma } from "~/server/db";
+import { prisma } from "~/server/db";
 import type { IncomingHttpHeaders } from 'http';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { WebhookRequiredHeaders } from 'svix';
@@ -28,6 +28,7 @@ export default async function handler(
  
   const eventType = evt.type;
   if (eventType === 'user.created') {
+    await prisma.user.findFirst();
     console.log(`User ${id} was ${eventType}`);
     console.log("req", payload);
     console.log("header", headers);
