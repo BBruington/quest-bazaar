@@ -1,7 +1,19 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 
 export const userRouter = createTRPCRouter({
+  queryUser: publicProcedure.input(z.object({
+    email: z.string(),
+  })).query(async ({ ctx, input }) => {
+    const user = await ctx.prisma.user.findUnique({
+      where: {email: input.email}
+    });
+
+    if (!user) throw new TRPCError({ code: "NOT_FOUND"});
+
+    return user;
+  }),
 
   createUser: publicProcedure.input(z.object({
     email: z.string(),
@@ -10,5 +22,5 @@ export const userRouter = createTRPCRouter({
     const newUser = await ctx.prisma.user.create({ data: {...input} });
 
     return newUser;
-  })
+  }),
 });

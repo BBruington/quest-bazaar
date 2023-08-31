@@ -2,9 +2,15 @@ import Head from "next/head";
 import { api } from "~/utils/api";
 import { UserButton } from "@clerk/nextjs";
 import CharacterCreation from "~/components/characterCreation";
+import { useState } from "react";
+
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const {data, isLoading} = api.user.queryUser.useQuery({email: "furi@gmail.com"})
+  const queryUserByEmail = () => {
+    console.log(data)
+  }
+  
 
   return (
     <>
@@ -14,6 +20,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center space-y-3 justify-center ">
+        <button onClick={queryUserByEmail}>look at user</button>
         {/* <CharacterCreation /> */}
         {/* <UserButton /> */}
       </main>

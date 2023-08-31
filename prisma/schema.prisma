@@ -12,17 +12,17 @@ generator client {
 }
 
 model User {
-  id         String      @id @default(cuid())
-  username   String?     @unique
-  email      String      @unique
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  characters Character[]
-  campaigns  Campaign[]  @relation("CampaignPlayers")
-  userPosts  UserPost[]
-  likes      Like[]
-  comments   Comment[]
-  Campaign   Campaign[]
+  id             String      @id @default(cuid())
+  username       String?     @unique
+  email          String      @unique
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  characters     Character[]
+  campaignplayer Campaign[]  @relation("CampaignPlayers")
+  campaigndm     Campaign[]
+  userPosts      UserPost[]
+  likes          Like[]
+  comments       Comment[]
 }
 
 model Character {
