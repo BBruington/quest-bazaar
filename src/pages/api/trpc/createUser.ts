@@ -7,7 +7,7 @@ import { Webhook } from 'svix';
 
 const webhookSecret: string  = process.env.WEBHOOK_SECRET!;
 
-export default async function createUser(
+export default  function createUser(
     req: NextApiRequestWithSvixRequiredHeaders,
     res: NextApiResponse
   ) {
