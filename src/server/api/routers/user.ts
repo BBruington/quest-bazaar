@@ -15,31 +15,31 @@ export const userRouter = createTRPCRouter({
     return user;
   }),
 
-  queryUserCampaigns: publicProcedure.input(z.object({
-    email: z.string(),
-  })).query( async ({ ctx, input }) => {
-    const userCampaigns = await ctx.prisma.user.findUnique({
-      where: {email: input.email},
-      include: {
-        campaignplayer: true,
-        campaigndm: true,
-      },
-    });
+  // queryUserCampaigns: publicProcedure.input(z.object({
+  //   email: z.string(),
+  // })).query( async ({ ctx, input }) => {
+  //   const userCampaigns = await ctx.prisma.user.findUnique({
+  //     where: {email: input.email},
+  //     include: {
+  //       campaignplayer: true,
+  //       campaigndm: true,
+  //     },
+  //   });
 
-    if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
+  //   if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
     
-    return {
-      ...userCampaigns.campaigndm,
-      ...userCampaigns.campaignplayer
-    }
-  }),
+  //   return {
+  //     ...userCampaigns.campaigndm,
+  //     ...userCampaigns.campaignplayer
+  //   }
+  // }),
 
-  createUser: publicProcedure.input(z.object({
-    email: z.string(),
-    username: z.string().optional(),
-  })).mutation(async ({ctx, input}) => {
-    const newUser = await ctx.prisma.user.create({ data: {...input} });
+  // createUser: publicProcedure.input(z.object({
+  //   email: z.string(),
+  //   username: z.string().optional(),
+  // })).mutation(async ({ctx, input}) => {
+  //   const newUser = await ctx.prisma.user.create({ data: {...input} });
 
-    return newUser;
-  }),
+  //   return newUser;
+  // }),
 });
