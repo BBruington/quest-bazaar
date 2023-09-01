@@ -4,7 +4,7 @@ import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const queryUserByEmail = () => {
-    console.log("data")
+    console.log("data") 
   }
   
 
