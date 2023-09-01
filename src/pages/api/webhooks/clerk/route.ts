@@ -11,6 +11,7 @@ export default async function handler(
   req: NextApiRequestWithSvixRequiredHeaders,
   res: NextApiResponse
 ) {
+  console.log("pee")
   const payload = JSON.stringify(req.body);
   const headers = req.headers;
   // Create a new Webhook instance with your webhook secret

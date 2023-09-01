@@ -1,8 +1,5 @@
 import Head from "next/head";
-import { api } from "~/utils/api";
 import { UserButton } from "@clerk/nextjs";
-import CharacterCreation from "~/components/characterCreation";
-import { useState } from "react";
 
 
 export default function Home() {
