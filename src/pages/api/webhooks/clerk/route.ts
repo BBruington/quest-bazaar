@@ -11,7 +11,6 @@ export default async function handler(
   req: NextApiRequestWithSvixRequiredHeaders,
   res: NextApiResponse
 ) {
-  console.log("pee")
   const payload = JSON.stringify(req.body);
   const headers = req.headers;
   // Create a new Webhook instance with your webhook secret
@@ -24,14 +23,20 @@ export default async function handler(
   } catch (_) {
     // If the verification fails, return a 400 error
     return res.status(400).json({});
-  }
-  const { id, ...attributes } = evt.data;
- 
+  } 
+  const { id, ...attributes} = evt.data;
   const eventType = evt.type;
 
   if (eventType === 'user.created' || eventType === "user.updated") {
-    await prisma.user.findFirst();
-    console.log(`User ${id} was ${eventType}`);
+    await prisma.user.upsert({
+      where: { externalId: id },
+      create: {
+        email: evt.data.email_addresses[0]!.email_address,
+        externalId: id!,
+        attributes: JSON.stringify(attributes),
+      },
+      update: attributes ,
+    });
     res.status(201).json({});
   }
 }
