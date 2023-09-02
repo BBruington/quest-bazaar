@@ -15,24 +15,23 @@ export const userRouter = createTRPCRouter({
     return user;
   }),
 
-  // queryUserCampaigns: publicProcedure.input(z.object({
-  //   email: z.string(),
-  // })).query( async ({ ctx, input }) => {
-  //   const userCampaigns = await ctx.prisma.user.findUnique({
-  //     where: {email: input.email},
-  //     include: {
-  //       campaignplayer: true,
-  //       campaigndm: true,
-  //     },
-  //   });
+  queryUserCampaigns: publicProcedure.input(z.object({
+    id: z.string(),
+  })).query( async ({ ctx, input }) => {
+    const userCampaignsData = await ctx.prisma.user.findUnique({
+      where: {externalId: input.id},
+      include: {
+        campaignplayer: true,
+        campaigndm: true,
+      },
+    });
+    const userCampaigns = [...userCampaignsData!.campaigndm,
+      ...userCampaignsData!.campaignplayer]
 
-  //   if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
+    if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
     
-  //   return {
-  //     ...userCampaigns.campaigndm,
-  //     ...userCampaigns.campaignplayer
-  //   }
-  // }),
+    return userCampaigns;
+  }),
 
   // createUser: publicProcedure.input(z.object({
   //   email: z.string(),

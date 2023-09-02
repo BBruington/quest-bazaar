@@ -24,7 +24,7 @@ export default async function handler(
     // If the verification fails, return a 400 error
     return res.status(400).json({});
   } 
-  const { id,} = evt.data;
+  const { id } = evt.data;
   const eventType = evt.type;
 
   if (eventType === 'user.created' || eventType === 'user.updated') {
