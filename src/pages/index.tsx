@@ -2,9 +2,6 @@ import Head from "next/head";
 
 
 export default function Home() {
-  const queryUserByEmail = () => {
-    console.log("data") 
-  }
   
 
   return (
@@ -15,7 +12,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center space-y-3 justify-center ">
-        <button onClick={queryUserByEmail}>look at user</button>
+        
         {/* <CharacterCreation /> */}
       </main>
     </>
