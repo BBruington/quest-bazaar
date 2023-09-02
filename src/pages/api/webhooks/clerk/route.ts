@@ -27,7 +27,7 @@ export default async function handler(
   const { id,} = evt.data;
   const eventType = evt.type;
 
-  if (eventType === 'user.created' || eventType === "user.updated") {
+  if (eventType === 'user.created') {
     await prisma.user.upsert({
       where: { externalId: id },
       create: {
@@ -39,6 +39,13 @@ export default async function handler(
       },
     });
     res.status(201).json({});
+  }
+
+  if ( eventType === 'user.deleted') {
+    await prisma.user.delete({
+      where: { externalId: id }
+    })
+    res.status(200).json({});
   }
 }
  
