@@ -27,15 +27,17 @@ export default async function handler(
   const { id,} = evt.data;
   const eventType = evt.type;
 
-  if (eventType === 'user.created') {
+  if (eventType === 'user.created' || eventType === 'user.updated') {
     await prisma.user.upsert({
       where: { externalId: id },
       create: {
         email: evt.data.email_addresses[0]!.email_address,
         externalId: id!,
+        username: evt.data.username
       },
       update: {
         email: evt.data.email_addresses[0]!.email_address,
+        username: evt.data.username
       },
     });
     res.status(201).json({});

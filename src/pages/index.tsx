@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { UserButton } from "@clerk/nextjs";
 
 
 export default function Home() {
@@ -16,7 +15,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center space-y-3 justify-center ">
-        <UserButton />
         <button onClick={queryUserByEmail}>look at user</button>
         {/* <CharacterCreation /> */}
       </main>
