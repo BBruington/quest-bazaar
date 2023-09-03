@@ -31,6 +31,20 @@ export const userRouter = createTRPCRouter({
     
     return userCampaigns;
   }),
+  queryUserSpecificCampaign: publicProcedure.input(z.object({
+    id: z.string(),
+  })).query( async ({ ctx, input }) => {
+    const userCampaignData = await ctx.prisma.campaign.findUnique({
+      where: {id: input.id},
+    })
+
+    return userCampaignData;
+  }),
+
+  queryCampaigns: publicProcedure.query( async ({ ctx }) => {
+    const allCampaigns = await ctx.prisma.campaign.findMany();
+    return allCampaigns;
+  })
 
   // createUser: publicProcedure.input(z.object({
   //   email: z.string(),
