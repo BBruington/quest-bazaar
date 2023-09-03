@@ -25,8 +25,7 @@ export const userRouter = createTRPCRouter({
         campaigndm: true,
       },
     });
-    const userCampaigns = [...userCampaignsData!.campaigndm,
-      ...userCampaignsData!.campaignplayer]
+    const userCampaigns = [...userCampaignsData!.campaigndm,  ...userCampaignsData!.campaignplayer]
 
     if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
     
