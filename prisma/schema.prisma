@@ -65,7 +65,7 @@ model Campaign {
   id          String   @id @default(cuid())
   name        String
   description String
-  dmUserId    String
+  dmUserId    String?
   dm          User?    @relation(fields: [dmUserId], references: [id], name: "CampaignDm")
   players     User[]   @relation("CampaignPlayers")
   createdAt   DateTime @default(now())
