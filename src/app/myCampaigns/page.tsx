@@ -1,12 +1,13 @@
-import { api } from "~/utils/api"
+'use client'
+import { api } from "~/utils/trpc"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link";
 
 export default function MyCampaigns() {
-  
   const { user } = useUser()
+  console.log("user", user)
   if (!user) return null;
-  const {data, isLoading: campaignsLoading} = api.user.queryUserCampaigns.useQuery({id: user.id})
+  const {data, isLoading: campaignsLoading} = api.queryUserCampaigns.useQuery({id: user.id})
   if ( campaignsLoading ) return <div>loading...</div>
   if (!data) return <div>error fetching campaigns</div>
 
