@@ -12,7 +12,7 @@ export default function Navigation() {
       <div>item 2</div>
       <div className="flex space-x-2">
         {user && <div>{user.username}</div>}
-        {/* <UserButton /> */}
+        <UserButton />
       </div>
     </div>
     </>
