@@ -1,4 +1,4 @@
-import { prisma } from "~/server/db";
+import { prisma } from '~/utils/context';
 import type { IncomingHttpHeaders } from 'http';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { WebhookRequiredHeaders } from 'svix';

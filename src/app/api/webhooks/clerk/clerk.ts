@@ -7,7 +7,7 @@ import { prisma } from '~/utils/context';
  
 const webhookSecret: string = process.env.WEBHOOK_SECRET!;
  
-export default async function handler(
+export async function handler(
   req: NextApiRequestWithSvixRequiredHeaders,
   res: NextApiResponse
 ) {

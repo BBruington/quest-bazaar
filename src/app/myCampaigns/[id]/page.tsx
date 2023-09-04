@@ -5,25 +5,25 @@ export default function Campaign() {
 
   return (
   <>
-    <div></div>
+    <div>random page</div>
   </>
   )
 }
 
-export const getStaticPaths = async () => {
-  const campaignsData =  await prisma.campaign.findMany();
+// export const getStaticPaths = async () => {
+//   const campaignsData =  await prisma.campaign.findMany();
 
-  const paths = campaignsData.map((campaign) => ({
-    params: {
-      id: campaign.id
-    },
-  }))
+//   const paths = campaignsData.map((campaign) => ({
+//     params: {
+//       id: campaign.id
+//     },
+//   }))
 
-  return({
-    paths,
-    fallback: false,
-  })
-}
+//   return({
+//     paths,
+//     fallback: false,
+//   })
+//}
 // export const getStaticProps: GetStaticProps = async ({params}) => {
   
 //   if (!params || typeof params.id !== 'string') {
