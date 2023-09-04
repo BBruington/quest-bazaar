@@ -1,5 +1,5 @@
 import type { IncomingHttpHeaders } from 'http';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import type { WebhookRequiredHeaders } from 'svix';
 import type { WebhookEvent } from '@clerk/nextjs/server';
 import { Webhook } from 'svix';
