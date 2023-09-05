@@ -10,8 +10,7 @@ import { prisma } from '~/utils/context';
 const webhookSecret: string = process.env.WEBHOOK_SECRET!
  
 export async function POST(req: Request) {
-  const payload = await req.json() as object
-  const payloadString = JSON.stringify(payload);
+  const payload = JSON.stringify(req.body)
   const headerPayload = headers();
   const svixId = headerPayload.get('svix-id');
   const svixIdTimeStamp = headerPayload.get('svix-timestamp');
@@ -33,7 +32,7 @@ export async function POST(req: Request) {
   let evt: WebhookEvent;
   try {
     // Verify the webhook payload and headers
-    evt = wh.verify(payloadString, svixHeaders) as WebhookEvent;
+    evt = wh.verify(payload, svixHeaders) as WebhookEvent;
   } catch (_) {
     console.log('error');
     return new Response('Error occured', {
