@@ -9,8 +9,9 @@ import { prisma } from '~/utils/context';
  
 const webhookSecret: string = process.env.WEBHOOK_SECRET!
  
-export async function POST(req: NextApiRequestWithSvixRequiredHeaders) {
-  const payloadString = JSON.stringify(req.body);
+export async function POST(req: Request) {
+  const payload = await req.json() as object
+  const payloadString = JSON.stringify(payload);
   const headerPayload = headers();
   const svixId = headerPayload.get('svix-id');
   const svixIdTimeStamp = headerPayload.get('svix-timestamp');
