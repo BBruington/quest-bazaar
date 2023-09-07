@@ -10,7 +10,7 @@ export default function MyCampaigns() {
   const {data, isLoading: campaignsLoading} = api.queryUserCampaigns.useQuery({id: user.id})
   if ( campaignsLoading ) return <div>loading...</div>
   if (!data) return <div>error fetching campaigns</div>
-
+  console.log("data", data)
   return (
     <>
     {!campaignsLoading && data.length !== 0 && (
