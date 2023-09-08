@@ -12,59 +12,61 @@ generator client {
 }
 
 model User {
-  id             String      @id @default(cuid())
-  externalId     String      @unique
-  username       String?     @unique
-  email          String      @unique
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  characters     Character[]
-  campaignplayer Campaign[]  @relation("CampaignPlayers")
-  campaigndm     Campaign[]  @relation("CampaignDm")
-  userPosts      UserPost[]
-  likes          Like[]
-  comments       Comment[]
+  id         String   @id @default(cuid())
+  externalId String   @unique
+  username   String?  @unique
+  email      String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  characters Character[]
+
+  campaignplayer Campaign[] @relation("CampaignPlayers")
+  campaigndm     Campaign[] @relation("CampaignDm")
+
+  userPosts UserPost[]
+  likes     Like[]
+  comments  Comment[]
+
+  sentFriendRequests     Friendship[]  @relation("sentRequests")
+  receivedFriendRequests Friendship[]  @relation("receivedRequests")
+
+  sentMessages     Message[] @relation("sender")
+  receivedMessages Message[] @relation("recipient")
 }
 
-model Character {
-  id                String   @id @default(cuid())
-  name              String
-  race              String
-  class             String
-  level             Int
-  background        String
-  alignment         String
-  experiencePoints  Int
-  maxHitPoints      Int
-  currentHitPoints  Int
-  tempHitPoints     Int
-  armorClass        Int
-  initiative        Int
-  speed             Int
-  inspiration       Boolean
-  proficiencyBonus  Int
-  personalityTraits String
-  ideals            String
-  bonds             String
-  flaws             String
-  features          String
-  languages         String
-  abilityScores     Json
-  skills            Json
-  savingThrows      Json
-  abilities         Json
-  spells            Json
-  equipment         Json
-  userId            String
-  user              User     @relation(fields: [userId], references: [id])
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+model Friendship {
+  id            String   @id @default(cuid())
+  senderId      String
+  receiverId    String
+  status        FriendshipStatus
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  sender        User     @relation("sentRequests", fields: [senderId], references: [id])
+  receiver      User     @relation("receivedRequests", fields: [receiverId], references: [id])
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  content     String   @db.Text
+  senderId    String
+  recipientId String
+  sentAt      DateTime @default(now())
+  sender      User     @relation("sender", fields: [senderId], references: [externalId])
+  recipient   User     @relation("recipient", fields: [recipientId], references: [externalId])
 }
 
 model Campaign {
   id          String   @id @default(cuid())
   name        String
   description String
+  password    String?
   dmUserId    String?
   dm          User?    @relation(fields: [dmUserId], references: [externalId], name: "CampaignDm")
   players     User[]   @relation("CampaignPlayers")
@@ -100,3 +102,38 @@ model Comment {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
+model Character {
+  id                String   @id @default(cuid())
+  name              String
+  race              String
+  class             String
+  level             Int
+  background        String
+  alignment         String
+  experiencePoints  Int
+  maxHitPoints      Int
+  currentHitPoints  Int
+  tempHitPoints     Int
+  armorClass        Int
+  initiative        Int
+  speed             Int
+  inspiration       Boolean
+  proficiencyBonus  Int
+  personalityTraits String
+  ideals            String
+  bonds             String
+  flaws             String
+  features          String
+  languages         String
+  abilityScores     Json
+  skills            Json
+  savingThrows      Json
+  abilities         Json
+  spells            Json
+  equipment         Json
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+

@@ -15,7 +15,6 @@ export default function CreateCampaign() {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setCampaignProps({ ...campaignProps, [name]: value });
-    console.log(campaignProps)
   };
 
   const { mutate } = api.createCampaign.useMutation({
@@ -57,7 +56,7 @@ export default function CreateCampaign() {
       e.preventDefault(); 
       if( campaignProps.name !== "" && campaignProps.description !== ""){
         mutate({
-        id: user.id,
+        id: user!.id,
         name: campaignProps.name,
         description: campaignProps.description
         })

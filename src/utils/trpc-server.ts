@@ -32,7 +32,6 @@ export const appRouter = t.router({
     const userCampaigns = [...userCampaignsData!.campaigndm,  ...userCampaignsData!.campaignplayer]
 
     if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
-    console.log(userCampaigns)
     return userCampaigns;
   }),
   queryUserSpecificCampaign: t.procedure.input(z.object({
