@@ -47,9 +47,24 @@ export const appRouter = t.router({
 
   queryCampaigns: t.procedure.query( async ({ ctx }) => {
     const allCampaigns = await prisma.campaign.findMany();
-    console.log('c is here', allCampaigns)
     return allCampaigns;
-  })
+  }),
+
+  createCampaign: t.procedure.input(z.object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string(),
+  })).mutation( async ({ctx, input}) => {
+    const campaignData = await prisma.campaign.create({
+      data: {
+        name: input.name,
+        description: input.description,
+        dmUserId: input.id,
+      },
+    })
+    if (!campaignData) throw new TRPCError({ code: "NOT_FOUND"});
+    return campaignData;
+  }),
 
   // createUser: t.procedure.input(z.object({
   //   email: z.string(),

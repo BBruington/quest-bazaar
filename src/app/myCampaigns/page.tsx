@@ -5,14 +5,16 @@ import Link from "next/link";
 
 export default function MyCampaigns() {
   const { user } = useUser()
-  console.log("user", user)
   if (!user) return null;
   const {data, isLoading: campaignsLoading} = api.queryUserCampaigns.useQuery({id: user.id})
   if ( campaignsLoading ) return <div>loading...</div>
   if (!data) return <div>error fetching campaigns</div>
-  console.log("data", data)
   return (
     <>
+    <div className="flex justify-around">
+      <Link href={`/myCampaigns/create`}>Create</Link>
+      <button className="hover:disabled" disabled>Join</button>
+    </div>
     {!campaignsLoading && data.length !== 0 && (
       <div className="p-3 gap-3 grid grid-cols-1 sm:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3 ">
         {data?.map((campaign) => (
@@ -27,6 +29,9 @@ export default function MyCampaigns() {
           </Link>
         ))}
       </div>
+    )}
+    {data.length === 0 && (
+      <div>It seems you arent a part of a campaign. Please either join or create a campaign to display your games here.</div>
     )}
     </>
   )
