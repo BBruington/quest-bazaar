@@ -1,18 +1,13 @@
 import { prisma } from "~/utils/context";
+import CampaignComponent from "~/components/campaign";
 
-export default async function Campaign({ params }: {
+export default async function CampaignPage({ params }: {
   params: { id: string; };
 }) {
 
   const campaign = await prisma.campaign.findUnique({
     where: {
       id: params.id
-    },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      dmUserId: true,
     }
   })
 
@@ -20,7 +15,7 @@ export default async function Campaign({ params }: {
 
   return (
   <>
-    <div>{campaign.name}</div>
+  <CampaignComponent campaignData={campaign}/>
   </>
   )
 }

@@ -23,7 +23,7 @@ export default function CreateCampaign() {
         name: "",
         description: ""
       })
-      void router.push(`/`)
+      void router.push(`/myCampaigns`)
     },
     onError: (e) => {
       console.error(e)

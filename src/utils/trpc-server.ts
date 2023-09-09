@@ -65,6 +65,17 @@ export const appRouter = t.router({
     return campaignData;
   }),
 
+  deleteCampaign: t.procedure.input(z.object({
+    id: z.string(),
+  })).mutation( async ({ctx, input}) => {
+    const deleted = await prisma.campaign.delete({
+      where: {
+        id: input.id
+      }
+    })
+    return deleted;
+  })
+
   // createUser: t.procedure.input(z.object({
   //   email: z.string(),
   //   username: z.string().optional(),
