@@ -1,31 +1,34 @@
 "use client"
 import { useUser } from "@clerk/nextjs"
-
-// Define the interface for the messages prop
-interface Message {
-  id: string;
-  content: string;
-  senderId: string;
-  recipientId: string;
-  sentAt: string; // You should use the actual data type for sentAt
-}
-
-interface MyMessagesProps {
-  messages: Message[];
-}
-
+import { useState } from "react";
+import type { Message, MyMessagesProps } from "~/app/types/Message";
 
 export default function MyMessages({messages}: MyMessagesProps) {
-  const {user} = useUser()
+
+  const [messageArr, setMessageArr] = useState(messages);
+  const {user} = useUser();
+  if ( !user ) return <div>loading...</div>
+  console.log(user.id)
+  console.log(messages)
+
   return (
     <>
-      <div>
-        {messages.map((message) => (
-          <div key={message.id}>
+    <div>
+      {messages.map((message) => (
+        <>
+        {message.senderId === user.id && (
+          <div className='flex text-right justify-end' key={message.id}>
             {message.content}
           </div>
-        ))}
-      </div>
+        )}
+        {message.senderId !== user.id && (
+          <div className='flex justify-left' key={message.id}>
+            <span>{message.content}</span>
+          </div>
+        )}
+        </>
+      ))}
+    </div>
     </>
   )
 }

@@ -1,8 +1,10 @@
 import MyMessages from "~/components/myMessages";
 import {prisma} from "../../utils/context";
 import {auth} from "@clerk/nextjs"
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-
+dayjs.extend(relativeTime);
 
 export default async function Messages() {
 
@@ -19,6 +21,9 @@ export default async function Messages() {
           recipientId: userId
          }]
       },
+      orderBy: {
+        sentAt: 'asc'
+      }
     })
   
   return <> 

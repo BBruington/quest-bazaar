@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export default function Navigation() {
   const {user} = useUser();
+  if (!user) return <></>
 
   return (
     <>
@@ -13,6 +14,7 @@ export default function Navigation() {
       <Link href={`/myCampaigns`}>My Campaigns</Link>
       <div className="flex space-x-2">
         {user && <div>{user.username}</div>}
+        <Link href={`/messages`}>Messages</Link>
         <UserButton />
       </div>
     </div>
