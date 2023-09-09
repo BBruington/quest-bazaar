@@ -8,10 +8,6 @@ export default function CampaignComponent(props: {campaignData: Campaign}) {
   const {campaignData} = props
   const router = useRouter()
   const [campaign, setCampaign] = useState(campaignData)
-  console.log(campaignData)
-  console.log(campaignData.name)
-  console.log("campaign", campaign)
-  console.log(campaign.name)
 
   const { mutate } = api.deleteCampaign.useMutation({
     onSuccess: () => {

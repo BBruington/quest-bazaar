@@ -7,7 +7,7 @@ import "../styles/globals.css";
 
  
 export const metadata: Metadata = {
-  title: 'Home',
+  title: 'Quest Bazaar',
   description: 'Welcome to Next.js',
 }
 

@@ -20,9 +20,13 @@ export default function MyCampaigns() {
         {data?.map((campaign) => (
           <Link key={campaign.id} href={`/myCampaigns/${campaign.id}`}>
             <div className="border rounded-lg group cursor-pointer overflow-hidden">
-              <div className='flex justify-between p-5 bg-white'>
+              {campaign.image && (
+                <img className='h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out' src={campaign.image as string} alt="" />
+              )}
+              <div className='flex justify-between p-5 bg-white '>
                 <div>
                   <p className='text-lg font-bold'>{campaign.name}</p>
+                  <p>{campaign.description}</p>
                 </div>
               </div>
             </div>

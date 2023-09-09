@@ -28,22 +28,22 @@ model User {
   likes     Like[]
   comments  Comment[]
 
-  sentFriendRequests     Friendship[]  @relation("sentRequests")
-  receivedFriendRequests Friendship[]  @relation("receivedRequests")
+  sentFriendRequests     Friendship[] @relation("sentRequests")
+  receivedFriendRequests Friendship[] @relation("receivedRequests")
 
   sentMessages     Message[] @relation("sender")
   receivedMessages Message[] @relation("recipient")
 }
 
 model Friendship {
-  id            String   @id @default(cuid())
-  senderId      String
-  receiverId    String
-  status        FriendshipStatus
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  sender        User     @relation("sentRequests", fields: [senderId], references: [id])
-  receiver      User     @relation("receivedRequests", fields: [receiverId], references: [id])
+  id         String           @id @default(cuid())
+  senderId   String
+  receiverId String
+  status     FriendshipStatus
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  sender     User             @relation("sentRequests", fields: [senderId], references: [id])
+  receiver   User             @relation("receivedRequests", fields: [receiverId], references: [id])
 }
 
 enum FriendshipStatus {
@@ -66,6 +66,7 @@ model Campaign {
   id          String   @id @default(cuid())
   name        String
   description String
+  image       String?
   password    String?
   dmUserId    String?
   dm          User?    @relation(fields: [dmUserId], references: [externalId], name: "CampaignDm")
@@ -102,6 +103,7 @@ model Comment {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
+
 model Character {
   id                String   @id @default(cuid())
   name              String
@@ -136,4 +138,3 @@ model Character {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
-
