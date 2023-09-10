@@ -87,9 +87,10 @@ model Campaign {
   description String
   image       String?
   password    String?
-  dmUserId    String         @unique
+  dmUserId    String        
+  dmNotesId   String
   dmName      String?
-  dmNotes     CampaignNote[]
+  dmNotes     CampaignNote[] 
   dm          User?          @relation(fields: [dmUserId], references: [externalId], name: "CampaignDm")
   players     User[]         @relation("CampaignPlayers")
   createdAt   DateTime       @default(now())
@@ -98,12 +99,13 @@ model Campaign {
 
 model CampaignNote {
   id        String   @id @default(cuid())
+  campaignId      String
+  campaign   Campaign  @relation(fields: [campaignId], references: [id])
   title     String
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
-  user      Campaign @relation(fields: [userId], references: [dmUserId])
 }
 
 model Comment {

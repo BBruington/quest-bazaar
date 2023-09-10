@@ -74,16 +74,27 @@ export const appRouter = t.router({
       }
     })
     return deleted;
-  })
+  }),
 
-  // createUser: t.procedure.input(z.object({
-  //   email: z.string(),
-  //   username: z.string().optional(),
-  // })).mutation(async ({ctx, input}) => {
-  //   const newUser = await ctx.prisma.user.create({ data: {...input} });
-
-  //   return newUser;
-  // }),
+  // upsertCampaignNote: t.procedure.input(z.object({
+  //   id: z.string(),
+  //   title: z.string(),
+  //   content: z.string(),
+  // })).mutation( async ({ctx, input}) => {
+  //   const upsertCampaign = await prisma.campaignNote.upsert({
+  //     where: {
+  //       userId: input.id,
+  //     },
+  //     update: {
+  //       title: input.title,
+  //       content: input.content
+  //     },
+  //     create: {
+  //       id: input.id,
+  //       title: input.title,
+  //       content: input.content
+  //     },
+  // })
 });
 
 export type AppRouter = typeof appRouter;

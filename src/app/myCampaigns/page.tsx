@@ -20,7 +20,7 @@ export default function MyCampaigns() {
         {data?.map((campaign) => (
           <Link key={campaign.id} href={`/myCampaigns/${campaign.id}`}>
             <div className="border rounded-lg group cursor-pointer overflow-hidden">
-              <img className='h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out' src={`${campaign.image as string? campaign.image : 'https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg'}`} alt="Campaign main image" />
+              <img className='h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out' src={`${campaign.image! ? campaign.image : 'https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg'}`} alt="Campaign main image" />
               <div className='flex justify-between p-5 bg-white '>
                 <div>
                   <p className='text-lg font-bold'>{campaign.name.substring(0, 30)}</p>

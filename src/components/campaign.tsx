@@ -1,12 +1,14 @@
 'use client'
 import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import type { Campaign } from "@prisma/client";
 
 export default function CampaignComponent(props: {campaignData: Campaign}) {
-  const {campaignData} = props
-  const router = useRouter()
+  const {campaignData} = props;
+  const router = useRouter();
+  const user = useUser();
   const [campaign, setCampaign] = useState(campaignData)
 
   const { mutate } = api.deleteCampaign.useMutation({
