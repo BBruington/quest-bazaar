@@ -76,25 +76,28 @@ export const appRouter = t.router({
     return deleted;
   }),
 
-  // upsertCampaignNote: t.procedure.input(z.object({
-  //   id: z.string(),
-  //   title: z.string(),
-  //   content: z.string(),
-  // })).mutation( async ({ctx, input}) => {
-  //   const upsertCampaign = await prisma.campaignNote.upsert({
-  //     where: {
-  //       userId: input.id,
-  //     },
-  //     update: {
-  //       title: input.title,
-  //       content: input.content
-  //     },
-  //     create: {
-  //       id: input.id,
-  //       title: input.title,
-  //       content: input.content
-  //     },
-  // })
+  upsertCampaignNote: t.procedure.input(z.object({
+    id: z.string(),
+    campaignId: z.string(),
+    title: z.string(),
+    content: z.string(),
+  })).mutation( async ({ctx, input}) => {
+    const upsertCampaign = await prisma.campaignNote.upsert({
+      where: {
+        id: input.id,
+      },
+      update: {
+        title: input.title,
+        content: input.content
+      },
+      create: {
+        campaignId: input.campaignId,
+        title: input.title,
+        content: input.content
+      },
+    })
+    return upsertCampaign;
+  })
 });
 
 export type AppRouter = typeof appRouter;
