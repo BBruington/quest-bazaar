@@ -10,7 +10,7 @@ const notesData = [
     title: 'Note 1',
     content: 'This is the content of Note 1.',
     createdAt: new Date(),
-    updatedAt: new Date
+    updatedAt: new Date(),
   },
   {
     id: "2",
@@ -18,7 +18,7 @@ const notesData = [
     title: 'Note 2',
     content: 'This is the content of Note 2.',
     createdAt: new Date(),
-    updatedAt: new Date
+    updatedAt: new Date(),
   },
 ];
 
