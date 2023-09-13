@@ -97,7 +97,26 @@ export const appRouter = t.router({
       },
     })
     return upsertCampaign;
-  })
+  }),
+
+  queryPost: t.procedure.input(z.object({
+    id: z.string()
+  })).query( async ({ctx, input}) => {
+    try{
+      const post = await prisma.userPost.findUnique({
+        where: {
+          id: input.id
+        }
+      })
+      return post;
+
+    } catch (e) {
+      console.error(e)
+      return null;
+    }
+  }),
+
+  
 });
 
 export type AppRouter = typeof appRouter;
