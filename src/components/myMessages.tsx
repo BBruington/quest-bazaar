@@ -1,5 +1,5 @@
 "use client"
-import { useUser } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import type { Message, MyMessagesProps } from "~/app/types/Message";
 
@@ -8,8 +8,6 @@ export default function MyMessages({messages}: MyMessagesProps) {
   const [messageArr, setMessageArr] = useState(messages);
   const {user} = useUser();
   if ( !user ) return <div>loading...</div>
-  console.log(user.id)
-  console.log(messages)
 
   return (
     <>
