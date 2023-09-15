@@ -25,7 +25,7 @@ export default function RootLayout({
           <html lang="en">
               <head>
               </head>
-              <body>
+              <body className='bg-foreground'>
                 <Navigation></Navigation>
                 {children}
               </body>

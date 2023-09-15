@@ -15,8 +15,6 @@ export default async function CampaignPage({ params }: {
     }
   })
 
-  console.log(campaign)
-
   if( !campaign ) return <div>Unable to fetch campaign</div>
 
   return (

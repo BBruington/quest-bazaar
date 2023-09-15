@@ -18,14 +18,14 @@ export default function MyCampaigns() {
     {!campaignsLoading && data.length !== 0 && (
       <div className="p-3 gap-3 grid grid-cols-1 sm:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3 ">
         {data?.map((campaign) => (
-          <Link key={campaign.id} href={`/myCampaigns/${campaign.id}`}>
-            <div className="border rounded-lg group cursor-pointer overflow-hidden">
+          <Link className="" key={campaign.id} href={`/myCampaigns/${campaign.id}`}>
+            <div className="border border-primary-foreground rounded-lg group cursor-pointer overflow-hidden">
               <img className='h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out' src={`${campaign.image! ? campaign.image : 'https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg'}`} alt="Campaign main image" />
-              <div className='flex justify-between p-5 bg-white '>
+              <div className='flex justify-between p-5 bg-accent-foreground '>
                 <div>
-                  <p className='text-lg font-bold'>{campaign.name.substring(0, 30)}</p>
+                  <p className='text-lg font-bold text-white'>{campaign.name.substring(0, 30)}</p>
                   <div className="flex space-x-5">
-                    <p className="flex text-xs">{campaign.dmName ? <>By: {campaign.dmName}</> : <>By: John Smith</>}</p>
+                    <p className="flex text-xs text-white">{campaign.dmName ? <>By: {campaign.dmName}</> : <>By: John Smith</>}</p>
                   </div>
                 </div>
               </div>

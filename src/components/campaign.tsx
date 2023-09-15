@@ -3,6 +3,7 @@ import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
+import { Button } from "./ui/button";
 import type { Campaign } from "@prisma/client";
 
 export default function CampaignComponent(props: {campaignData: Campaign}) {
@@ -23,12 +24,12 @@ export default function CampaignComponent(props: {campaignData: Campaign}) {
     <div className="flex space-x-3">
       <div>{campaign.name}</div>
       <div>{campaign.description}</div>
-      <button onClick={(e) => {
+      <Button variant="destructive" onClick={(e) => {
         e.preventDefault();
         mutate({
           id: campaignData.id
         })
-      }}>Delete Campaign</button>
+      }}>Delete Campaign</Button>
   </div>
   )
 }
