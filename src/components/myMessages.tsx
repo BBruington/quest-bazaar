@@ -35,7 +35,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
               </div>
           ))}
 
-        <Input className="mt-auto bg-primary border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"></Input>
+        <Input placeholder="Message" className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"></Input>
         </div>
       </div>
       <div></div>
