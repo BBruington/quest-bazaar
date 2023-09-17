@@ -38,7 +38,17 @@ export default function MyMessages({messages}: MyMessagesProps) {
           <AccordionItem value="item-1">
             <AccordionTrigger>Friends</AccordionTrigger>
             <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
+              <div className="flex flex-col">
+                <button className="w-full py-1 hover:bg-slate-800">
+                  <div className="flex space-x-3 items-center">
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <span>Friend A</span>
+                  </div>
+                </button>
+              </div>
             </AccordionContent>
           </AccordionItem>
           {/* <AccordionItem value="item-3">
@@ -81,7 +91,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </div>
-            <div className="text-white">also hi</div>
+            <div className="text-white mt-1">Friend A</div>
             <div className="flex justify-center mt-auto mb-5">
               <Button className="mr-5 w-1/3">Invite</Button>
               <Button variant="destructive" className="px-none w-1/3">Remove</Button>
