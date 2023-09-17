@@ -12,8 +12,8 @@ export default function MyCampaigns() {
   return (
     <>
     <div className="h-30 flex justify-around"> 
-      <Link className="my-5 lg:py-4 bg-black text-white py-3 px-5 rounded-md hover:bg-gray-700 whitespace-nowrap w-1/6 text-center" href={`/myCampaigns/create`}>Create</Link>
-      <button className="my-5 lg:py-4  bg-black text-white py-3 px-5 rounded-md hover:bg-gray-700 whitespace-nowrap w-1/6 text-center hover:disabled" disabled>Join</button>
+      <Link className="my-5 lg:py-4 bg-accent-foreground text-white py-3 px-5 rounded-md hover:bg-gray-700 whitespace-nowrap w-1/6 text-center" href={`/myCampaigns/create`}>Create</Link>
+      <button className="my-5 lg:py-4  bg-accent-foreground text-white py-3 px-5 rounded-md hover:bg-gray-700 whitespace-nowrap w-1/6 text-center hover:disabled" disabled>Join</button>
     </div>
     {!campaignsLoading && data.length !== 0 && (
       <div className="p-3 gap-3 grid grid-cols-1 sm:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3 ">
