@@ -39,7 +39,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
             <AccordionContent>
               <div className="flex">
                 <Input placeholder="Friend" className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"></Input>
-                <Button className="ml-2">Add</Button>
+                <Button onClick={() => handleAddFriend("randyrando")} className="ml-2">Add</Button>
               </div>
             </AccordionContent>
           </AccordionItem>

@@ -126,7 +126,7 @@ export const appRouter = t.router({
           username: input.name
         },
         select: {
-          id: true
+          externalId: true
         },
       });
       if(recipient === null) {
@@ -135,7 +135,7 @@ export const appRouter = t.router({
       }
       const pendingFriend = await prisma.friendship.create({
         data: {
-          receiverId: recipient.id,
+          receiverId: recipient.externalId,
           senderId: input.id,
           status: "PENDING"
         },

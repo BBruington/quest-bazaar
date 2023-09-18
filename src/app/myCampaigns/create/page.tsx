@@ -19,10 +19,6 @@ export default function CreateCampaign() {
 
   const { mutate } = api.createCampaign.useMutation({
     onSuccess: () => {
-      setCampaignProps({
-        name: "",
-        description: ""
-      })
       void router.push(`/myCampaigns`)
     },
     onError: (e) => {
