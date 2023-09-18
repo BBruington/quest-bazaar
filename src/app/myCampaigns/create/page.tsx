@@ -33,7 +33,7 @@ export default function CreateCampaign() {
   return (
     <>
     <div>
-      <div>
+      {/* <div>
         <label htmlFor="name">Campaign Name:</label>
         <input
           type="text"
@@ -61,7 +61,9 @@ export default function CreateCampaign() {
         description: campaignProps.description
         })
       }}}>Create Campaign
-    </button>
+    </button> */}
+
+    
     </div>
     </>
   )
