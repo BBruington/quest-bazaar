@@ -49,7 +49,6 @@ model Friendship {
 enum FriendshipStatus {
   PENDING
   ACCEPTED
-  DECLINED
 }
 
 model Message {

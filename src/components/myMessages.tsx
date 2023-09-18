@@ -1,4 +1,5 @@
 "use client"
+import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Input } from "./ui/input";
@@ -18,8 +19,15 @@ import type { Message, MyMessagesProps } from "~/app/types/Message";
 export default function MyMessages({messages}: MyMessagesProps) {
 
   const [messageArr, setMessageArr] = useState(messages);
+
   const {user} = useUser();
   if ( !user ) return <div>loading...</div>
+  const mutation  = api.addFriend.useMutation()
+
+  const handleAddFriend = (friendName: string) => {
+    const id = user.id
+    mutation.mutate({ name: friendName, id });
+  };
 
   return (
     <>
