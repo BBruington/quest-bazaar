@@ -146,6 +146,18 @@ export const appRouter = t.router({
       console.error("error: ", error);
       return false;
     }
+  }),
+
+  queryMyFriendRequests: t.procedure.input( z.object({
+    id: z.string()
+  })).query(async ({ctx, input}) => {
+    const myRequests = await prisma.friendship.findMany({
+      where: {
+        receiverId: input.id
+      }
+    })
+
+    return myRequests;
   })
 
   
