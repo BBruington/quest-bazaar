@@ -7,7 +7,7 @@ export default async function Posts() {
   if ( !posts ) return <div>failed to load posts</div>
   return (
     <>
-      <div className="p-3 gap-3 grid grid-cols-1 sm:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3 ">
+      <div className="p-3 gap-3 grid grid-cols-1 sm:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3">
           {posts.map((post: Post) => (
             <Link key={post.id} href={`/post/${post.id}`}>
               <div className="border rounded-lg group cursor-pointer overflow-hidden">

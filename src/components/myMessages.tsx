@@ -26,17 +26,23 @@ export default function MyMessages({messages}: MyMessagesProps) {
   
   const {user} = useUser();
   if ( !user ) return <div>loading...</div>
-  const mutation  = api.addFriend.useMutation();
+  const addFriendMutation  = api.addFriend.useMutation();
+  const handleFrRequestMutation = api.handleFriendRequest.useMutation();
   const {data: friendRequests, isLoading: loadingFriendRequests} = api.queryMyFriendRequests.useQuery({id: user.id});
-  console.log(friendRequests)
   const handleAddFriendChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value } = e.target;
     setAddFriendInput(value);
   };
 
+  const handleFriendRequest = (senderId: string, frResponse: string) => {
+    const fr = handleFrRequestMutation.mutate({
+      senderId, receiverId: user.id, response: frResponse
+    })
+  }
+
   const handleAddFriend = (friendName: string) => {
     const id = user.id
-    const friendRes = mutation.mutate({ receiverName: friendName, id, senderName: user.username! });
+    const friendRes = addFriendMutation.mutate({ receiverName: friendName, id, senderName: user.username! });
     setAddFriendInput("")
   };
 
@@ -71,11 +77,19 @@ export default function MyMessages({messages}: MyMessagesProps) {
               <div className="flex flex-col">
                 <button className="w-full py-1 hover:bg-slate-800">
                   <div className="flex space-x-3 items-center">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <span>Friend A</span>
+                  {friendRequests?.map((friendRequest) => (
+                  <>
+                    {friendRequest.status === "ACCEPTED" ? (
+                      <> 
+                        <Avatar>
+                          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                        <span>{friendRequest.senderName}</span>
+                      </>
+                    ) : null}
+                  </>
+                ))}                
                   </div>
                 </button>
               </div>
@@ -87,15 +101,18 @@ export default function MyMessages({messages}: MyMessagesProps) {
               <div className="space-y-3">
                 {friendRequests?.map((friendRequest) => (
                   <>
-                    <div className="flex md:flex-col border-b border-white pb-3">
-                      <span className="flex justify-center text-sm">
-                        {friendRequest.senderName} would like to be Friends
-                      </span>
-                      <div className="flex md:flex-row flex-col justify-around mt-1">
-                        <Button className="h-6">Accept</Button>
-                        <Button className="h-6">Decline</Button>
+                    {friendRequest.status === "PENDING" ? (
+                      <div className="flex md:flex-col border-b border-white pb-3">
+                        <span className="flex justify-center text-sm">
+                          {friendRequest.senderName} would like to be Friends
+                        </span>
+                        <div className="flex md:flex-row flex-col justify-around mt-1">
+                          <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "ACCEPTED")}>Accept</Button>
+                          <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "DECLINED")}>Decline</Button>
+                        </div>
                       </div>
-                    </div>
+
+                    ) : null}
                   </>
                 ))}                
               </div>

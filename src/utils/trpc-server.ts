@@ -162,6 +162,34 @@ export const appRouter = t.router({
     })
 
     return myRequests;
+  }),
+
+  handleFriendRequest: t.procedure.input( z.object({
+    response: z.string(),
+    senderId: z.string(),
+    receiverId: z.string(),
+  })).mutation(async ({ input }) => {
+    if( input.response === "ACCEPTED") {
+      const acceptedFriend = await prisma.friendship.updateMany({
+        where: {
+          senderId: input.senderId,
+          receiverId: input.receiverId
+        },
+        data: {
+          status: "ACCEPTED"
+        }
+      });
+      return acceptedFriend
+    } else {
+      const declinedFriend = await prisma.friendship.deleteMany({
+        where: {
+          senderId: input.senderId,
+          receiverId: input.receiverId
+        }
+      })
+
+      return declinedFriend
+    }
   })
 
   
