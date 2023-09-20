@@ -21,14 +21,19 @@ import type { MyMessagesProps } from "~/app/types/Message";
 export default function MyMessages({messages}: MyMessagesProps) {
 
   const [messageArr, setMessageArr] = useState(messages);
+  const [selectedFriend, setSelectedFriend] = useState({});
+  console.log(selectedFriend)
   const [addFriendInput, setAddFriendInput] = useState("");
 
   
   const {user} = useUser();
   if ( !user ) return <div>loading...</div>
+
   const addFriendMutation  = api.addFriend.useMutation();
   const handleFrRequestMutation = api.handleFriendRequest.useMutation();
+
   const {data: friendRequests, isLoading: loadingFriendRequests} = api.queryMyFriendRequests.useQuery({id: user.id});
+  
   const handleAddFriendChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value } = e.target;
     setAddFriendInput(value);
@@ -38,12 +43,14 @@ export default function MyMessages({messages}: MyMessagesProps) {
     const fr = handleFrRequestMutation.mutate({
       senderId, receiverId: user.id, response: frResponse
     })
+    return fr;
   }
 
   const handleAddFriend = (friendName: string) => {
     const id = user.id
     const friendRes = addFriendMutation.mutate({ receiverName: friendName, id, senderName: user.username! });
     setAddFriendInput("")
+    return friendRes;
   };
 
   return (
@@ -75,23 +82,22 @@ export default function MyMessages({messages}: MyMessagesProps) {
             <AccordionTrigger>Friends</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col">
-                <button className="w-full py-1 hover:bg-slate-800">
-                  <div className="flex space-x-3 items-center">
-                  {friendRequests?.map((friendRequest) => (
-                  <>
-                    {friendRequest.status === "ACCEPTED" ? (
-                      <> 
-                        <Avatar>
-                          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                          <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                        <span>{friendRequest.senderName}</span>
-                      </>
-                    ) : null}
-                  </>
-                ))}                
-                  </div>
-                </button>
+                {friendRequests?.map((friendRequest) => (
+                <>
+                  <button className="w-full py-1 hover:bg-slate-800" onClick={() => setSelectedFriend(friendRequest)}>
+                    <div className="flex space-x-3 items-center">
+                      {friendRequest.status === "ACCEPTED" ? (
+                        <> 
+                          <Avatar>
+                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                            <AvatarFallback>CN</AvatarFallback>
+                          </Avatar>
+                          <span>{friendRequest.senderName}</span>
+                        </>
+                      ) : null}
+                    </div>
+                  </button>
+                </>))}                
               </div>
             </AccordionContent>
           </AccordionItem>
