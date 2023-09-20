@@ -138,7 +138,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
 
       <DisplayMessages messages={messages} />
 
-      <SelectedFriend selectedFriend={selectedFriend}/>
+      <SelectedFriend selectedFriend={selectedFriend} userId={user.id}/>
     </div>
     </>
   )
