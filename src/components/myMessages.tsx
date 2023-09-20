@@ -1,6 +1,5 @@
 "use client"
 import DisplayMessages from "./profile/displayMessages";
-import SelectedFriend from "./profile/selectedFriend";
 import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
@@ -17,7 +16,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger, } from "./ui/accordion";
-import type { Message, MyMessagesProps } from "~/app/types/Message";
+import type { MyMessagesProps } from "~/app/types/Message";
 
 export default function MyMessages({messages}: MyMessagesProps) {
 
@@ -28,16 +27,16 @@ export default function MyMessages({messages}: MyMessagesProps) {
   const {user} = useUser();
   if ( !user ) return <div>loading...</div>
   const mutation  = api.addFriend.useMutation();
-
+  const {data: friendRequests, isLoading: loadingFriendRequests} = api.queryMyFriendRequests.useQuery({id: user.id});
+  console.log(friendRequests)
   const handleAddFriendChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value } = e.target;
     setAddFriendInput(value);
-    console.log(addFriendInput)
   };
 
   const handleAddFriend = (friendName: string) => {
     const id = user.id
-    const friendRes = mutation.mutate({ name: friendName, id });
+    const friendRes = mutation.mutate({ receiverName: friendName, id, senderName: user.username! });
     setAddFriendInput("")
   };
 
@@ -51,19 +50,17 @@ export default function MyMessages({messages}: MyMessagesProps) {
             <AccordionContent>
               <div className="flex">
                 <Input id="name"
-                        name="name"
-                        value={addFriendInput}
-                        onChange={handleAddFriendChange}
-                        placeholder="Friend" 
-                        onKeyDown={(e) => {
-                          if(e.key === "Enter") {
-                            e.preventDefault();
-                            if(addFriendInput !== "") {
-                              handleAddFriend(addFriendInput);
-                            }
-                          }
-                        }}
-                        className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"></Input>
+                  name="name" value={addFriendInput} onChange={handleAddFriendChange} placeholder="Friend" 
+                  onKeyDown={(e) => {
+                    if(e.key === "Enter") {
+                      e.preventDefault();
+                      if(addFriendInput !== "") {
+                        handleAddFriend(addFriendInput);
+                      }
+                    }
+                  }}
+                  className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black">
+                </Input>
                 <Button onClick={() => handleAddFriend(addFriendInput)} className="ml-2">Add</Button>
               </div>
             </AccordionContent>
@@ -87,8 +84,21 @@ export default function MyMessages({messages}: MyMessagesProps) {
           <AccordionItem value="item-3">
             <AccordionTrigger>Notifications</AccordionTrigger>
             <AccordionContent>
-              Yes. It&apos;s animated by default, but you can disable it if you
-              prefer.
+              <div className="space-y-3">
+                {friendRequests?.map((friendRequest) => (
+                  <>
+                    <div className="flex md:flex-col border-b border-white pb-3">
+                      <span className="flex justify-center text-sm">
+                        {friendRequest.senderName} would like to be Friends
+                      </span>
+                      <div className="flex md:flex-row flex-col justify-around mt-1">
+                        <Button className="h-6">Accept</Button>
+                        <Button className="h-6">Decline</Button>
+                      </div>
+                    </div>
+                  </>
+                ))}                
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

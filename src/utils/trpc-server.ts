@@ -9,7 +9,7 @@ const t = initTRPC.create();
 export const appRouter = t.router({
   queryUser: t.procedure.input(z.object({
       email: z.string(),
-    })).query(async ({ ctx, input }) => {
+    })).query(async ({  input }) => {
       const user = await prisma.user.findUnique({
         where: {email: input.email}
       });
@@ -21,7 +21,7 @@ export const appRouter = t.router({
   
   queryUserCampaigns: t.procedure.input(z.object({
     id: z.string(),
-  })).query( async ({ ctx, input }) => {
+  })).query( async ({  input }) => {
     const userCampaignsData = await prisma.user.findUnique({
       where: {externalId: input.id},
       include: {
@@ -36,7 +36,7 @@ export const appRouter = t.router({
   }),
   queryUserSpecificCampaign: t.procedure.input(z.object({
     id: z.string(),
-  })).query( async ({ ctx, input }) => {
+  })).query( async ({  input }) => {
     const userCampaignData = await prisma.campaign.findUnique({
       where: {id: input.id},
     })
@@ -44,7 +44,7 @@ export const appRouter = t.router({
     return userCampaignData;
   }),
 
-  queryCampaigns: t.procedure.query( async ({ ctx }) => {
+  queryCampaigns: t.procedure.query( async () => {
     const allCampaigns = await prisma.campaign.findMany();
     return allCampaigns;
   }),
@@ -53,7 +53,7 @@ export const appRouter = t.router({
     id: z.string(),
     name: z.string(),
     description: z.string(),
-  })).mutation( async ({ctx, input}) => {
+  })).mutation( async ({ input}) => {
     const campaignData = await prisma.campaign.create({
       data: {
         name: input.name,
@@ -67,7 +67,7 @@ export const appRouter = t.router({
 
   deleteCampaign: t.procedure.input(z.object({
     id: z.string(),
-  })).mutation( async ({ctx, input}) => {
+  })).mutation( async ({ input}) => {
     const deleted = await prisma.campaign.delete({
       where: {
         id: input.id
@@ -81,7 +81,7 @@ export const appRouter = t.router({
     campaignId: z.string(),
     title: z.string(),
     content: z.string(),
-  })).mutation( async ({ctx, input}) => {
+  })).mutation( async ({ input}) => {
     const upsertCampaign = await prisma.campaignNote.upsert({
       where: {
         id: input.id,
@@ -101,7 +101,7 @@ export const appRouter = t.router({
 
   queryPost: t.procedure.input(z.object({
     id: z.string()
-  })).query( async ({ctx, input}) => {
+  })).query( async ({ input}) => {
     try{
       const post = await prisma.userPost.findUnique({
         where: {
@@ -117,13 +117,14 @@ export const appRouter = t.router({
   }),
 
   addFriend: t.procedure.input(z.object({
-    name: z.string(),
+    receiverName: z.string(),
+    senderName: z.string(),
     id: z.string()
-  })).mutation( async ({ctx, input}) => {
+  })).mutation( async ({input}) => {
     try{
       const recipient = await prisma.user.findUnique({
         where: {
-          username: input.name
+          username: input.receiverName
         },
         select: {
           externalId: true
@@ -136,7 +137,9 @@ export const appRouter = t.router({
       const pendingFriend = await prisma.friendship.create({
         data: {
           receiverId: recipient.externalId,
+          receiverName: input.receiverName,
           senderId: input.id,
+          senderName: input.senderName,
           status: "PENDING"
         },
       })
@@ -150,7 +153,8 @@ export const appRouter = t.router({
 
   queryMyFriendRequests: t.procedure.input( z.object({
     id: z.string()
-  })).query(async ({ctx, input}) => {
+  })).query(async ({input}) => {
+
     const myRequests = await prisma.friendship.findMany({
       where: {
         receiverId: input.id

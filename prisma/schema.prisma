@@ -36,14 +36,16 @@ model User {
 }
 
 model Friendship {
-  id         String           @id @default(cuid())
-  senderId   String
-  receiverId String
-  status     FriendshipStatus
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
-  sender     User             @relation("sentRequests", fields: [senderId], references: [externalId])
-  receiver   User             @relation("receivedRequests", fields: [receiverId], references: [externalId])
+  id           String           @id @default(cuid())
+  senderId     String
+  senderName   String           
+  receiverId   String
+  receiverName String
+  status       FriendshipStatus
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  sender       User             @relation("sentRequests", fields: [senderId], references: [externalId])
+  receiver     User             @relation("receivedRequests", fields: [receiverId], references: [externalId])
 }
 
 enum FriendshipStatus {
