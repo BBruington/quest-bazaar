@@ -22,7 +22,6 @@ export default function MyMessages({messages}: MyMessagesProps) {
 
   const [messageArr, setMessageArr] = useState(messages);
   const [selectedFriend, setSelectedFriend] = useState({});
-  console.log(selectedFriend)
   const [addFriendInput, setAddFriendInput] = useState("");
 
   

@@ -190,6 +190,23 @@ export const appRouter = t.router({
 
       return declinedFriend
     }
+  }),
+
+  queryFriendMessages: t.procedure.input(z.object({
+    senderId: z.string(),
+    receiverId: z.string(),
+  })).query(async ({ input }) => {
+    const messagesData = await prisma.message.findMany({
+      where: {
+        senderId: input.senderId,
+        recipientId: input.receiverId,
+      },
+      orderBy: {
+        sentAt: 'asc'
+      }
+    })
+
+    return messagesData;
   })
 
   
