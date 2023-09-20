@@ -1,5 +1,6 @@
 "use client"
 import DisplayMessages from "./profile/displayMessages";
+import SelectedFriend from "./profile/selectedFriend";
 import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
@@ -21,7 +22,16 @@ import type { MyMessagesProps } from "~/app/types/Message";
 export default function MyMessages({messages}: MyMessagesProps) {
 
   const [messageArr, setMessageArr] = useState(messages);
-  const [selectedFriend, setSelectedFriend] = useState({});
+  const [selectedFriend, setSelectedFriend] = useState({
+    id: "",
+    status: "",
+    receiverName: "",
+    senderName: "",
+    senderId: "",
+    receiverId: "",
+    createdAt: "",
+    updatedAt: ""
+  });
   const [addFriendInput, setAddFriendInput] = useState("");
 
   
@@ -37,6 +47,12 @@ export default function MyMessages({messages}: MyMessagesProps) {
     const { value } = e.target;
     setAddFriendInput(value);
   };
+  const handleAddFriend = (friendName: string) => {
+    const id = user.id
+    const friendRes = addFriendMutation.mutate({ receiverName: friendName, id, senderName: user.username! });
+    setAddFriendInput("")
+    return friendRes;
+  };
 
   const handleFriendRequest = (senderId: string, frResponse: string) => {
     const fr = handleFrRequestMutation.mutate({
@@ -45,12 +61,6 @@ export default function MyMessages({messages}: MyMessagesProps) {
     return fr;
   }
 
-  const handleAddFriend = (friendName: string) => {
-    const id = user.id
-    const friendRes = addFriendMutation.mutate({ receiverName: friendName, id, senderName: user.username! });
-    setAddFriendInput("")
-    return friendRes;
-  };
 
   return (
     <>
@@ -128,24 +138,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
 
       <DisplayMessages messages={messages} />
 
-      <div className="w-1/6">
-        <div className="flex items-center justify-center h-60 bg-accent-foreground mx-2">
-          <div className="flex flex-col items-center justify-top bg-foreground w-5/6 h-4/6">
-            <div className="text-white mt-5">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="text-white mt-1">Friend A</div>
-            <div className="flex justify-center mt-auto mb-5">
-              <Button className="mr-5 w-1/3">Invite</Button>
-              <Button variant="destructive" className="px-none w-1/3">Remove</Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <SelectedFriend selectedFriend={selectedFriend}/>
     </div>
     </>
   )
