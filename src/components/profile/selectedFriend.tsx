@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useState } from "react";
 import { api } from "~/utils/trpc";
 import type { SelectedFriend } from "~/app/types/Message";
 
@@ -14,6 +15,7 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
     const fr = handleFrRequestMutation.mutate({
       senderId, receiverId: userId, response: "DECLINED"
     })
+
     return fr;
   }
 

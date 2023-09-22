@@ -32,8 +32,8 @@ export default function MyMessages({messages}: MyMessagesProps) {
     createdAt: "",
     updatedAt: ""
   });
-  const [addFriendInput, setAddFriendInput] = useState("");
 
+  const [addFriendInput, setAddFriendInput] = useState("");
   
   const {user} = useUser();
   if ( !user ) return <div>loading...</div>
@@ -60,7 +60,6 @@ export default function MyMessages({messages}: MyMessagesProps) {
     })
     return fr;
   }
-
 
   return (
     <>
@@ -138,7 +137,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
 
       <DisplayMessages messages={messages} />
 
-      <SelectedFriend selectedFriend={selectedFriend} userId={user.id}/>
+      <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
     </div>
     </>
   )
