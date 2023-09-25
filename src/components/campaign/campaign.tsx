@@ -3,14 +3,14 @@ import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import type { Campaign } from "@prisma/client";
 
 import { 
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger, } from "./ui/accordion";
+  AccordionTrigger, } from "../ui/accordion";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../components/ui/alert-dialog"
+} from "../ui/alert-dialog"
 
 
 export default function CampaignComponent(props: {campaignData: Campaign}) {
