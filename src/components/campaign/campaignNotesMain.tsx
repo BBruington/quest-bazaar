@@ -3,18 +3,18 @@ import { useState } from "react"
 import ReactMarkdown from "react-markdown"
 export default function CampaignNotesMain(props:{ activeNote, updateNote, editMode}) {
 
-  const {activeNote, updateNote, editMode} = props
+  // const {activeNote, updateNote, editMode} = props
 
-  const editField = (key, value) => {
-    updateNote({
-          ...activeNote,
-        [key]: value,
-        lastModified: {
-          seconds: Date.now()/1000,
-          milliseconds: Date.now()
-        }
-    })
-  }
+  // const editField = (key, value) => {
+  //   updateNote({
+  //         ...activeNote,
+  //       [key]: value,
+  //       lastModified: {
+  //         seconds: Date.now()/1000,
+  //         milliseconds: Date.now()
+  //       }
+  //   })
+  // }
 
   // return (<>
   // <div className="w-4/6 h-90v border-b-2">
