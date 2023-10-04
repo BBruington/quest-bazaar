@@ -44,12 +44,12 @@ export default function CampaignComponent(props: {campaignData: Campaign}) {
       <div>{campaign.description}</div>
       <div className="w-1/6 mx-2">
         <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="item-2">
+          <AccordionItem value="item-1">
             <AccordionTrigger>Notes</AccordionTrigger>
             <AccordionContent>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-1">
+          <AccordionItem value="item-2">
             <AccordionTrigger>Players</AccordionTrigger>
             <AccordionContent>
             </AccordionContent>
@@ -66,7 +66,7 @@ export default function CampaignComponent(props: {campaignData: Campaign}) {
               <div className="space-y-3">            
                 <AlertDialog>
                   <AlertDialogTrigger>
-                    <Button variant="destructive" >Delete Campaign</Button>
+                    <Button variant="destructive">Delete Campaign</Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
