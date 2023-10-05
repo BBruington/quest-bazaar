@@ -5,7 +5,9 @@ import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import type { Campaign } from "@prisma/client";
+import type { CampaignNote } from "@prisma/client";
 
+import NotesPage from "~/components/notes/notes";
 import { 
   Accordion,
   AccordionContent,
@@ -24,8 +26,8 @@ import {
 } from "../ui/alert-dialog"
 
 
-export default function CampaignComponent(props: {campaignData: Campaign}) {
-  const {campaignData} = props;
+export default function CampaignComponent(props: {campaignData: Campaign, campaignNotes: CampaignNote[]}) {
+  const {campaignData, campaignNotes} = props;
   const router = useRouter();
   const user = useUser();
   const [campaign, setCampaign] = useState(campaignData)
@@ -93,6 +95,7 @@ export default function CampaignComponent(props: {campaignData: Campaign}) {
           </AccordionItem>
         </Accordion>
       </div>
-  </div>
+      <NotesPage campaignNotes={campaignNotes}/>
+    </div>
   )
 }

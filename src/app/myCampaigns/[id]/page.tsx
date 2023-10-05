@@ -19,7 +19,7 @@ export default async function CampaignPage({ params }: {
 
   return (
   <>
-    <CampaignComponent campaignData={campaign}/>
+    <CampaignComponent campaignData={campaign} campaignNotes={campaign.dmNotes}/>
     <NotesPage campaignNotes={campaign.dmNotes}/>
   </>
   )
