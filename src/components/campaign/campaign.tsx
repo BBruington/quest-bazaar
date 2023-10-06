@@ -4,9 +4,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import type { Campaign } from "@prisma/client";
-import type { CampaignNote } from "@prisma/client";
-
+import type { Campaign, CampaignNote } from "@prisma/client";
 import NotesPage from "~/components/notes/notes";
 import { 
   Accordion,

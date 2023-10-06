@@ -1,6 +1,5 @@
 import { prisma } from "~/utils/context";
 import CampaignComponent from "~/components/campaign/campaign";
-import NotesPage from "~/components/notes/notes";
 
 export default async function CampaignPage({ params }: {
   params: { id: string; };
@@ -20,7 +19,6 @@ export default async function CampaignPage({ params }: {
   return (
   <>
     <CampaignComponent campaignData={campaign} campaignNotes={campaign.dmNotes}/>
-    <NotesPage campaignNotes={campaign.dmNotes}/>
   </>
   )
 }
