@@ -40,8 +40,6 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
   })
   return (
     <div className="flex space-x-3">
-      <div>{campaign.name}</div>
-      <div>{campaign.description}</div>
       <div className="w-1/6 mx-2">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
@@ -93,7 +91,9 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
           </AccordionItem>
         </Accordion>
       </div>
-      <NotesPage campaignNotes={campaignNotes}/>
+      <div className="w-full">
+        <NotesPage campaignNotes={campaignNotes}/>
+      </div>
     </div>
   )
 }

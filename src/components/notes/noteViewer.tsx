@@ -4,7 +4,7 @@ const NoteViewer = (props: { note: CampaignNote | undefined}) => {
 
   const { note } = props;
   return (
-    <div>
+    <div className="flex w-5/6 text-white justify-center items-center">
       {note && (
         <>
           <h2>{note.title}</h2>

@@ -16,9 +16,9 @@ const NotesPage = (props: {campaignNotes: CampaignNote[]}) => {
   };
 
   return (
-    <div>
-      <NoteList notes={campaignNotes} onNoteClick={handleNoteClick} />
+    <div className='flex'>
       <NoteViewer note={selectedNote} />
+      <NoteList notes={campaignNotes} onNoteClick={handleNoteClick} />
     </div>
   );
 };
