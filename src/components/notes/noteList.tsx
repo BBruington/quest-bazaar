@@ -8,8 +8,8 @@ const NoteList = (props: { notes: CampaignNote[], onNoteClick: (noteId: string) 
       <ul className="w-full text-center space-y-3 mt-1">
         {notes.map((note) => (
           <>
-          <div className="hover:cursor-pointer hover:bg-slate-800 ">
-              <li key={note.id} className="text-white text-lg" onClick={() => onNoteClick(note.id)}>
+          <div className="hover:cursor-pointer hover:bg-slate-800" onClick={() => onNoteClick(note.id)}>
+              <li key={note.id} className="text-white text-lg">
                 {note.title}
               </li>
               <li className="text-white text-xs">
