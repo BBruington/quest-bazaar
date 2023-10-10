@@ -28,7 +28,9 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
   const {campaignData, campaignNotes} = props;
   const router = useRouter();
   const user = useUser();
-  const [campaign, setCampaign] = useState(campaignData)
+  const [uiToggle, setUiToggle] = useState({
+    editNotes: false,
+  })
 
   const { mutate } = api.deleteCampaign.useMutation({
     onSuccess: () => {
@@ -43,7 +45,11 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
       <div className="w-1/6 mx-2">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Notes</AccordionTrigger>
+          <button className="text-white py-3 hover:underline" onClick={() => setUiToggle({
+            editNotes: true,
+          })}>Notes
+          </button>
+            {/* <AccordionTrigger>Notes</AccordionTrigger> */}
             <AccordionContent>
             </AccordionContent>
           </AccordionItem>
@@ -91,9 +97,11 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
           </AccordionItem>
         </Accordion>
       </div>
-      <div className="w-full">
-        <NotesPage campaignNotes={campaignNotes}/>
-      </div>
+      {uiToggle.editNotes && (
+        <div className="w-full">
+          <NotesPage campaignNotes={campaignNotes}/>
+        </div>
+      )}
     </div>
   )
 }
