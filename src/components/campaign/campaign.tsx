@@ -43,7 +43,7 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
   return (
     <div className="flex space-x-3">
       <div className="w-1/6 mx-2">
-        <Accordion type="single" collapsible className="w-full">
+        <Accordion type="single" collapsible className="w-full ml-2">
           <AccordionItem value="item-1">
           <button className="text-white py-3 hover:underline" onClick={() => setUiToggle({
             editNotes: true,
