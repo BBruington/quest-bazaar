@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import type { Campaign, CampaignNote } from "@prisma/client";
+import type { Campaign, CampaignNote, User } from "@prisma/client";
 import NotesPage from "~/components/notes/notes";
 import { 
   Accordion,
@@ -24,8 +24,8 @@ import {
 } from "../ui/alert-dialog"
 
 
-export default function CampaignComponent(props: {campaignData: Campaign, campaignNotes: CampaignNote[]}) {
-  const {campaignData, campaignNotes} = props;
+export default function CampaignComponent(props: {campaignData: Campaign, campaignNotes: CampaignNote[], campaignPlayers: User[]}) {
+  const {campaignData, campaignNotes, campaignPlayers} = props;
   const router = useRouter();
   const user = useUser();
   const [uiToggle, setUiToggle] = useState({
@@ -56,6 +56,9 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
           <AccordionItem value="item-2">
             <AccordionTrigger>Players</AccordionTrigger>
             <AccordionContent>
+              {campaignPlayers.map( (player) => (
+                <div key={player.id}>{player.username}</div>
+              ))}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">

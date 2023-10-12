@@ -11,6 +11,7 @@ export default async function CampaignPage({ params }: {
     },
     include: {
       dmNotes: true,
+      players: true
     }
   })
 
@@ -18,7 +19,7 @@ export default async function CampaignPage({ params }: {
 
   return (
   <>
-    <CampaignComponent campaignData={campaign} campaignNotes={campaign.dmNotes}/>
+    <CampaignComponent campaignData={campaign} campaignNotes={campaign.dmNotes} campaignPlayers={campaign.players} />
   </>
   )
 }
