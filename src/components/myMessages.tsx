@@ -135,7 +135,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
         </Accordion>
       </div>
 
-      <DisplayMessages messages={messages} />
+      <DisplayMessages selectedFriend={selectedFriend} messages={messages} />
 
       <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
     </div>

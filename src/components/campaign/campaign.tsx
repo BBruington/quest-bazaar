@@ -73,7 +73,7 @@ export default function CampaignComponent(props: {campaignData: Campaign, campai
               <div className="space-y-3">            
                 <AlertDialog>
                   <AlertDialogTrigger>
-                    <Button variant="destructive">Delete Campaign</Button>
+                    <Button variant="destructive" className="h-8">Delete</Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
