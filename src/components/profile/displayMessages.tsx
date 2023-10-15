@@ -1,22 +1,28 @@
 'use-client'
 import type { SelectedFriend, Message } from "~/app/types/Message";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
 import { useUser } from "@clerk/nextjs";
 
 export default function DisplayMessages(props: {messages: Message[], selectedFriend: SelectedFriend}) {
   const {messages, selectedFriend} = props
   const {user} = useUser()
-  const sortedMessages = messages.slice().sort((a,b) => {
-    const aMatches = a.senderId === selectedFriend.senderId || a.recipientId === selectedFriend.senderId;
-    const bMatches = b.senderId === selectedFriend.senderId || b.recipientId === selectedFriend.senderId;
-    if(aMatches && !bMatches) return -1;
-    if(!aMatches && bMatches) return 1;
-    return 0;
-  })
-  const [messageState, setMessageState] = useState(sortedMessages)
-  console.log(messageState)
-  console.log(selectedFriend)
+  useEffect(() => {
+    const filteredMessages = messages.filter((message) => {
+      return (
+        message.senderId === selectedFriend.senderId ||
+        message.recipientId === selectedFriend.senderId
+      );
+    });
+    setMessageState(filteredMessages)
+  }, [selectedFriend]) 
+  
+  const [messageState, setMessageState] = useState([{
+    id: '',
+    content: '',
+    senderId: '',
+    recipientId: '',
+  }])
   if ( !user ) return <div>loading...</div>
 
   return (
