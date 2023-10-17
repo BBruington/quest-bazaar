@@ -209,20 +209,51 @@ export const appRouter = t.router({
   }),
 
   queryFriendMessages: t.procedure.input(z.object({
-    senderId: z.string(),
-    receiverId: z.string(),
+    userId: z.string(),
+    friendSenderId: z.string(),
   })).query(async ({ input }) => {
     const messagesData = await prisma.message.findMany({
       where: {
-        senderId: input.senderId,
-        recipientId: input.receiverId,
+        OR:
+          [{
+            senderId: input.userId
+          },
+          {
+            recipientId: input.userId
+          }]
       },
       orderBy: {
         sentAt: 'asc'
       }
     })
+    const filteredMessages = messagesData.filter((message) => {
+      return (
+        message.senderId === input.friendSenderId ||
+        message.recipientId === input.friendSenderId
+      );
+    });
+    return filteredMessages;
+  }),
 
-    return messagesData;
+  sendMessage: t.procedure.input(z.object({
+    userId: z.string(),
+    friendId: z.string(),
+    content: z.string(),
+  })).mutation(async ({input}) => {
+    try{
+      const message = await prisma.message.create({
+        data: {
+          senderId: input.userId,
+          recipientId: input.friendId,
+          content: input.content
+        }
+      })
+      return message;
+    } catch {
+      throw new TRPCError({
+        code: "BAD_REQUEST"
+      })
+    }
   })
 
   

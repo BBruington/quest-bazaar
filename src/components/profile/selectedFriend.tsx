@@ -1,7 +1,6 @@
 "use client"
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useState } from "react";
 import { api } from "~/utils/trpc";
 import type { SelectedFriend } from "~/app/types/Message";
 

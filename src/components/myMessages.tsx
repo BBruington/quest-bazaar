@@ -21,7 +21,6 @@ import type { MyMessagesProps } from "~/app/types/Message";
 
 export default function MyMessages({messages}: MyMessagesProps) {
 
-  const [messageArr, setMessageArr] = useState(messages);
   const [selectedFriend, setSelectedFriend] = useState({
     id: "",
     status: "",
@@ -135,7 +134,7 @@ export default function MyMessages({messages}: MyMessagesProps) {
         </Accordion>
       </div>
 
-      <DisplayMessages selectedFriend={selectedFriend} messages={messages} />
+      <DisplayMessages selectedFriend={selectedFriend} />
 
       <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
     </div>
