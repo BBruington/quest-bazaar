@@ -17,9 +17,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger, } from "./ui/accordion";
-import type { MyMessagesProps } from "~/app/types/Message";
 
-export default function MyMessages({messages}: MyMessagesProps) {
+export default function MyMessages() {
 
   const [selectedFriend, setSelectedFriend] = useState({
     id: "",

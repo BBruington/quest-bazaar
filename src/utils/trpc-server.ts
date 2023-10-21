@@ -212,27 +212,31 @@ export const appRouter = t.router({
     userId: z.string(),
     friendSenderId: z.string(),
   })).query(async ({ input }) => {
-    const messagesData = await prisma.message.findMany({
-      where: {
-        OR:
-          [{
-            senderId: input.userId
+    try{
+        const messagesData = await prisma.message.findMany({
+          where: {
+            OR:
+              [{
+                senderId: input.userId
+              },
+              {
+                recipientId: input.userId
+              }]
           },
-          {
-            recipientId: input.userId
-          }]
-      },
-      orderBy: {
-        sentAt: 'asc'
-      }
-    })
-    const filteredMessages = messagesData.filter((message) => {
-      return (
-        message.senderId === input.friendSenderId ||
-        message.recipientId === input.friendSenderId
-      );
-    });
-    return filteredMessages;
+          orderBy: {
+            sentAt: 'asc'
+          }
+        })
+        const filteredMessages = messagesData.filter((message) => {
+          return (
+            message.senderId === input.friendSenderId ||
+            message.recipientId === input.friendSenderId
+          );
+        });
+        return filteredMessages;
+    }catch{throw new TRPCError({
+      code: "NOT_FOUND"
+    })}
   }),
 
   sendMessage: t.procedure.input(z.object({
