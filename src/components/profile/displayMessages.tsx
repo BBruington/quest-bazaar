@@ -8,10 +8,23 @@ import { useUser } from "@clerk/nextjs";
 export default function DisplayMessages(props: { selectedFriend: SelectedFriend}) {
   const {selectedFriend} = props
   const [inputValue, setInputValue] = useState('');
+  const ctx = api.useContext();
   const {user} = useUser();
   if (!user) return<div>loading...</div>
   const {data: friendMessages, isLoading: loadingFriendMessages} = api.queryFriendMessages.useQuery({userId: user.id, friendSenderId: selectedFriend.senderId});
   if ( !friendMessages ) return <div>failed to load friend messages</div>
+  const { mutate, isLoading: isPosting } = api.sendMessage.useMutation({
+    onSuccess: () => {
+      setInputValue("");
+
+      //void tells typescript that even though i know this is a promise, in this particular context
+      //it's ok to not use async / await and to ignore it
+      void ctx.queryFriendMessages.invalidate();
+    },
+    onError: (e) => {
+        console.error(e)
+      }
+  });
 
   const handleInputChange = (e: string) => {
     setInputValue(e);
@@ -68,7 +81,11 @@ export default function DisplayMessages(props: { selectedFriend: SelectedFriend}
             if(e.key === "Enter") {
               e.preventDefault();
               if(inputValue !== "") {
-                mutate({ content: input });
+                mutate({
+                  userId: user.id,
+                  friendId:selectedFriend.senderId, 
+                  content: inputValue 
+                });
               }
             }
           }}
