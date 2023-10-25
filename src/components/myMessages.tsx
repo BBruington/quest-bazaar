@@ -40,6 +40,7 @@ export default function MyMessages() {
   const handleFrRequestMutation = api.handleFriendRequest.useMutation();
 
   const {data: friendRequests, isLoading: loadingFriendRequests} = api.queryMyFriendRequests.useQuery({id: user.id});
+  const pendingFR = friendRequests?.filter(function(request) {return request.status === "PENDING"})
   
   const handleAddFriendChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value } = e.target;
@@ -108,23 +109,23 @@ export default function MyMessages() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>Notifications</AccordionTrigger>
+            <AccordionTrigger>Notifications <span className="text-white text-xs bg-red-600 items-center rounded-full w-4 h-4">{pendingFR ? pendingFR.length : null}</span></AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
                 {friendRequests?.map((friendRequest) => (
                   <>
-                      {friendRequest.status === "PENDING" ? (
-                        <div className="flex md:flex-col border-b border-white pb-3">
-                          <span className="flex justify-center text-sm">
-                            {friendRequest.senderName} would like to be Friends
-                          </span>
-                          <div className="flex md:flex-row flex-col justify-around mt-1">
-                            <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "ACCEPTED")}>Accept</Button>
-                            <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "DECLINED")}>Decline</Button>
-                          </div>
+                    {friendRequest.status === "PENDING" ? (
+                      <div className="flex md:flex-col border-b border-white pb-3">
+                        <span className="flex justify-center text-sm mb-1">
+                          {friendRequest.senderName} would like to be Friends
+                        </span>
+                        <div className="flex md:flex-row flex-col justify-around mt-1">
+                          <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "ACCEPTED")}>Accept</Button>
+                          <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "DECLINED")}>Decline</Button>
                         </div>
+                      </div>
 
-                      ) : null}
+                    ) : null}
                   </>
                 ))}                
               </div>

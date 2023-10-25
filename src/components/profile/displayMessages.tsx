@@ -9,7 +9,7 @@ export default function DisplayMessages(props: { selectedFriend: SelectedFriend}
   const [inputValue, setInputValue] = useState('');
   const {selectedFriend} = props
 
-  const { mutate, isLoading: isPosting } = api.sendMessage.useMutation({
+  const { mutate, isLoading: sendingMessage } = api.sendMessage.useMutation({
     onSuccess: () => {
       setInputValue("");
     },
