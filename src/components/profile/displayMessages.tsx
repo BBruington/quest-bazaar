@@ -6,20 +6,12 @@ import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 
 export default function DisplayMessages(props: { selectedFriend: SelectedFriend}) {
-  const {selectedFriend} = props
   const [inputValue, setInputValue] = useState('');
-  const ctx = api.useContext();
-  const {user} = useUser();
-  if (!user) return<div>loading...</div>
-  const {data: friendMessages, isLoading: loadingFriendMessages} = api.queryFriendMessages.useQuery({userId: user.id, friendSenderId: selectedFriend.senderId});
-  if ( !friendMessages ) return <div>failed to load friend messages</div>
+  const {selectedFriend} = props
+
   const { mutate, isLoading: isPosting } = api.sendMessage.useMutation({
     onSuccess: () => {
       setInputValue("");
-
-      //void tells typescript that even though i know this is a promise, in this particular context
-      //it's ok to not use async / await and to ignore it
-      void ctx.queryFriendMessages.invalidate();
     },
     onError: (e) => {
         console.error(e)
@@ -29,6 +21,19 @@ export default function DisplayMessages(props: { selectedFriend: SelectedFriend}
   const handleInputChange = (e: string) => {
     setInputValue(e);
   }
+
+  const {user} = useUser();
+  if (!user) return<div>loading...</div>
+
+  const {data: friendMessages, isLoading: loadingFriendMessages} = api.queryFriendMessages.useQuery({userId: user.id, friendSenderId: selectedFriend.senderId});
+  if ( !friendMessages ) return <div>failed to load friend messages</div>
+
+  const findFriendId = (myId: string) => {
+    if(myId === selectedFriend.senderId) return selectedFriend.receiverId;
+    return selectedFriend.senderId
+  }
+  const friendId = findFriendId(user.id)
+
 
   return (
     <>
@@ -72,25 +77,25 @@ export default function DisplayMessages(props: { selectedFriend: SelectedFriend}
               </div>
           ))}
 
-        <Input 
-          placeholder="Message" 
-          className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"
-          value={inputValue}
-          onChange={(e) => handleInputChange(e.target.value)}
-          onKeyDown={(e) => {
-            if(e.key === "Enter") {
-              e.preventDefault();
-              if(inputValue !== "") {
-                mutate({
-                  userId: user.id,
-                  friendId:selectedFriend.senderId, 
-                  content: inputValue 
-                });
+          <Input 
+            placeholder="Message" 
+            className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"
+            value={inputValue}
+            onChange={(e) => handleInputChange(e.target.value)}
+            onKeyDown={(e) => {
+              if(e.key === "Enter") {
+                e.preventDefault();
+                if(inputValue !== "") {
+                  mutate({
+                    userId: user.id,
+                    friendId: friendId, 
+                    content: inputValue 
+                  });
+                }
               }
-            }
-          }}
-          >
-        </Input>
+            }}
+            >
+          </Input>
         </div>
       </div>
     )}

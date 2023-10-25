@@ -3,7 +3,7 @@ import DisplayMessages from "./profile/displayMessages";
 import SelectedFriend from "./profile/selectedFriend";
 import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import {
