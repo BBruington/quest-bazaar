@@ -2,14 +2,20 @@
 import type { SelectedFriend } from "~/app/types/Message";
 import { Input } from "../ui/input";
 import { api } from "~/utils/trpc";
+import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 
 export default function DisplayMessages(props: { selectedFriend: SelectedFriend}) {
   const {selectedFriend} = props
+  const [inputValue, setInputValue] = useState('');
   const {user} = useUser();
   if (!user) return<div>loading...</div>
   const {data: friendMessages, isLoading: loadingFriendMessages} = api.queryFriendMessages.useQuery({userId: user.id, friendSenderId: selectedFriend.senderId});
   if ( !friendMessages ) return <div>failed to load friend messages</div>
+
+  const handleInputChange = (e: string) => {
+    setInputValue(e);
+  }
 
   return (
     <>
@@ -55,7 +61,19 @@ export default function DisplayMessages(props: { selectedFriend: SelectedFriend}
 
         <Input 
           placeholder="Message" 
-          className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"></Input>
+          className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"
+          value={inputValue}
+          onChange={(e) => handleInputChange(e.target.value)}
+          onKeyDown={(e) => {
+            if(e.key === "Enter") {
+              e.preventDefault();
+              if(inputValue !== "") {
+                mutate({ content: input });
+              }
+            }
+          }}
+          >
+        </Input>
         </div>
       </div>
     )}
