@@ -10,12 +10,25 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
 
   const handleFrRequestMutation = api.handleFriendRequest.useMutation();
 
-  const handleFriendRemove = (senderId: string) => {
-    const fr = handleFrRequestMutation.mutate({
-      senderId, receiverId: userId, response: "DECLINED"
-    })
+  const findFriendId = (myId: string) => {
+    if(myId === selectedFriend.senderId) return selectedFriend.receiverId;
+    return selectedFriend.senderId
+  }
 
-    return fr;
+  const handleFriendRemove = () => {
+    const friendId = findFriendId(userId)
+    if(friendId === selectedFriend.senderId) {
+      const fr = handleFrRequestMutation.mutate({
+        senderId: selectedFriend.senderId, receiverId: userId, response: "DECLINED"
+      })
+      return fr;
+    }
+    if(friendId === selectedFriend.receiverId) {
+      const fr = handleFrRequestMutation.mutate({
+        senderId:userId, receiverId: selectedFriend.receiverId, response: "DECLINED"
+      })
+      return fr;
+    }
   }
 
   return (
@@ -31,7 +44,7 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
             <div className="text-white mt-1">{selectedFriend.senderName}</div>
             <div className="flex justify-center mt-auto mb-5">
               <Button className="mr-5 w-1/3">Invite</Button>
-              <Button onClick={() => handleFriendRemove(selectedFriend.senderId)} variant="destructive" className="px-none w-1/3">Remove</Button>
+              <Button onClick={() => handleFriendRemove()} variant="destructive" className="px-none w-1/3">Remove</Button>
             </div>
           </div>
         </div>

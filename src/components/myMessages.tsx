@@ -113,18 +113,18 @@ export default function MyMessages() {
               <div className="space-y-3">
                 {friendRequests?.map((friendRequest) => (
                   <>
-                    {friendRequest.status === "PENDING" ? (
-                      <div className="flex md:flex-col border-b border-white pb-3">
-                        <span className="flex justify-center text-sm">
-                          {friendRequest.senderName} would like to be Friends
-                        </span>
-                        <div className="flex md:flex-row flex-col justify-around mt-1">
-                          <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "ACCEPTED")}>Accept</Button>
-                          <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "DECLINED")}>Decline</Button>
+                      {friendRequest.status === "PENDING" ? (
+                        <div className="flex md:flex-col border-b border-white pb-3">
+                          <span className="flex justify-center text-sm">
+                            {friendRequest.senderName} would like to be Friends
+                          </span>
+                          <div className="flex md:flex-row flex-col justify-around mt-1">
+                            <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "ACCEPTED")}>Accept</Button>
+                            <Button className="h-6" onClick={() => handleFriendRequest(friendRequest.senderId, "DECLINED")}>Decline</Button>
+                          </div>
                         </div>
-                      </div>
 
-                    ) : null}
+                      ) : null}
                   </>
                 ))}                
               </div>
