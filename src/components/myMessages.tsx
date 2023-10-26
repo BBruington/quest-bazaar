@@ -109,7 +109,7 @@ export default function MyMessages() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>Notifications <span className="text-white text-xs bg-red-600 items-center rounded-full w-4 h-4">{pendingFR ? pendingFR.length : null}</span></AccordionTrigger>
+            <AccordionTrigger>Notifications <span className="text-white text-xs bg-red-600 items-center rounded-full w-4 h-4">{pendingFR && pendingFR.length > 0 ? pendingFR.length : null}</span></AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
                 {friendRequests?.map((friendRequest) => (
