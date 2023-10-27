@@ -76,26 +76,36 @@ export default function DisplayMessages(props: { selectedFriend: SelectedFriend}
                 )}
               </div>
           ))}
-
-          <Input 
-            placeholder="Message" 
+          { sendingMessage ? (
+            <Input 
+            placeholder="Sending Message" 
             className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"
-            value={inputValue}
-            onChange={(e) => handleInputChange(e.target.value)}
-            onKeyDown={(e) => {
-              if(e.key === "Enter") {
-                e.preventDefault();
-                if(inputValue !== "") {
-                  mutate({
-                    userId: user.id,
-                    friendId: friendId, 
-                    content: inputValue 
-                  });
-                }
-              }
-            }}
+            disabled
             >
-          </Input>
+            </Input>
+
+          ) : (
+
+            <Input 
+              placeholder="Message" 
+              className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black"
+              value={inputValue}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onKeyDown={(e) => {
+                if(e.key === "Enter") {
+                  e.preventDefault();
+                  if(inputValue !== "") {
+                    mutate({
+                      userId: user.id,
+                      friendId: friendId, 
+                      content: inputValue 
+                    });
+                  }
+                }
+              }}
+              >
+            </Input>
+          )}
         </div>
       </div>
     )}

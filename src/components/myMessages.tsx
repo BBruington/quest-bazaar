@@ -81,7 +81,11 @@ export default function MyMessages() {
                   }}
                   className="mt-auto bg-primary placeholder:text-black border-none focus-visible:ring-accent-foreground ring-offset-black ring-2 text-black">
                 </Input>
-                <Button onClick={() => handleAddFriend(addFriendInput)} className="ml-2">Add</Button>
+                {addFriendInput.length > 0 ? (
+                  <Button onClick={() => handleAddFriend(addFriendInput)} className="ml-2">Add</Button>   
+                  ) : (
+                  <Button disabled className="ml-2">Add</Button>
+                )}
               </div>
             </AccordionContent>
           </AccordionItem>
