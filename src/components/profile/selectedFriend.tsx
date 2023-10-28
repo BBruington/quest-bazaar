@@ -4,6 +4,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { api } from "~/utils/trpc";
 import type { SelectedFriend } from "~/app/types/Message";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu"
+
+
 export default function SelectedFriend(props: {selectedFriend: SelectedFriend, userId: string}) {
 
   const {selectedFriend, userId} = props;
@@ -43,6 +53,18 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
           </div>
           <div className="text-white mt-1">{selectedFriend.senderId === userId ? selectedFriend.receiverName : selectedFriend.senderName}</div>
           <div className="flex justify-center mt-auto mb-5">
+          <DropdownMenu>
+            <DropdownMenuTrigger>Invite</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              <DropdownMenuItem>Subscription</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
             <Button className="mr-5 w-1/3">Invite</Button>
             <Button onClick={() => handleFriendRemove()} variant="destructive" className="px-none w-1/3">Remove</Button>
           </div>
