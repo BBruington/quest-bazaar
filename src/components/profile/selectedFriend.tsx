@@ -18,6 +18,9 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
 
   const {selectedFriend, userId} = props;
 
+  const {data: userCampaigns, isLoading: fetchingUserCampaigns} = api.queryUserCampaigns.useQuery({id: userId});
+
+  const campaignInvite = api.inviteToCampaign.useMutation()
   const handleFrRequestMutation = api.handleFriendRequest.useMutation();
 
   const findFriendId = (myId: string) => {
@@ -54,18 +57,21 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
           <div className="text-white mt-1">{selectedFriend.senderId === userId ? selectedFriend.receiverName : selectedFriend.senderName}</div>
           <div className="flex justify-center mt-auto mb-5">
           <DropdownMenu>
-            <DropdownMenuTrigger>Invite</DropdownMenuTrigger>
+            <DropdownMenuTrigger className="mr-5 w-1/3">Invite</DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
+              {userCampaigns && userCampaigns.length > 0 ? (
+                userCampaigns.map((campaign) => (
+                  <DropdownMenuItem onClick={() => campaignInvite.mutate({playerId: userId, campaignId: campaign.id})} key={campaign.id}>{campaign.name}</DropdownMenuItem>
+                ))
+                 ) : (
+                <>
+                <DropdownMenuItem>Find a Campaign to Join</DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
-
-            <Button className="mr-5 w-1/3">Invite</Button>
             <Button onClick={() => handleFriendRemove()} variant="destructive" className="px-none w-1/3">Remove</Button>
           </div>
         </div>

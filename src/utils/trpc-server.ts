@@ -34,6 +34,7 @@ export const appRouter = t.router({
     if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
     return userCampaigns;
   }),
+  
   queryUserSpecificCampaign: t.procedure.input(z.object({
     id: z.string(),
   })).query( async ({  input }) => {
