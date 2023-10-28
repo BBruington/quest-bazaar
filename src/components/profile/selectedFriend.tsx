@@ -28,8 +28,9 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
     return selectedFriend.senderId
   }
 
+  const friendId = findFriendId(userId)
+
   const handleFriendRemove = () => {
-    const friendId = findFriendId(userId)
     if(friendId === selectedFriend.senderId) {
       const fr = handleFrRequestMutation.mutate({
         senderId: selectedFriend.senderId, receiverId: userId, response: "DECLINED"
@@ -63,7 +64,7 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
               <DropdownMenuSeparator />
               {userCampaigns && userCampaigns.length > 0 ? (
                 userCampaigns.map((campaign) => (
-                  <DropdownMenuItem onClick={() => campaignInvite.mutate({playerId: userId, campaignId: campaign.id})} key={campaign.id}>{campaign.name}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => campaignInvite.mutate({playerId: friendId, campaignId: campaign.id})} key={campaign.id}>{campaign.name}</DropdownMenuItem>
                 ))
                  ) : (
                 <>

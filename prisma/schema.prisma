@@ -21,8 +21,8 @@ model User {
 
   characters Character[]
 
-  campaignplayer Campaign[] @relation("CampaignPlayers")
-  campaigndm     Campaign[] @relation("CampaignDm")
+  campaignplayer   Campaign[] @relation("CampaignPlayers")
+  campaigndm       Campaign[] @relation("CampaignDm")
   invitedCampaigns Campaign[] @relation("InvitedGame")
 
   userPosts UserPost[]
@@ -39,7 +39,7 @@ model User {
 model Friendship {
   id           String           @id @default(cuid())
   senderId     String
-  senderName   String           
+  senderName   String
   receiverId   String
   receiverName String
   status       FriendshipStatus
@@ -99,19 +99,19 @@ model Comment {
 }
 
 model Campaign {
-  id          String         @id @default(cuid())
-  name        String
-  description String
-  image       String?
-  password    String?
-  dmUserId    String
-  dmName      String?
-  dmNotes     CampaignNote[]
-  dm          User?          @relation(fields: [dmUserId], references: [externalId], name: "CampaignDm")
-  players     User[]         @relation("CampaignPlayers")
-  invitedPlayers User[]      @relation("InvitedGame")
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id             String         @id @default(cuid())
+  name           String
+  description    String
+  image          String?
+  password       String?
+  dmUserId       String
+  dmName         String?
+  dmNotes        CampaignNote[]
+  dm             User?          @relation(fields: [dmUserId], references: [externalId], name: "CampaignDm")
+  players        User[]         @relation("CampaignPlayers")
+  invitedPlayers User[]         @relation("InvitedGame")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 model CampaignNote {
