@@ -76,6 +76,41 @@ export const appRouter = t.router({
     return deleted;
   }),
 
+  inviteToCampaign: t.procedure.input(z.object({
+    playerId: z.string(),
+    campaignId: z.string()
+  })).mutation( async({input}) => {
+    try{
+      const campaign = await prisma.campaign.findUnique({
+        where: { id: input.campaignId },
+        include: { invitedPlayers: true }, // Include invitedPlayers relation
+      });
+      if (!campaign) {
+        throw new Error('Campaign not found');
+      }
+      const isUserInvited = campaign.invitedPlayers.some((player) => player.id === input.playerId);
+      if (!isUserInvited) { 
+        const updatedCampaign = await prisma.campaign.update({
+          where:{
+            id: input.campaignId
+          },
+          data: {
+            invitedPlayers: {
+              connect: {
+                id: input.playerId
+              }
+            }
+          },
+          include: { invitedPlayers: true },
+        })
+        return updatedCampaign
+      }
+    } catch (error) {
+      console.error("error: ", error);
+    }
+
+  }),
+
   upsertCampaignNote: t.procedure.input(z.object({
     id: z.string(),
     campaignId: z.string(),
