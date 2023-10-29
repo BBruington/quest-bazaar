@@ -30,8 +30,8 @@ export const appRouter = t.router({
       },
     });
     const userCampaigns = [...userCampaignsData!.campaigndm,  ...userCampaignsData!.campaignplayer]
-
-    if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
+    if (userCampaigns === undefined) throw new TRPCError({ code: "NOT_FOUND"});
+    if (!userCampaigns) return null;
     return userCampaigns;
   }),
 
@@ -48,6 +48,21 @@ export const appRouter = t.router({
   queryCampaigns: t.procedure.query( async () => {
     const allCampaigns = await prisma.campaign.findMany();
     return allCampaigns;
+  }),
+
+  queryUserInvitedCampaigns: t.procedure.input(z.object({
+    userId: z.string(),
+  })).query( async ({  input }) => {
+    const userCampaignsData = await prisma.user.findUnique({
+      where: {externalId: input.userId},
+      include: {
+        invitedCampaigns: true,
+      },
+    });
+    const userCampaigns = [...userCampaignsData!.invitedCampaigns]
+    if (userCampaigns === undefined) throw new TRPCError({ code: "NOT_FOUND"});
+    if (!userCampaigns) return null;
+    return userCampaigns;
   }),
 
   createCampaign: t.procedure.input(z.object({
@@ -89,9 +104,7 @@ export const appRouter = t.router({
       if (!campaign) {
         throw new Error('Campaign not found');
       }
-      if(campaign.players.find( player =>  player.id === input.playerId)) return "ALREADY_PLAYER"
-      const isUserInvited = campaign.invitedPlayers.some((player) => player.id === input.playerId);
-      if (!isUserInvited) { 
+      if(campaign.players.find( player =>  player.id === input.playerId)) return "ALREADY_PLAYER";
         const updatedCampaign = await prisma.campaign.update({
           where:{
             id: input.campaignId
@@ -105,8 +118,7 @@ export const appRouter = t.router({
           },
           include: { invitedPlayers: true },
         })
-        return updatedCampaign
-      }
+        return updatedCampaign;
     } catch (error) {
       console.error("error: ", error);
     }

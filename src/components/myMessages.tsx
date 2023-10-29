@@ -40,6 +40,7 @@ export default function MyMessages() {
   const handleFrRequestMutation = api.handleFriendRequest.useMutation();
 
   const {data: friendRequests, isLoading: loadingFriendRequests} = api.queryMyFriendRequests.useQuery({id: user.id});
+  const {data: userInvitedCampaigns, isLoading: fetchingUserInvitedCampaigns} = api.queryUserInvitedCampaigns.useQuery({userId: user.id});
   const pendingFR = friendRequests?.filter(function(request) {return request.status === "PENDING"})
   
   const handleAddFriendChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -108,7 +109,7 @@ export default function MyMessages() {
                       ) : null}
                     </div>
                   </button>
-                </>))}                
+                </>))}       
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -131,7 +132,18 @@ export default function MyMessages() {
 
                     ) : null}
                   </>
-                ))}                
+                ))}     
+                {userInvitedCampaigns?.map((campaign) => (
+                  <>
+                  <div>
+                    <span>You have been invited to join {campaign.name}</span>
+                  </div>
+                  <div className="flex md:flex-row flex-col justify-around mt-1">
+                    <Button className="h-6" onClick={() => handleCampaignInvite()}>Accept</Button>
+                    <Button className="h-6" onClick={() => handleCampaignInvite()}>Decline</Button>
+                  </div>
+                  </>  
+                ))}                    
               </div>
             </AccordionContent>
           </AccordionItem>
