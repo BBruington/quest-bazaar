@@ -34,7 +34,7 @@ export const appRouter = t.router({
     if (!userCampaigns) throw new TRPCError({ code: "NOT_FOUND"});
     return userCampaigns;
   }),
-  
+
   queryUserSpecificCampaign: t.procedure.input(z.object({
     id: z.string(),
   })).query( async ({  input }) => {
@@ -84,11 +84,12 @@ export const appRouter = t.router({
     try{
       const campaign = await prisma.campaign.findUnique({
         where: { id: input.campaignId },
-        include: { invitedPlayers: true }, // Include invitedPlayers relation
+        include: { invitedPlayers: true, players: true }, // Include invitedPlayers relation
       });
       if (!campaign) {
         throw new Error('Campaign not found');
       }
+      if(campaign.players.find( player =>  player.id === input.playerId)) return "ALREADY_PLAYER"
       const isUserInvited = campaign.invitedPlayers.some((player) => player.id === input.playerId);
       if (!isUserInvited) { 
         const updatedCampaign = await prisma.campaign.update({

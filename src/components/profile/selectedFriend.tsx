@@ -58,11 +58,11 @@ export default function SelectedFriend(props: {selectedFriend: SelectedFriend, u
           <div className="text-white mt-1">{selectedFriend.senderId === userId ? selectedFriend.receiverName : selectedFriend.senderName}</div>
           <div className="flex justify-center mt-auto mb-5">
           <DropdownMenu>
-            <DropdownMenuTrigger className="mr-5 w-1/3">Invite</DropdownMenuTrigger>
+            <DropdownMenuTrigger><Button className="mr-5">Invite</Button></DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              {userCampaigns && userCampaigns.length > 0 ? (
+              {selectedFriend.id && userCampaigns && userCampaigns.length > 0 ? (
                 userCampaigns.map((campaign) => (
                   <DropdownMenuItem onClick={() => campaignInvite.mutate({playerId: friendId, campaignId: campaign.id})} key={campaign.id}>{campaign.name}</DropdownMenuItem>
                 ))
