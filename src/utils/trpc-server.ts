@@ -4,7 +4,7 @@ import { prisma } from "../utils/context";
 import { z } from "zod";
 
 export const t = initTRPC.create();
-
+//clerkId
 // this is our RPC API
 export const appRouter = t.router({
   queryUser: t.procedure
@@ -31,7 +31,7 @@ export const appRouter = t.router({
     )
     .query(async ({ input }) => {
       const userCampaignsData = await prisma.user.findUnique({
-        where: { externalId: input.id },
+        where: { clerkId: input.id },
         include: {
           campaignplayer: true,
           campaigndm: true,
@@ -74,7 +74,7 @@ export const appRouter = t.router({
     )
     .query(async ({ input }) => {
       const userCampaignsData = await prisma.user.findUnique({
-        where: { externalId: input.userId },
+        where: { clerkId: input.userId },
         include: {
           invitedCampaigns: true,
         },
@@ -104,12 +104,12 @@ export const appRouter = t.router({
             data: {
               players: {
                 connect: {
-                  externalId: input.userId,
+                  clerkId: input.userId,
                 },
               },
               invitedPlayers: {
                 disconnect: {
-                  externalId: input.userId,
+                  clerkId: input.userId,
                 },
               },
             },
@@ -128,7 +128,7 @@ export const appRouter = t.router({
             data: {
               invitedPlayers: {
                 disconnect: {
-                  externalId: input.userId,
+                  clerkId: input.userId,
                 },
               },
             },
@@ -194,7 +194,7 @@ export const appRouter = t.router({
         }
         if (
           campaign.players.find(
-            (player) => player.externalId === input.playerId
+            (player) => player.clerkId === input.playerId
           )
         ) {
           return "ALREADY_PLAYER";
@@ -206,7 +206,7 @@ export const appRouter = t.router({
           data: {
             invitedPlayers: {
               connect: {
-                externalId: input.playerId,
+                clerkId: input.playerId,
               },
             },
           },
@@ -299,7 +299,7 @@ export const appRouter = t.router({
             username: input.receiverName,
           },
           select: {
-            externalId: true,
+            clerkId: true,
           },
         });
         if (recipient === null) {
@@ -308,7 +308,7 @@ export const appRouter = t.router({
         }
         const pendingFriend = await prisma.friendship.create({
           data: {
-            receiverId: recipient.externalId,
+            receiverId: recipient.clerkId,
             receiverName: input.receiverName,
             senderId: input.id,
             senderName: input.senderName,

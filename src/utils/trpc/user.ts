@@ -27,7 +27,7 @@ export const queryUserCampaigns = t.procedure
   )
   .query(async ({ input }) => {
     const userCampaignsData = await prisma.user.findUnique({
-      where: { externalId: input.id },
+      where: { clerkId: input.id },
       include: {
         campaignplayer: true,
         campaigndm: true,

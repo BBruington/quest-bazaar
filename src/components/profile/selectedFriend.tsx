@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { api } from "~/utils/trpc";
@@ -19,11 +19,11 @@ export default function SelectedFriend(props: {
 }) {
   const { selectedFriend, userId } = props;
 
-  const { data: userCampaigns, isLoading: fetchingUserCampaigns } =
+  const { data: userCampaigns, isLoading: loadingUserCampaigns } =
     api.queryUserCampaigns.useQuery({ id: userId });
 
-  const campaignInvite = api.inviteToCampaign.useMutation();
-  const handleFrRequestMutation = api.handleFriendRequest.useMutation();
+  const sendCampaignInvite = api.inviteToCampaign.useMutation();
+  const handleRemoveFriend = api.handleFriendRequest.useMutation();
 
   const findFriendId = (myId: string) => {
     if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
@@ -34,20 +34,18 @@ export default function SelectedFriend(props: {
 
   const handleFriendRemove = () => {
     if (friendId === selectedFriend.senderId) {
-      const fr = handleFrRequestMutation.mutate({
+      handleRemoveFriend.mutate({
         senderId: selectedFriend.senderId,
         receiverId: userId,
         response: "DECLINED",
       });
-      return fr;
     }
     if (friendId === selectedFriend.receiverId) {
-      const fr = handleFrRequestMutation.mutate({
+      handleRemoveFriend.mutate({
         senderId: userId,
         receiverId: selectedFriend.receiverId,
         response: "DECLINED",
       });
-      return fr;
     }
   };
 
@@ -83,8 +81,9 @@ export default function SelectedFriend(props: {
                 userCampaigns.length > 0 ? (
                   userCampaigns.map((campaign) => (
                     <DropdownMenuItem
+                      disabled={sendCampaignInvite.isLoading}
                       onClick={() =>
-                        campaignInvite.mutate({
+                        sendCampaignInvite.mutate({
                           playerId: friendId,
                           campaignId: campaign.id,
                         })

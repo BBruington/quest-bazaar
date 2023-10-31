@@ -45,10 +45,10 @@ export async function POST(req: Request) {
   const eventType = evt.type;
   if (eventType === 'user.created' || eventType === 'user.updated') {
     await prisma.user.upsert({
-      where: { externalId: id },
+      where: { clerkId: id },
       create: {
         email: evt.data.email_addresses[0]!.email_address,
-        externalId: id!,
+        clerkId: id!,
         username: evt.data.username
       },
       update: {
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
 
   if ( eventType === 'user.deleted') {
     await prisma.user.delete({
-      where: { externalId: id }
+      where: { clerkId: id }
     })
     return new Response('User was deleted', {
       status: 200

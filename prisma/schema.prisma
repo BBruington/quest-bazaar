@@ -13,7 +13,7 @@ generator client {
 
 model User {
   id         String   @id @default(cuid())
-  externalId String   @unique
+  clerkId    String   @unique
   username   String?  @unique
   email      String   @unique
   createdAt  DateTime @default(now())
@@ -45,8 +45,8 @@ model Friendship {
   status       FriendshipStatus
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
-  sender       User             @relation("sentRequests", fields: [senderId], references: [externalId])
-  receiver     User             @relation("receivedRequests", fields: [receiverId], references: [externalId])
+  sender       User             @relation("sentRequests", fields: [senderId], references: [clerkId])
+  receiver     User             @relation("receivedRequests", fields: [receiverId], references: [clerkId])
 }
 
 enum FriendshipStatus {
@@ -60,8 +60,8 @@ model Message {
   senderId    String
   recipientId String
   sentAt      DateTime @default(now())
-  sender      User     @relation("sender", fields: [senderId], references: [externalId])
-  recipient   User     @relation("recipient", fields: [recipientId], references: [externalId])
+  sender      User     @relation("sender", fields: [senderId], references: [clerkId])
+  recipient   User     @relation("recipient", fields: [recipientId], references: [clerkId])
 }
 
 model UserPost {
@@ -107,7 +107,7 @@ model Campaign {
   dmUserId       String
   dmName         String?
   dmNotes        CampaignNote[]
-  dm             User?          @relation(fields: [dmUserId], references: [externalId], name: "CampaignDm")
+  dm             User?          @relation(fields: [dmUserId], references: [clerkId], name: "CampaignDm")
   players        User[]         @relation("CampaignPlayers")
   invitedPlayers User[]         @relation("InvitedGame")
   createdAt      DateTime       @default(now())

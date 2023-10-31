@@ -1,15 +1,15 @@
-"use-client";
+"use-client"; 
 import type { SelectedFriend } from "~/app/types/Message";
 import { Input } from "../ui/input";
 import { api } from "~/utils/trpc";
 import { useState } from "react";
-import { useUser } from "@clerk/nextjs";
 
 export default function DisplayMessages(props: {
-  selectedFriend: SelectedFriend;
+  selectedFriend: SelectedFriend,
+  userId: string,
 }) {
   const [inputValue, setInputValue] = useState("");
-  const { selectedFriend } = props;
+  const { selectedFriend, userId } = props;
 
   const { mutate, isLoading: sendingMessage } = api.sendMessage.useMutation({
     onSuccess: () => {
@@ -24,12 +24,9 @@ export default function DisplayMessages(props: {
     setInputValue(e);
   };
 
-  const { user } = useUser();
-  if (!user) return <div>loading...</div>;
-
   const { data: friendMessages, isLoading: loadingFriendMessages } =
     api.queryFriendMessages.useQuery({
-      userId: user.id,
+      userId,
       friendSenderId: selectedFriend.senderId,
     });
   if (!friendMessages) return <div>failed to load friend messages</div>;
@@ -38,7 +35,7 @@ export default function DisplayMessages(props: {
     if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
     return selectedFriend.senderId;
   };
-  const friendId = findFriendId(user.id);
+  const friendId = findFriendId(userId);
 
   return (
     <>
@@ -70,14 +67,14 @@ export default function DisplayMessages(props: {
           <div className="mt-auto ">
             {friendMessages.map((message) => (
               <div key={message.id} className="bg-accent-foreground p-2">
-                {message.senderId === user.id && (
+                {message.senderId === userId && (
                   <div className="flex justify-end text-right" key={message.id}>
                     <span className="rounded-md bg-blue-500 p-2 text-black">
                       {message.content}
                     </span>
                   </div>
                 )}
-                {message.senderId !== user.id && (
+                {message.senderId !== userId && (
                   <div className="justify-left mb-5 flex" key={message.id}>
                     <span className="rounded-md bg-slate-700 p-2 text-white">
                       {message.content}
@@ -97,7 +94,7 @@ export default function DisplayMessages(props: {
                   e.preventDefault();
                   if (inputValue !== "") {
                     mutate({
-                      userId: user.id,
+                      userId: userId,
                       friendId: friendId,
                       content: inputValue,
                     });
