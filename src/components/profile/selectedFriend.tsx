@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { api } from "~/utils/trpc";
@@ -11,72 +11,106 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
+} from "../ui/dropdown-menu";
 
+export default function SelectedFriend(props: {
+  selectedFriend: SelectedFriend;
+  userId: string;
+}) {
+  const { selectedFriend, userId } = props;
 
-export default function SelectedFriend(props: {selectedFriend: SelectedFriend, userId: string}) {
+  const { data: userCampaigns, isLoading: fetchingUserCampaigns } =
+    api.queryUserCampaigns.useQuery({ id: userId });
 
-  const {selectedFriend, userId} = props;
-
-  const {data: userCampaigns, isLoading: fetchingUserCampaigns} = api.queryUserCampaigns.useQuery({id: userId});
-
-  const campaignInvite = api.inviteToCampaign.useMutation()
+  const campaignInvite = api.inviteToCampaign.useMutation();
   const handleFrRequestMutation = api.handleFriendRequest.useMutation();
 
   const findFriendId = (myId: string) => {
-    if(myId === selectedFriend.senderId) return selectedFriend.receiverId;
-    return selectedFriend.senderId
-  }
+    if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
+    return selectedFriend.senderId;
+  };
 
-  const friendId = findFriendId(userId)
+  const friendId = findFriendId(userId);
 
   const handleFriendRemove = () => {
-    if(friendId === selectedFriend.senderId) {
+    if (friendId === selectedFriend.senderId) {
       const fr = handleFrRequestMutation.mutate({
-        senderId: selectedFriend.senderId, receiverId: userId, response: "DECLINED"
-      })
+        senderId: selectedFriend.senderId,
+        receiverId: userId,
+        response: "DECLINED",
+      });
       return fr;
     }
-    if(friendId === selectedFriend.receiverId) {
+    if (friendId === selectedFriend.receiverId) {
       const fr = handleFrRequestMutation.mutate({
-        senderId:userId, receiverId: selectedFriend.receiverId, response: "DECLINED"
-      })
+        senderId: userId,
+        receiverId: selectedFriend.receiverId,
+        response: "DECLINED",
+      });
       return fr;
     }
-  }
+  };
 
   return (
     <div className="w-1/6">
-      <div className="flex items-center justify-center h-60 bg-accent-foreground mx-2">
-        <div className="flex flex-col items-center justify-top bg-foreground w-5/6 h-4/6">
-          <div className="text-white mt-5">
+      <div className="mx-2 flex h-60 items-center justify-center bg-accent-foreground">
+        <div className="justify-top flex h-4/6 w-5/6 flex-col items-center bg-foreground">
+          <div className="mt-5 text-white">
             <Avatar>
-              <AvatarImage className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full" src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarImage
+                className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
+                src="https://github.com/shadcn.png"
+                alt="@shadcn"
+              />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
-          <div className="text-white mt-1">{selectedFriend.senderId === userId ? selectedFriend.receiverName : selectedFriend.senderName}</div>
-          <div className="flex justify-center mt-auto mb-5">
-          <DropdownMenu>
-            <DropdownMenuTrigger><Button className="mr-5">Invite</Button></DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {selectedFriend.id && userCampaigns && userCampaigns.length > 0 ? (
-                userCampaigns.map((campaign) => (
-                  <DropdownMenuItem onClick={() => campaignInvite.mutate({playerId: friendId, campaignId: campaign.id})} key={campaign.id}>{campaign.name}</DropdownMenuItem>
-                ))
-                 ) : (
-                <>
-                <DropdownMenuItem>Find a Campaign to Join</DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-            <Button onClick={() => handleFriendRemove()} variant="destructive" className="px-none w-1/3">Remove</Button>
+          <div className="mt-1 text-white">
+            {selectedFriend.senderId === userId
+              ? selectedFriend.receiverName
+              : selectedFriend.senderName}
+          </div>
+          <div className="mb-5 mt-auto flex justify-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button className="mr-5">Invite</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {selectedFriend.id &&
+                userCampaigns &&
+                userCampaigns.length > 0 ? (
+                  userCampaigns.map((campaign) => (
+                    <DropdownMenuItem
+                      onClick={() =>
+                        campaignInvite.mutate({
+                          playerId: friendId,
+                          campaignId: campaign.id,
+                        })
+                      }
+                      key={campaign.id}
+                    >
+                      {campaign.name}
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <>
+                    <DropdownMenuItem>Find a Campaign to Join</DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button
+              onClick={() => handleFriendRemove()}
+              variant="destructive"
+              className="px-none w-1/3"
+            >
+              Remove
+            </Button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

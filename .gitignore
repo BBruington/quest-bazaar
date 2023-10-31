@@ -13,6 +13,9 @@
 /prisma/db.sqlite-journal
 /prisma/prismaCheatsheet
 
+#trpc ex
+/test/
+
 # next.js
 /.next/
 /out/
