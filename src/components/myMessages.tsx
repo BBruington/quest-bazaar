@@ -32,20 +32,23 @@ export default function MyMessages() {
   const { user } = useUser();
   if (!user) return <div>loading...</div>;
 
-  const addFriendMutation = api.addFriend.useMutation();
-  const handleFrRequestMutation = api.handleFriendRequest.useMutation();
-  const handleCampaignInvites = api.handleCampaignInvite.useMutation();
+  const sendAddFriendRequest = api.addFriend.useMutation();
+  const handleReceivedFriendRequest = api.handleFriendRequest.useMutation();
+  const handleReceivedCampaignInvite = api.handleCampaignInvite.useMutation();
 
   const { data: friendRequests, isLoading: loadingFriendRequests } =
     api.queryMyFriendRequests.useQuery({ id: user.id });
   const {
-    data: userInvitedCampaigns,
-    isLoading: fetchingUserInvitedCampaigns,
+    data: receivedInvitedCampaigns,
+    isLoading: loadingReceivedInvitedCampaigns,
   } = api.queryUserInvitedCampaigns.useQuery({ userId: user.id });
-  const pendingFR = friendRequests?.filter(function (request) {
+  const pendingFriendRequests = friendRequests?.filter(function (request) {
     return request.status === "PENDING";
   });
-
+  let notificationsAmount = 0;
+  if (receivedInvitedCampaigns && pendingFriendRequests)
+    notificationsAmount =
+      receivedInvitedCampaigns.length + pendingFriendRequests.length;
   const handleAddFriendChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -53,27 +56,28 @@ export default function MyMessages() {
     setAddFriendInput(value);
   };
   const handleAddFriend = (friendName: string) => {
-    const id = user.id;
-    const friendRes = addFriendMutation.mutate({
+    sendAddFriendRequest.mutate({
       receiverName: friendName,
-      id,
+      id: user.id,
       senderName: user.username!,
     });
     setAddFriendInput("");
-    return friendRes;
   };
 
   const handleCampaignInvite = (campaignId: string, campaignRes: string) => {
-    handleCampaignInvites.mutate({ campaignId, userId: user.id, campaignRes });
+    handleReceivedCampaignInvite.mutate({
+      campaignId,
+      userId: user.id,
+      campaignRes,
+    });
   };
 
-  const handleFriendRequest = (senderId: string, frResponse: string) => {
-    const fr = handleFrRequestMutation.mutate({
+  const handleFriendRequest = (senderId: string, requestResponse: string) => {
+    handleReceivedFriendRequest.mutate({
       senderId,
       receiverId: user.id,
-      response: frResponse,
+      response: requestResponse,
     });
-    return fr;
   };
 
   return (
@@ -121,8 +125,9 @@ export default function MyMessages() {
               <AccordionContent>
                 <div className="flex flex-col">
                   {friendRequests?.map((friendRequest) => (
-                    <>
-                      <button
+                      <div
+                        key={friendRequest.id}
+                        role="button"
                         className="w-full py-1 hover:bg-slate-800"
                         onClick={() => setSelectedFriend(friendRequest)}
                       >
@@ -140,8 +145,7 @@ export default function MyMessages() {
                             </>
                           ) : null}
                         </div>
-                      </button>
-                    </>
+                      </div>
                   ))}
                 </div>
               </AccordionContent>
@@ -151,12 +155,12 @@ export default function MyMessages() {
                 Notifications{" "}
                 <span
                   className={`${
-                    pendingFR && pendingFR.length > 0
+                    notificationsAmount > 0
                       ? "h-4 w-4 items-center rounded-full bg-red-600 text-xs text-white"
                       : ""
                   }`}
                 >
-                  {pendingFR && pendingFR.length > 0 ? pendingFR.length : null}
+                  {notificationsAmount === 0 ? null : notificationsAmount}
                 </span>
               </AccordionTrigger>
               <AccordionContent>
@@ -164,7 +168,7 @@ export default function MyMessages() {
                   {friendRequests?.map((friendRequest) => (
                     <>
                       {friendRequest.status === "PENDING" ? (
-                        <div className="flex border-b border-white pb-3 md:flex-col">
+                        <div key={friendRequest.id} className="flex border-b border-white pb-3 md:flex-col">
                           <span className="mb-1 flex justify-center text-sm">
                             {friendRequest.senderName} would like to be Friends
                           </span>
@@ -196,9 +200,9 @@ export default function MyMessages() {
                       ) : null}
                     </>
                   ))}
-                  {userInvitedCampaigns?.map((campaign) => (
+                  {receivedInvitedCampaigns?.map((campaign) => (
                     <>
-                      <div>
+                      <div key={campaign.id}>
                         <span>
                           You have been invited to join {campaign.name}
                         </span>

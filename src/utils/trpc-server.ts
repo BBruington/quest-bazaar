@@ -8,57 +8,58 @@ export const t = initTRPC.create();
 // this is our RPC API
 export const appRouter = t.router({
   queryUser: t.procedure
-  .input(
-    z.object({
-      email: z.string(),
-    })
-  )
-  .query(async ({ input }) => {
-    const user = await prisma.user.findUnique({
-      where: { email: input.email },
-    });
+    .input(
+      z.object({
+        email: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const user = await prisma.user.findUnique({
+        where: { email: input.email },
+      });
 
-    if (!user) throw new TRPCError({ code: "NOT_FOUND" });
+      if (!user) throw new TRPCError({ code: "NOT_FOUND" });
 
-    return user;
-  }),
+      return user;
+    }),
 
   queryUserCampaigns: t.procedure
-  .input(
-    z.object({
-      id: z.string(),
-    })
-  )
-  .query(async ({ input }) => {
-    const userCampaignsData = await prisma.user.findUnique({
-      where: { externalId: input.id },
-      include: {
-        campaignplayer: true,
-        campaigndm: true,
-      },
-    });
-    const userCampaigns = [
-      ...userCampaignsData!.campaigndm,
-      ...userCampaignsData!.campaignplayer,
-    ];
-    if (userCampaigns === undefined) throw new TRPCError({ code: "NOT_FOUND" });
-    if (!userCampaigns) return null;
-    return userCampaigns;
-  }),
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const userCampaignsData = await prisma.user.findUnique({
+        where: { externalId: input.id },
+        include: {
+          campaignplayer: true,
+          campaigndm: true,
+        },
+      });
+      const userCampaigns = [
+        ...userCampaignsData!.campaigndm,
+        ...userCampaignsData!.campaignplayer,
+      ];
+      if (userCampaigns === undefined)
+        throw new TRPCError({ code: "NOT_FOUND" });
+      if (!userCampaigns) return null;
+      return userCampaigns;
+    }),
 
   queryUserSpecificCampaign: t.procedure
-  .input(
-    z.object({
-      id: z.string(),
-    })
-  )
-  .query(async ({ input }) => {
-    const userCampaignData = await prisma.campaign.findUnique({
-      where: { id: input.id },
-    });
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const userCampaignData = await prisma.campaign.findUnique({
+        where: { id: input.id },
+      });
 
-    return userCampaignData;
-  }),
+      return userCampaignData;
+    }),
 
   queryCampaigns: t.procedure.query(async () => {
     const allCampaigns = await prisma.campaign.findMany();
@@ -191,8 +192,13 @@ export const appRouter = t.router({
         if (!campaign) {
           throw new Error("Campaign not found");
         }
-        if (campaign.players.find((player) => player.id === input.playerId))
+        if (
+          campaign.players.find(
+            (player) => player.externalId === input.playerId
+          )
+        ) {
           return "ALREADY_PLAYER";
+        }
         const updatedCampaign = await prisma.campaign.update({
           where: {
             id: input.campaignId,
@@ -200,11 +206,10 @@ export const appRouter = t.router({
           data: {
             invitedPlayers: {
               connect: {
-                id: input.playerId,
+                externalId: input.playerId,
               },
             },
           },
-          include: { invitedPlayers: true },
         });
         return updatedCampaign;
       } catch (error) {
