@@ -11,9 +11,12 @@ export default function DisplayMessages(props: {
   const [inputValue, setInputValue] = useState("");
   const { selectedFriend, userId } = props;
 
+  const utils = api.useContext();
+
   const { mutate, isLoading: sendingMessage } = api.sendMessage.useMutation({
-    onSuccess: () => {
+    onSuccess: async() => {
       setInputValue("");
+      await utils.queryFriendMessages.invalidate()
     },
     onError: (e) => {
       console.error(e);
@@ -23,19 +26,20 @@ export default function DisplayMessages(props: {
   const handleInputChange = (e: string) => {
     setInputValue(e);
   };
-
-  const { data: friendMessages, isLoading: loadingFriendMessages } =
-    api.queryFriendMessages.useQuery({
-      userId,
-      friendSenderId: selectedFriend.senderId,
-    });
-  if (!friendMessages) return <div>failed to load friend messages</div>;
-
+  
   const findFriendId = (myId: string) => {
     if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
     return selectedFriend.senderId;
   };
   const friendId = findFriendId(userId);
+
+  const { data: friendMessages, isLoading: loadingFriendMessages } =
+    api.queryFriendMessages.useQuery({
+      userId,
+      friendSenderId: friendId,
+    });
+  if (!friendMessages) return <div>failed to load friend messages</div>;
+
 
   return (
     <>
@@ -101,7 +105,7 @@ export default function DisplayMessages(props: {
                   }
                 }
               }}
-            ></Input>
+            />
           </div>
         </div>
       )}

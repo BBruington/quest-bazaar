@@ -193,9 +193,7 @@ export const appRouter = t.router({
           throw new Error("Campaign not found");
         }
         if (
-          campaign.players.find(
-            (player) => player.clerkId === input.playerId
-          )
+          campaign.players.find((player) => player.clerkId === input.playerId)
         ) {
           return "ALREADY_PLAYER";
         }
@@ -332,7 +330,47 @@ export const appRouter = t.router({
     .query(async ({ input }) => {
       const myRequests = await prisma.friendship.findMany({
         where: {
-          receiverId: input.id,
+          OR: [
+            {
+              receiverId: input.id,
+            },
+            {
+              senderId: input.id,
+            },
+          ],
+          AND:[
+            {
+              status: "PENDING"
+            },
+          ],
+        },
+      });
+
+      return myRequests;
+    }),
+
+    queryMyFriends: t.procedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const myRequests = await prisma.friendship.findMany({
+        where: {
+          OR: [
+            {
+              receiverId: input.id,
+            },
+            {
+              senderId: input.id,
+            },
+          ],
+          AND:[
+            {
+              status: "ACCEPTED"
+            },
+          ],
         },
       });
 

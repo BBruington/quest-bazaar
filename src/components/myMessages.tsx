@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import DisplayMessages from "./profile/displayMessages";
 import SelectedFriend from "./profile/selectedFriend";
 import { api } from "~/utils/trpc";
@@ -30,22 +30,39 @@ export default function MyMessages() {
 
   const [addFriendInput, setAddFriendInput] = useState("");
 
+  const utils = api.useContext();
   const { user } = useUser();
   if (!user) return <div>loading...</div>;
 
   const sendAddFriendRequest = api.addFriend.useMutation();
-  const handleReceivedFriendRequest = api.handleFriendRequest.useMutation();
-  const handleReceivedCampaignInvite = api.handleCampaignInvite.useMutation();
+
+  const handleReceivedFriendRequest = api.handleFriendRequest.useMutation({
+    onSuccess: async () => {
+      await utils.queryMyFriendRequests.invalidate();
+    },
+  });
+
+  const handleReceivedCampaignInvite = api.handleCampaignInvite.useMutation({
+    onSuccess: async () => {
+      await utils.queryUserInvitedCampaigns.invalidate();
+    },
+  });
 
   const { data: friendRequests, isLoading: loadingFriendRequests } =
     api.queryMyFriendRequests.useQuery({ id: user.id });
+
+  const { data: friends, isLoading: loadingFriends } =
+    api.queryMyFriends.useQuery({ id: user.id });
+
   const {
     data: receivedInvitedCampaigns,
     isLoading: loadingReceivedInvitedCampaigns,
   } = api.queryUserInvitedCampaigns.useQuery({ userId: user.id });
+
   const pendingFriendRequests = friendRequests?.filter(function (request) {
     return request.status === "PENDING";
   });
+  
   let notificationsAmount = 0;
   if (receivedInvitedCampaigns && pendingFriendRequests)
     notificationsAmount =
@@ -110,7 +127,7 @@ export default function MyMessages() {
                     }
                   }}
                   className="mt-auto border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-                ></Input>
+                />
                 {addFriendInput.length > 0 ? (
                   <Button
                     onClick={() => handleAddFriend(addFriendInput)}
@@ -130,15 +147,15 @@ export default function MyMessages() {
             <AccordionTrigger>Friends</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col">
-                {friendRequests?.map((friendRequest) => (
+                {friends?.map((friend) => (
                   <div
-                    key={friendRequest.id}
+                    key={friend.id}
                     role="button"
                     className="w-full py-1 hover:bg-slate-800"
-                    onClick={() => setSelectedFriend(friendRequest)}
+                    onClick={() => setSelectedFriend(friend)}
                   >
                     <div className="flex items-center space-x-3">
-                      {friendRequest.status === "ACCEPTED" ? (
+                      {friend.receiverId === user.id ? (
                         <>
                           <Avatar>
                             <AvatarImage
@@ -147,9 +164,20 @@ export default function MyMessages() {
                             />
                             <AvatarFallback>CN</AvatarFallback>
                           </Avatar>
-                          <span>{friendRequest.senderName}</span>
+                          <span>{friend.senderName}</span>
                         </>
-                      ) : null}
+                      ) : (
+                        <>
+                          <Avatar>
+                            <AvatarImage
+                              src="https://github.com/shadcn.png"
+                              alt="@shadcn"
+                            />
+                            <AvatarFallback>CN</AvatarFallback>
+                          </Avatar>
+                          <span>{friend.receiverName}</span>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -173,37 +201,37 @@ export default function MyMessages() {
               <div className="space-y-3">
                 {friendRequests?.map((friendRequest) => (
                   <React.Fragment key={friendRequest.id}>
-                    {friendRequest.status === "PENDING" ? (
-                      <div className="flex border-b border-white pb-3 md:flex-col">
-                        <span className="mb-1 flex justify-center text-sm">
-                          {friendRequest.senderName} would like to be Friends
-                        </span>
-                        <div className="mt-1 flex flex-col justify-around md:flex-row">
-                          <Button
-                            className="h-6"
-                            onClick={() =>
-                              handleFriendRequestResponse(
-                                friendRequest.senderId,
-                                "ACCEPTED"
-                              )
-                            }
-                          >
-                            Accept
-                          </Button>
-                          <Button
-                            className="h-6"
-                            onClick={() =>
-                              handleFriendRequestResponse(
-                                friendRequest.senderId,
-                                "DECLINED"
-                              )
-                            }
-                          >
-                            Decline
-                          </Button>
-                        </div>
+                    <div className="flex border-b border-white pb-3 md:flex-col">
+                      <span className="mb-1 flex justify-center text-sm">
+                        {friendRequest.senderName} would like to be Friends
+                      </span>
+                      <div className="mt-1 flex flex-col justify-around md:flex-row">
+                        <Button
+                          className="h-6"
+                          disabled={handleReceivedFriendRequest.isLoading}
+                          onClick={() =>
+                            handleFriendRequestResponse(
+                              friendRequest.senderId,
+                              "ACCEPTED"
+                            )
+                          }
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          className="h-6"
+                          disabled={handleReceivedFriendRequest.isLoading}
+                          onClick={() =>
+                            handleFriendRequestResponse(
+                              friendRequest.senderId,
+                              "DECLINED"
+                            )
+                          }
+                        >
+                          Decline
+                        </Button>
                       </div>
-                    ) : null}
+                    </div>
                   </React.Fragment>
                 ))}
                 {receivedInvitedCampaigns?.map((campaign) => (
@@ -214,6 +242,7 @@ export default function MyMessages() {
                     <div className="mt-1 flex flex-col justify-around md:flex-row">
                       <Button
                         className="h-6"
+                        disabled={handleReceivedCampaignInvite.isLoading}
                         onClick={() =>
                           handleCampaignInviteResponse(campaign.id, "ACCEPTED")
                         }
@@ -222,6 +251,7 @@ export default function MyMessages() {
                       </Button>
                       <Button
                         className="h-6"
+                        disabled={handleReceivedCampaignInvite.isLoading}
                         onClick={() =>
                           handleCampaignInviteResponse(campaign.id, "DECLINED")
                         }
