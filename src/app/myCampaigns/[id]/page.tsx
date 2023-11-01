@@ -5,7 +5,7 @@ export default async function CampaignPage({ params }: {
   params: { id: string; };
 }) {
 
-  const campaign = await prisma.campaign.findUnique({
+  const campaignData = await prisma.campaign.findUnique({
     where: {
       id: params.id
     },
@@ -15,11 +15,8 @@ export default async function CampaignPage({ params }: {
     }
   })
 
-  if( !campaign ) return <div>Unable to fetch campaign</div>
-
+  if( !campaignData ) return <div>Unable to fetch campaign</div>
   return (
-  <>
-    <CampaignComponent campaignData={campaign} campaignNotes={campaign.dmNotes} campaignPlayers={campaign.players} />
-  </>
+    <CampaignComponent campaignData={campaignData} campaignNotes={campaignData.dmNotes} campaignPlayers={campaignData.players} />
   )
 }

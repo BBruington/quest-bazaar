@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import NoteList from './noteList';
 import NoteViewer from './noteViewer';
-import type { CampaignNote } from "@prisma/client";
+import type { CampaignNote, Campaign } from "@prisma/client";
 
-const NotesPage = (props: {campaignNotes: CampaignNote[]}) => {
-  const {campaignNotes} = props
+const NotesPage = (props: {campaignData: Campaign, campaignNotes: CampaignNote[]}) => {
+  const {campaignNotes, campaignData} = props
   const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);
 
   const handleNoteClick = (noteId: string): CampaignNote | boolean=> {
@@ -18,7 +18,7 @@ const NotesPage = (props: {campaignNotes: CampaignNote[]}) => {
   return (
     <div className='flex'>
       <NoteViewer note={selectedNote} />
-      <NoteList notes={campaignNotes} onNoteClick={handleNoteClick} />
+      <NoteList notes={campaignNotes} onNoteClick={handleNoteClick} campaignData={campaignData} />
     </div>
   );
 };
