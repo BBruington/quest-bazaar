@@ -9,9 +9,14 @@ const NoteList = (props: {
   campaignData: Campaign,
   note: CampaignNote | undefined
 }) => {
+  const utils = api.useContext();
   const { notes, onNoteClick, campaignData, note } = props;
   const upsertNote = api.upsertCampaignNote.useMutation();
-  const deleteNote = api.deleteCampaignNote.useMutation();
+  const deleteNote = api.deleteCampaignNote.useMutation({
+    onSuccess: async () => {
+      await utils.queryCampaignNotes.invalidate();
+    },
+  });
   return (
     <div className="flex h-screen w-1/6  flex-col items-center border-l-2 border-slate-600 bg-accent-foreground">
       <div className="flex flex-col w-full">
@@ -40,13 +45,13 @@ const NoteList = (props: {
               <li key={note.id} className="text-lg text-white">
                 {note.title}
               </li>
-              <li className="text-xs text-white">
+              {/* <li className="text-xs text-white">
                 Last Modified:{" "}
                 {new Date(note.updatedAt).toLocaleDateString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
-              </li>
+              </li> */}
             </div>
           </React.Fragment>
         ))}

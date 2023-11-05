@@ -10,13 +10,12 @@ export default async function CampaignPage({ params }: {
       id: params.id
     },
     include: {
-      dmNotes: true,
       players: true
     }
   })
 
   if( !campaignData ) return <div>Unable to fetch campaign</div>
   return (
-    <CampaignComponent campaignData={campaignData} campaignNotes={campaignData.dmNotes} campaignPlayers={campaignData.players} />
+    <CampaignComponent campaignData={campaignData} campaignPlayers={campaignData.players} />
   )
 }

@@ -2,7 +2,6 @@ import * as React from "react"
 
 import { cn } from "src/lib/utils"
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 

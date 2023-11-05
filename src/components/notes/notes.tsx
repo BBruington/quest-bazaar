@@ -3,10 +3,10 @@ import { useState } from 'react';
 import NoteList from './noteList';
 import NoteViewer from './noteViewer';
 import type { CampaignNote, Campaign } from "@prisma/client";
-
 const NotesPage = (props: {campaignData: Campaign, campaignNotes: CampaignNote[]}) => {
-  const {campaignNotes, campaignData} = props
+  const {campaignData, campaignNotes} = props
   const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);
+  if(campaignNotes === undefined) return <div>failed to load campaign notes</div>
 
   const handleNoteClick = (noteId: string): CampaignNote | boolean=> {
     const selected = campaignNotes.find((note) => note.id === noteId);

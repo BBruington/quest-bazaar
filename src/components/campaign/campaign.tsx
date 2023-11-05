@@ -1,10 +1,9 @@
 "use client";
 import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import type { Campaign, CampaignNote, User } from "@prisma/client";
+import type { Campaign, User } from "@prisma/client";
 import NotesPage from "~/components/notes/notes";
 import {
   Accordion,
@@ -26,12 +25,11 @@ import {
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
-  campaignNotes: CampaignNote[];
   campaignPlayers: User[];
 }) {
-  const { campaignData, campaignNotes, campaignPlayers } = props;
+  const { campaignData, campaignPlayers } = props;
   const router = useRouter();
-  const user = useUser();
+  const {data: campaignNotes} = api.queryCampaignNotes.useQuery({id: campaignData.id})
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
   });
@@ -116,10 +114,11 @@ export default function CampaignComponent(props: {
       </div>
       {uiToggle.editNotes && (
         <div className="w-full">
-          <NotesPage
-            campaignNotes={campaignNotes}
-            campaignData={campaignData}
-          />
+          {campaignNotes !== undefined && (
+            <NotesPage
+              campaignData={campaignData} campaignNotes={campaignNotes}
+            />
+          )}
         </div>
       )}
     </div>

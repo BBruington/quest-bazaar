@@ -48,10 +48,10 @@ export default function MyMessages() {
     },
   });
 
-  const { data: friendRequests, isLoading: loadingFriendRequests } =
+  const { data: friendRequests } =
     api.queryMyFriendRequests.useQuery({ id: user.id });
 
-  const { data: friends, isLoading: loadingFriends } =
+  const { data: friends } =
     api.queryMyFriends.useQuery({ id: user.id });
 
   const {

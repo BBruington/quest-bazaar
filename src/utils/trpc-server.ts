@@ -261,25 +261,25 @@ export const appRouter = t.router({
       }
     }),
 
-  // queryCampaignNotes: t.procedure
-  //   .input(
-  //     z.object({
-  //       id: z.string(),
-  //     })
-  //   )
-  //   .query(async ({ input }) => {
-  //     try {
-  //       const notes = await prisma.campaignNote.findMany({
-  //         where: {
-  //           campaignId: input.id,
-  //         },
-  //       });
+  queryCampaignNotes: t.procedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      try {
+        const notes = await prisma.campaignNote.findMany({
+          where: {
+            campaignId: input.id,
+          },
+        });
 
-  //       return notes;
-  //     } catch (e) {
-  //       console.error("error", e);
-  //     }
-  //   }),
+        return notes;
+      } catch (e) {
+        console.error("error", e);
+      }
+    }),
 
   queryPost: t.procedure
     .input(
