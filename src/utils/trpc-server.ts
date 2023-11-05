@@ -2,6 +2,7 @@ import { initTRPC } from "@trpc/server";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../utils/context";
 import { z } from "zod";
+import { error } from "console";
 
 export const t = initTRPC.create();
 //clerkId
@@ -242,6 +243,24 @@ export const appRouter = t.router({
       return upsertCampaign;
     }),
 
+  deleteCampaignNote: t.procedure
+    .input(
+      z.object({
+        id: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      if (input.id) {
+        try {
+          await prisma.campaignNote.delete({
+            where: { id: input.id },
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }),
+
   // queryCampaignNotes: t.procedure
   //   .input(
   //     z.object({
@@ -338,9 +357,9 @@ export const appRouter = t.router({
               senderId: input.id,
             },
           ],
-          AND:[
+          AND: [
             {
-              status: "PENDING"
+              status: "PENDING",
             },
           ],
         },
@@ -349,7 +368,7 @@ export const appRouter = t.router({
       return myRequests;
     }),
 
-    queryMyFriends: t.procedure
+  queryMyFriends: t.procedure
     .input(
       z.object({
         id: z.string(),
@@ -366,9 +385,9 @@ export const appRouter = t.router({
               senderId: input.id,
             },
           ],
-          AND:[
+          AND: [
             {
-              status: "ACCEPTED"
+              status: "ACCEPTED",
             },
           ],
         },

@@ -11,6 +11,7 @@ const NoteList = (props: {
 }) => {
   const { notes, onNoteClick, campaignData, note } = props;
   const upsertNote = api.upsertCampaignNote.useMutation();
+  const deleteNote = api.deleteCampaignNote.useMutation();
   return (
     <div className="flex h-screen w-1/6  flex-col items-center border-l-2 border-slate-600 bg-accent-foreground">
       <div className="flex flex-col w-full">
@@ -24,7 +25,9 @@ const NoteList = (props: {
             title: 'New Note',
             content: '',
           })}>Add</Button>
-          <Button className="w-20">Delete</Button>
+          <Button className="w-20" onClick={() => deleteNote.mutate({
+            id: note?.id
+          })}>Delete</Button>
         </div>
       </div>
       <ul className="mt-1 w-full space-y-3 text-center">
