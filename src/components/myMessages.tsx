@@ -56,7 +56,6 @@ export default function MyMessages() {
 
   const {
     data: receivedInvitedCampaigns,
-    isLoading: loadingReceivedInvitedCampaigns,
   } = api.queryUserInvitedCampaigns.useQuery({ userId: user.id });
 
   const pendingFriendRequests = friendRequests?.filter(function (request) {

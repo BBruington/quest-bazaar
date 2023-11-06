@@ -1,8 +1,9 @@
-import type { CampaignNote, Campaign } from "@prisma/client";
+import type { Campaign } from "@prisma/client";
 import uuid from "react-uuid";
 import React from "react";
 import { api } from "~/utils/trpc";
 import { Button } from "../ui/button";
+import type { CampaignNote } from "./types";
 const NoteList = (props: {
   notes: CampaignNote[];
   onNoteClick: (noteId: string) => CampaignNote | boolean;
@@ -45,13 +46,13 @@ const NoteList = (props: {
               <li key={note.id} className="text-lg text-white">
                 {note.title}
               </li>
-              {/* <li className="text-xs text-white">
+              <li className="text-xs text-white">
                 Last Modified:{" "}
                 {new Date(note.updatedAt).toLocaleDateString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
-              </li> */}
+              </li>
             </div>
           </React.Fragment>
         ))}

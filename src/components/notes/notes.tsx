@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import NoteList from './noteList';
 import NoteViewer from './noteViewer';
-import type { CampaignNote, Campaign } from "@prisma/client";
+import type { Campaign } from "@prisma/client";
+import type { CampaignNote } from "./types";
+
 const NotesPage = (props: {campaignData: Campaign, campaignNotes: CampaignNote[]}) => {
   const {campaignData, campaignNotes} = props
   const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);

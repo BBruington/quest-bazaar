@@ -2,7 +2,6 @@ import { initTRPC } from "@trpc/server";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../utils/context";
 import { z } from "zod";
-import { error } from "console";
 
 export const t = initTRPC.create();
 //clerkId
@@ -264,7 +263,7 @@ export const appRouter = t.router({
   queryCampaignNotes: t.procedure
     .input(
       z.object({
-        id: z.string(),
+       id: z.string(), 
       })
     )
     .query(async ({ input }) => {
@@ -274,7 +273,6 @@ export const appRouter = t.router({
             campaignId: input.id,
           },
         });
-
         return notes;
       } catch (e) {
         console.error("error", e);
