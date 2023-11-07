@@ -231,7 +231,7 @@ export const appRouter = t.router({
         },
         update: {
           title: input.title,
-          content: input.content,
+          content: input.content
         },
         create: {
           campaignId: input.campaignId,
