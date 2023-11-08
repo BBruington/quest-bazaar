@@ -21,7 +21,6 @@ const NoteViewer = (props: {
     },
   });
   const handleSaveNote = () => {
-    console.log(campaignNote)
     if (
       campaignNote?.title !== undefined &&
       campaignNote?.content !== undefined
