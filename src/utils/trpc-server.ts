@@ -147,6 +147,7 @@ export const appRouter = t.router({
         id: z.string(),
         name: z.string(),
         description: z.string(),
+        friendsIds: z.string().array().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -158,6 +159,20 @@ export const appRouter = t.router({
         },
       });
       if (!campaignData) throw new TRPCError({ code: "NOT_FOUND" });
+      if (input.friendsIds !== undefined && input.friendsIds[0] !== '' && campaignData !== undefined) {
+        await prisma.campaign.update({
+          where: {
+            id: campaignData.id,
+          },
+          data: {
+            invitedPlayers: {
+              connect:
+                input.friendsIds.map((friendId) => ({ clerkId: friendId })) ||
+                [],
+            },
+          },
+        });
+      }
       return campaignData;
     }),
 
@@ -231,7 +246,7 @@ export const appRouter = t.router({
         },
         update: {
           title: input.title,
-          content: input.content
+          content: input.content,
         },
         create: {
           campaignId: input.campaignId,
@@ -263,7 +278,7 @@ export const appRouter = t.router({
   queryCampaignNotes: t.procedure
     .input(
       z.object({
-       id: z.string(), 
+        id: z.string(),
       })
     )
     .query(async ({ input }) => {

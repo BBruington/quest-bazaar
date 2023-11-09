@@ -21,11 +21,11 @@ export default function CreateCampaign() {
   const [campaignProps, setCampaignProps] = useState({
     name: "",
     description: "",
-    friends: [''],
+    friends: [{id: '', name: ''}],
     imgUrl: "",
   });
-  const [friends, setFriends] = useState(['']);
-  if(!user) return <div>failed to load user</div>
+  const [friends, setFriends] = useState([{name: '', id:""}]);
+  if (!user) return <div>failed to load user</div>;
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -33,8 +33,8 @@ export default function CreateCampaign() {
     setCampaignProps({ ...campaignProps, [name]: value });
   };
 
-  const {data: friendsList} = api.queryMyFriends.useQuery({id: user.id})
-  
+  const { data: friendsList } = api.queryMyFriends.useQuery({ id: user.id });
+
   const { mutate } = api.createCampaign.useMutation({
     onSuccess: () => {
       void router.push(`/myCampaigns`);
@@ -43,48 +43,52 @@ export default function CreateCampaign() {
       console.error(e);
     },
   });
-
-  const test = () => {
-    const array: string[] = []
+  type FriendList = {
+    id: string;
+    name: string
+  }
+  const findFriendsIds = () => {
+    const array: FriendList[]  = [];
     friendsList?.map((friend) => {
-    if(friend.receiverId === user.id) array.push(friend.senderName)
-    else if (friend.senderId === user.id) array.push(friend.receiverName)
-    if(array.length === 0) {
-      setFriends(["You don't seem to have anyone to add"])
-    }else {
-      setFriends(array)
-    }
-  })}
+      if (friend.receiverId === user.id) array.push({id:friend.senderId, name:friend.senderName});
+      else if (friend.senderId === user.id) array.push({id: friend.receiverId, name: friend.receiverName});
+      if (array.length === 0) {
+        setFriends([{name:"You don't seem to have anyone to add", id:''}]);
+      } else {
+        setFriends(array);
+      }
+    });
+  };
 
-  if(friends[0] === '') test()
+  if (friends[0]?.id === "") findFriendsIds();
 
   return (
-    <>
-      <div>
-        <div>
-          <label className="text-white" htmlFor="name">
-            Campaign Name:
-          </label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            value={campaignProps.name}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label className="text-white" htmlFor="description">
-            Description:
-          </label>
-          <Input
-            id="description"
-            name="description"
-            value={campaignProps.description}
-            onChange={handleChange}
-          />
-        </div>
-        <Button
+    <div>
+      <div className="ml-2">
+        <label className="text-white" htmlFor="name">
+          Campaign Name:
+        </label>
+        <Input
+          type="text"
+          id="name"
+          name="name"
+          value={campaignProps.name}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="ml-2">
+        <label className="text-white" htmlFor="description">
+          Description:
+        </label>
+        <Input
+          id="description"
+          name="description"
+          value={campaignProps.description}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="flex gap-5 m-2">
+        <Button className="h-10 w-30"
           onClick={(e) => {
             e.preventDefault();
             if (campaignProps.name !== "" && campaignProps.description !== "") {
@@ -99,16 +103,20 @@ export default function CreateCampaign() {
           Create Campaign
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger>Invite Friends</DropdownMenuTrigger>
+          <DropdownMenuTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 w-40">Invite Friends</DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>My Friends</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {friends? (friends.map((friend, index) => (
-              <DropdownMenuItem key={index}>{friend}</DropdownMenuItem>
-            ))):(<></>)}
+            {friends ? (
+              friends.map((friend, index) => (
+                <DropdownMenuItem key={index}>{friend.name}</DropdownMenuItem>
+              ))
+            ) : (
+              <></>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    </>
+    </div>
   );
 }
