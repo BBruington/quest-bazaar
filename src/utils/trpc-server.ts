@@ -159,7 +159,7 @@ export const appRouter = t.router({
         },
       });
       if (!campaignData) throw new TRPCError({ code: "NOT_FOUND" });
-      if (input.friendsIds !== undefined && input.friendsIds[0] !== '' && campaignData !== undefined) {
+      if (input.friendsIds !== undefined && input.friendsIds[0] !== '') {
         await prisma.campaign.update({
           where: {
             id: campaignData.id,
