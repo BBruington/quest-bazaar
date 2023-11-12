@@ -33,6 +33,18 @@ export default function CreateCampaign() {
     setCampaignProps({ ...campaignProps, [name]: value });
   };
 
+  type FriendList = {
+    id: string;
+    name: string
+  }
+  const inviteFriendToCampaign = (invitedFriend: FriendList) => {
+    if(campaignProps.friends.find((friend) => friend === invitedFriend)) return;
+    if(campaignProps.friends[0] !== undefined && campaignProps.friends[0].name === '') {campaignProps.friends[0] = invitedFriend}
+    else{
+      campaignProps.friends.push(invitedFriend)
+    }
+  }
+
   const { data: friendsList } = api.queryMyFriends.useQuery({ id: user.id });
 
   const { mutate } = api.createCampaign.useMutation({
@@ -43,10 +55,6 @@ export default function CreateCampaign() {
       console.error(e);
     },
   });
-  type FriendList = {
-    id: string;
-    name: string
-  }
   const findFriendsIds = () => {
     const array: FriendList[]  = [];
     friendsList?.map((friend) => {
@@ -109,7 +117,7 @@ export default function CreateCampaign() {
             <DropdownMenuSeparator />
             {friends ? (
               friends.map((friend, index) => (
-                <DropdownMenuItem key={index}>{friend.name}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => inviteFriendToCampaign(friend)} key={index}>{friend.name}</DropdownMenuItem>
               ))
             ) : (
               <></>
