@@ -1,10 +1,10 @@
 "use-client";
 import type { Campaign } from "@prisma/client";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "../../ui/textarea";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/trpc";
 import type { CampaignNote } from "./types";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 const NoteViewer = (props: {
   note: CampaignNote | undefined;
@@ -14,7 +14,9 @@ const NoteViewer = (props: {
   const utils = api.useContext();
   const [campaignNote, setCampaigNote] = useState(note);
   const [editMode, setEditmode] = useState(false);
-  useEffect(() => {setCampaigNote(note)},[note])
+  useEffect(() => {
+    setCampaigNote(note);
+  }, [note]);
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
       await utils.queryCampaignNotes.invalidate();
@@ -43,10 +45,13 @@ const NoteViewer = (props: {
   };
   return (
     <div className="flex w-5/6 flex-col items-center text-white">
-      <div className="flex items-center gap-5 mb-2">
-      <Button className="h-7" onClick={() => setEditmode(!editMode)}>Edit</Button>
-      <Button className="h-7" onClick={() => handleSaveNote()}>Save</Button>
-
+      <div className="mb-2 flex items-center gap-5">
+        <Button className="h-7" onClick={() => setEditmode(!editMode)}>
+          Edit
+        </Button>
+        <Button className="h-7" onClick={() => handleSaveNote()}>
+          Save
+        </Button>
       </div>
       {campaignNote && (
         <>

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import type { Campaign, User } from "@prisma/client";
-import NotesPage from "~/components/notes/notes";
+import NotesPage from "~/components/campaign/notes/notes";
 import {
   Accordion,
   AccordionContent,
@@ -29,7 +29,9 @@ export default function CampaignComponent(props: {
 }) {
   const { campaignData, campaignPlayers } = props;
   const router = useRouter();
-  const {data: campaignNotes} = api.queryCampaignNotes.useQuery({id: campaignData.id})
+  const { data: campaignNotes } = api.queryCampaignNotes.useQuery({
+    id: campaignData.id,
+  });
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
   });
@@ -64,7 +66,9 @@ export default function CampaignComponent(props: {
             <AccordionTrigger>Players</AccordionTrigger>
             <AccordionContent>
               {campaignPlayers.map((player) => (
-                <div key={player.id}>{player.username}</div>
+                <div className="mb-2" key={player.id}>
+                  {player.username}
+                </div>
               ))}
             </AccordionContent>
           </AccordionItem>
@@ -116,7 +120,8 @@ export default function CampaignComponent(props: {
         <div className="w-full">
           {campaignNotes !== undefined && (
             <NotesPage
-              campaignData={campaignData} campaignNotes={campaignNotes}
+              campaignData={campaignData}
+              campaignNotes={campaignNotes}
             />
           )}
         </div>
