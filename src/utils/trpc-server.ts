@@ -310,7 +310,7 @@ export const appRouter = t.router({
     )
     .query(async ({ input }) => {
       try {
-        const post = await prisma.userPost.findUnique({
+        const post = await prisma.post.findUnique({
           where: {
             id: input.id,
           },

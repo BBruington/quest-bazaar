@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import type { Campaign, User } from "@prisma/client";
 import NotesPage from "~/components/campaign/notes/notes";
+import Posts from "./posts/posts";
 import {
   Accordion,
   AccordionContent,
@@ -126,6 +127,7 @@ export default function CampaignComponent(props: {
           )}
         </div>
       )}
+      <Posts campaignData={campaignData}/>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import type { Post } from "~/app/types/Posts";
 import Link from "next/link";
 
 export default async function Posts() {
-  const posts = await prisma.userPost.findMany() 
+  const posts = await prisma.post.findMany() 
   if ( !posts ) return <div>failed to load posts</div>
   return (
     <>

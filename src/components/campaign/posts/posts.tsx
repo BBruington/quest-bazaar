@@ -1,6 +1,6 @@
-"use-client"
-import { useState } from "react"
-// model UserPost {
+import { prisma } from "~/utils/context"
+import type { Campaign } from "@prisma/client"
+// model Post {
 //   id          String    @id @default(cuid())
 //   userId      String
 //   title       String
@@ -14,12 +14,17 @@ import { useState } from "react"
 //   likes       Like[]
 //   comments    Comment[]
 // }
+//header
+//content
+//comment section
 
-export default function Post() {
-  const [post, setPost] = useState({})
+export default async function Posts(props: {campaignData: Campaign}) {
+  const {campaignData} = props
+  const postData = await prisma.post.findMany({
+    where: {campaignId: campaignData.id}
+  })
   return (
     <main>
-
         <img className="w-full h-40 object-cover" src={''} alt='' />
         <article className="max-w-3xl mx-auto p-5">
 
