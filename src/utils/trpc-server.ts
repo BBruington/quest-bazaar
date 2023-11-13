@@ -1,6 +1,7 @@
 import { initTRPC } from "@trpc/server";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../utils/context";
+import { friendsForCampaignInvite } from "./types";
 import { z } from "zod";
 
 export const t = initTRPC.create();
@@ -147,7 +148,8 @@ export const appRouter = t.router({
         id: z.string(),
         name: z.string(),
         description: z.string(),
-        friendsIds: z.string().array().optional(),
+        imageUrl: z.string(),
+        friendsIds: z.array(friendsForCampaignInvite).optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -155,11 +157,12 @@ export const appRouter = t.router({
         data: {
           name: input.name,
           description: input.description,
+          image: input.imageUrl,
           dmUserId: input.id,
         },
       });
       if (!campaignData) throw new TRPCError({ code: "NOT_FOUND" });
-      if (input.friendsIds !== undefined && input.friendsIds[0] !== '') {
+      if (input.friendsIds !== undefined) {
         await prisma.campaign.update({
           where: {
             id: campaignData.id,
@@ -167,7 +170,7 @@ export const appRouter = t.router({
           data: {
             invitedPlayers: {
               connect:
-                input.friendsIds.map((friendId) => ({ clerkId: friendId })) ||
+                input.friendsIds?.map((friendId) => ({ clerkId: friendId.id })) ||
                 [],
             },
           },
@@ -183,6 +186,11 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+      await prisma.campaignNote.deleteMany({
+        where: {
+          campaignId: input.id
+        }
+      })
       const deleted = await prisma.campaign.delete({
         where: {
           id: input.id,
