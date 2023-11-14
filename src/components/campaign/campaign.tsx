@@ -3,7 +3,7 @@ import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import type { Campaign, User } from "@prisma/client";
+import type { Campaign, Post, User } from "@prisma/client";
 import NotesPage from "~/components/campaign/notes/notes";
 import Posts from "./posts/posts";
 import {
@@ -26,15 +26,17 @@ import {
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
-  campaignPlayers: User[];
+  campaignPlayers: User[] | null;
+  campaignPosts: Post[] | null;
 }) {
-  const { campaignData, campaignPlayers } = props;
+  const { campaignData, campaignPlayers, campaignPosts } = props;
   const router = useRouter();
   const { data: campaignNotes } = api.queryCampaignNotes.useQuery({
     id: campaignData.id,
   });
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
+    posts: false,
   });
 
   const { mutate } = api.deleteCampaign.useMutation({
@@ -55,6 +57,7 @@ export default function CampaignComponent(props: {
               onClick={() =>
                 setUiToggle({
                   editNotes: true,
+                  posts: false,
                 })
               }
             >
@@ -66,16 +69,31 @@ export default function CampaignComponent(props: {
           <AccordionItem value="item-2">
             <AccordionTrigger>Players</AccordionTrigger>
             <AccordionContent>
-              {campaignPlayers.map((player) => (
-                <div className="mb-2" key={player.id}>
-                  {player.username}
-                </div>
-              ))}
+              {campaignPlayers !== null ? (
+                campaignPlayers?.map((player) => (
+                  <div className="mb-2" key={player.id}>
+                    {player.username}
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
             <AccordionTrigger>Posts</AccordionTrigger>
-            <AccordionContent></AccordionContent>
+            <AccordionContent>
+              <div className="flex flex-col items-start justify-start space-y-2">
+                <Button className="w-full" onClick={() =>
+                setUiToggle({
+                  editNotes: false,
+                  posts: true,
+                })
+              }>View</Button>
+                <Button className="w-full">Create</Button>
+                <Button className="w-full">Schedule</Button>
+              </div>
+            </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
             <AccordionTrigger>Campaign</AccordionTrigger>
@@ -127,7 +145,9 @@ export default function CampaignComponent(props: {
           )}
         </div>
       )}
-      <Posts campaignData={campaignData}/>
+      {uiToggle.posts && (
+        <Posts campaignData={campaignData} campaignPosts={campaignPosts} />
+      )}
     </div>
   );
 }
