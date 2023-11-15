@@ -11,7 +11,7 @@ export default function Scheduler() {
 
   return (
     <>
-      <div className="ml-5 flex items-center justify-center text-white">
+      <div className="flex items-center justify-center text-white">
         <TimePicker value={time} onChange={setTime} />
       </div>
       <div className="mt-5 flex flex-col items-center justify-center">
