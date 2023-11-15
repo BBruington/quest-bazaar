@@ -31,7 +31,7 @@ export default function Posts(props: { campaignData: Campaign; campaignPosts: Po
         </Link>
       </div>
       {campaignPosts && campaignPosts?.length !== 0 && (
-        <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3 ">
+        <div className="grid grid-cols-1 gap-3 p-3 items-center lg:grid-cols-2 md:gap-6 md:p-6 2xl:grid-cols-3 ">
           {campaignPosts?.map((post) => (
             <Link className="" key={post.id} href={`/post/${post.id}`}>
               <div className="group cursor-pointer overflow-hidden rounded-lg border border-primary-foreground">

@@ -65,20 +65,21 @@ model Message {
 }
 
 model Post {
-  id          String    @id @default(cuid())
-  userId      String
-  campaignId  String?
-  title       String
-  description String
-  author      String
-  mainImage   String
-  body        String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [clerkId])
-  likes       Like[]
-  comments    Comment[]
-  campaign    Campaign? @relation("CampaignPosts", fields: [campaignId], references: [id])
+  id           String    @id @default(cuid())
+  userId       String
+  campaignId   String?
+  title        String
+  description  String
+  author       String
+  mainImage    String
+  body         String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  scheduleTime DateTime?
+  user         User      @relation(fields: [userId], references: [clerkId])
+  likes        Like[]
+  comments     Comment[]
+  campaign     Campaign? @relation("CampaignPosts", fields: [campaignId], references: [id])
 }
 
 model Like {

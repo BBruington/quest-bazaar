@@ -314,6 +314,10 @@ export const appRouter = t.router({
           where: {
             id: input.id,
           },
+          include: {
+            comments: true,
+            likes: true,
+          }
         });
         return post;
       } catch (e) {
