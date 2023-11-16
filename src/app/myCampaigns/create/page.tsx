@@ -85,31 +85,23 @@ export default function CreateCampaign() {
     },
   });
   const handleCreateCampaign = () => {
-    if (
-      campaignProps.name !== "" &&
-      campaignProps.description !== "" &&
-      campaignProps.friends[0]?.id === ""
-    ) {
+    if (campaignProps.name !== "" && campaignProps.description !== "") {
       mutate({
         id: user.id,
         imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
         name: campaignProps.name,
         description: campaignProps.description,
-      });
-    } else {
-      mutate({
-        id: user.id,
-        imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
-        name: campaignProps.name,
-        description: campaignProps.description,
-        friendsIds: campaignProps.friends,
+        friendsIds:
+          campaignProps.friends[0]?.id === ""
+            ? undefined
+            : campaignProps.friends,
       });
     }
   };
 
   return (
     <div>
-      {imageFile ? <img src={URL.createObjectURL(imageFile)} /> : <></>}
+      {/* {imageFile ? <img src={URL.createObjectURL(imageFile)} /> : <></>} */}
       <div className="ml-2">
         <label className="text-white" htmlFor="name">
           Campaign Name:
@@ -141,7 +133,9 @@ export default function CreateCampaign() {
           type="file"
           id="imageUrl"
           name="imageUrl"
-          value={imageFile !== undefined ? URL.createObjectURL(imageFile) : ""}
+          // value={
+          //   imageFile !== undefined ? URL.createObjectURL(imageFile) : undefined
+          // }
           onChange={handleImageFile}
         />
       </div>
