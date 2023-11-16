@@ -18,6 +18,7 @@ import {
 export default function CreateCampaign() {
   const { user } = useUser();
   const router = useRouter();
+  const [imageFile, setImageFile] = useState<File | undefined>();
   const [campaignProps, setCampaignProps] = useState({
     name: "",
     description: "",
@@ -28,6 +29,12 @@ export default function CreateCampaign() {
   if (!user) return <div>failed to load user</div>;
 
   const { data: friendsList } = api.queryMyFriends.useQuery({ id: user.id });
+
+  const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files !== null) {
+      setImageFile(event.target.files[0]);
+    }
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -70,7 +77,6 @@ export default function CreateCampaign() {
 
   if (friends[0]?.id === "") findFriendsIds();
 
-
   const { mutate } = api.createCampaign.useMutation({
     onSuccess: () => {
       void router.push(`/myCampaigns`);
@@ -82,6 +88,7 @@ export default function CreateCampaign() {
 
   return (
     <div>
+      {imageFile ? (<img src={URL.createObjectURL(imageFile)}/>) : (<></>)}
       <div className="ml-2">
         <label className="text-white" htmlFor="name">
           Campaign Name:
@@ -114,7 +121,7 @@ export default function CreateCampaign() {
           id="imageUrl"
           name="imageUrl"
           value={campaignProps.imageUrl}
-          onChange={handleChange}
+          onChange={handleImageFile}
         />
       </div>
       <div className="m-2 flex gap-5">
@@ -122,17 +129,21 @@ export default function CreateCampaign() {
           className="w-30 h-10"
           onClick={(e) => {
             e.preventDefault();
-            if (campaignProps.name !== "" && campaignProps.description !== "" && campaignProps.friends[0]?.id === '') {
+            if (
+              campaignProps.name !== "" &&
+              campaignProps.description !== "" &&
+              campaignProps.friends[0]?.id === ""
+            ) {
               mutate({
                 id: user.id,
-                imageUrl: campaignProps.imageUrl,
+                imageUrl: URL.createObjectURL(imageFile),
                 name: campaignProps.name,
                 description: campaignProps.description,
               });
             } else {
               mutate({
                 id: user.id,
-                imageUrl: campaignProps.imageUrl,
+                imageUrl: URL.createObjectURL(imageFile),
                 name: campaignProps.name,
                 description: campaignProps.description,
                 friendsIds: campaignProps.friends,

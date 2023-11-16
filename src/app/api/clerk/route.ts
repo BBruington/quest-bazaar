@@ -1,6 +1,3 @@
-import type { IncomingHttpHeaders } from 'http';
-import type { NextApiRequest } from 'next';
-import type { WebhookRequiredHeaders } from 'svix';
 import type { WebhookEvent } from '@clerk/nextjs/server';
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
@@ -71,6 +68,3 @@ export async function POST(req: Request) {
   }
 }
 
-type NextApiRequestWithSvixRequiredHeaders = NextApiRequest & {
-  headers: IncomingHttpHeaders & WebhookRequiredHeaders;
-};
