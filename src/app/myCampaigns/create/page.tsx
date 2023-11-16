@@ -18,7 +18,7 @@ import {
 export default function CreateCampaign() {
   const { user } = useUser();
   const router = useRouter();
-  const [imageFile, setImageFile] = useState<File | undefined>();
+  const [imageFile, setImageFile] = useState<File | undefined | Blob>();
   const [campaignProps, setCampaignProps] = useState({
     name: "",
     description: "",
@@ -136,14 +136,14 @@ export default function CreateCampaign() {
             ) {
               mutate({
                 id: user.id,
-                imageUrl: URL.createObjectURL(imageFile),
+                imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
                 name: campaignProps.name,
                 description: campaignProps.description,
               });
             } else {
               mutate({
                 id: user.id,
-                imageUrl: URL.createObjectURL(imageFile),
+                imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
                 name: campaignProps.name,
                 description: campaignProps.description,
                 friendsIds: campaignProps.friends,
