@@ -19,7 +19,7 @@ import Link from "next/link";
 //comment section
 
 export default function Posts(props: { campaignData: Campaign; campaignPosts: Post[] | null }) {
-  const { campaignPosts } = props;
+  const { campaignPosts } = props; 
   return (
     <div className="flex flex-col">
       <div className="h-30 flex justify-around">
