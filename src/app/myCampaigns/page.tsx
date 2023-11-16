@@ -7,8 +7,8 @@ export default function MyCampaigns() {
   const { user } = useUser()
   if (!user) return null;
   const {data, isLoading: campaignsLoading} = api.queryUserCampaigns.useQuery({id: user.id})
-  if ( campaignsLoading ) return <div>loading...</div>
-  if (!data) return <div>error fetching campaigns</div>
+  if ( campaignsLoading ) return <div className="text-white">loading...</div>
+  if (!data) return <div className="text-white">error fetching campaigns</div>
   return (
     <>
     <div className="h-30 flex justify-around"> 
