@@ -23,7 +23,6 @@ export default function CreateCampaign() {
     name: "",
     description: "",
     friends: [{ id: "", name: "" }],
-    imageUrl: "",
   });
   const [friends, setFriends] = useState([{ name: "", id: "" }]);
   if (!user) return <div>failed to load user</div>;
@@ -85,10 +84,32 @@ export default function CreateCampaign() {
       console.error(e);
     },
   });
+  const handleCreateCampaign = () => {
+    if (
+      campaignProps.name !== "" &&
+      campaignProps.description !== "" &&
+      campaignProps.friends[0]?.id === ""
+    ) {
+      mutate({
+        id: user.id,
+        imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
+        name: campaignProps.name,
+        description: campaignProps.description,
+      });
+    } else {
+      mutate({
+        id: user.id,
+        imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
+        name: campaignProps.name,
+        description: campaignProps.description,
+        friendsIds: campaignProps.friends,
+      });
+    }
+  };
 
   return (
     <div>
-      {imageFile ? (<img src={URL.createObjectURL(imageFile)}/>) : (<></>)}
+      {imageFile ? <img src={URL.createObjectURL(imageFile)} /> : <></>}
       <div className="ml-2">
         <label className="text-white" htmlFor="name">
           Campaign Name:
@@ -120,37 +141,12 @@ export default function CreateCampaign() {
           type="file"
           id="imageUrl"
           name="imageUrl"
-          value={campaignProps.imageUrl}
+          value={imageFile !== undefined ? URL.createObjectURL(imageFile) : ""}
           onChange={handleImageFile}
         />
       </div>
       <div className="m-2 flex gap-5">
-        <Button
-          className="w-30 h-10"
-          onClick={(e) => {
-            e.preventDefault();
-            if (
-              campaignProps.name !== "" &&
-              campaignProps.description !== "" &&
-              campaignProps.friends[0]?.id === ""
-            ) {
-              mutate({
-                id: user.id,
-                imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
-                name: campaignProps.name,
-                description: campaignProps.description,
-              });
-            } else {
-              mutate({
-                id: user.id,
-                imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
-                name: campaignProps.name,
-                description: campaignProps.description,
-                friendsIds: campaignProps.friends,
-              });
-            }
-          }}
-        >
+        <Button className="w-30 h-10" onClick={handleCreateCampaign}>
           Create Campaign
         </Button>
         <DropdownMenu>
