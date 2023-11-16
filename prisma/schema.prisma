@@ -1,5 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider     = "mysql"
@@ -7,33 +8,24 @@ datasource db {
   relationMode = "prisma"
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
-  id        String   @id @default(cuid())
-  clerkId   String   @unique
-  username  String?  @unique
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  characters Character[]
-
-  campaignplayer   Campaign[] @relation("CampaignPlayers")
-  campaigndm       Campaign[] @relation("CampaignDm")
-  invitedCampaigns Campaign[] @relation("InvitedGame")
-
-  userPosts Post[]
-  likes     Like[]
-  comments  Comment[]
-
+  id                     String       @id @default(cuid())
+  clerkId                String       @unique
+  username               String?      @unique
+  email                  String       @unique
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+  characters             Character[]
+  campaignplayer         Campaign[]   @relation("CampaignPlayers")
+  campaigndm             Campaign[]   @relation("CampaignDm")
+  invitedCampaigns       Campaign[]   @relation("InvitedGame")
+  userPosts              Post[]
+  likes                  Like[]
+  comments               Comment[]
   sentFriendRequests     Friendship[] @relation("sentRequests")
   receivedFriendRequests Friendship[] @relation("receivedRequests")
-
-  sentMessages     Message[] @relation("sender")
-  receivedMessages Message[] @relation("recipient")
+  sentMessages           Message[]    @relation("sender")
+  receivedMessages       Message[]    @relation("recipient")
 }
 
 model Friendship {
@@ -49,11 +41,6 @@ model Friendship {
   receiver     User             @relation("receivedRequests", fields: [receiverId], references: [clerkId])
 }
 
-enum FriendshipStatus {
-  PENDING
-  ACCEPTED
-}
-
 model Message {
   id          String   @id @default(cuid())
   content     String   @db.Text
@@ -67,7 +54,6 @@ model Message {
 model Post {
   id           String    @id @default(cuid())
   userId       String
-  campaignId   String?
   title        String
   description  String
   author       String
@@ -75,6 +61,7 @@ model Post {
   body         String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  campaignId   String?
   scheduleTime DateTime?
   user         User      @relation(fields: [userId], references: [clerkId])
   likes        Like[]
@@ -85,20 +72,20 @@ model Post {
 model Like {
   id        String   @id @default(cuid())
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Comment {
   id        String   @id @default(cuid())
   content   String
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Campaign {
@@ -109,23 +96,23 @@ model Campaign {
   password       String?
   dmUserId       String
   dmName         String?
-  dmNotes        CampaignNote[]
-  posts          Post[]         @relation("CampaignPosts")
-  dm             User?          @relation(fields: [dmUserId], references: [clerkId], name: "CampaignDm")
-  players        User[]         @relation("CampaignPlayers")
-  invitedPlayers User[]         @relation("InvitedGame")
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
+  dmNotes        CampaignNote[]
+  posts          Post[]         @relation("CampaignPosts")
+  dm             User?          @relation("CampaignDm", fields: [dmUserId], references: [clerkId])
+  players        User[]         @relation("CampaignPlayers")
+  invitedPlayers User[]         @relation("InvitedGame")
 }
 
 model CampaignNote {
   id         String   @id @default(cuid())
   campaignId String
-  campaign   Campaign @relation(fields: [campaignId], references: [id])
   title      String
   content    String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
 }
 
 model Character {
@@ -158,7 +145,30 @@ model Character {
   spells            Json
   equipment         Json
   userId            String
-  user              User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id])
+}
+
+model CampaignPlayers {
+  A String
+  B String
+
+  @@unique([A, B], map: "_CampaignPlayers_AB_unique")
+  @@index([B], map: "_CampaignPlayers_B_index")
+  @@map("_CampaignPlayers")
+}
+
+model InvitedGame {
+  A String
+  B String
+
+  @@unique([A, B], map: "_InvitedGame_AB_unique")
+  @@index([B], map: "_InvitedGame_B_index")
+  @@map("_InvitedGame")
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
 }
