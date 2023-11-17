@@ -1,36 +1,32 @@
-import type { Metadata } from 'next'
-import { ClerkProvider } from '@clerk/nextjs'
+import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import Navigation from "~/components/navigation";
-import { TrpcProvider } from './TrpcProvider';
+import { TrpcProvider } from "./TrpcProvider";
 import "../styles/globals.css";
 
-
- 
 export const metadata: Metadata = {
-  title: 'Quest Bazaar',
-  description: 'Welcome to Next.js',
-}
-
+  title: "Quest Bazaar",
+  description: "Welcome to Next.js",
+};
 
 // here we wrap all of our pages with TrpcProvider to enable the client to invoke RPCs
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
+    <ClerkProvider>
       <TrpcProvider>
-        <ClerkProvider>
-          <html lang="en">
-              <head>
-              </head>
-              <body className='bg-foreground'>
-                <Navigation></Navigation>
-                {children}
-              </body>
-          </html>
-        </ClerkProvider>
+        <html lang="en">
+          <head></head>
+          <body className="bg-foreground">
+            <Navigation></Navigation>
+            {children}
+          </body>
+        </html>
       </TrpcProvider>
-  )
+    </ClerkProvider>
+  );
 }
