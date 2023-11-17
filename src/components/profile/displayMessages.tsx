@@ -26,6 +26,16 @@ export default function DisplayMessages(props: {
   const handleInputChange = (e: string) => {
     setInputValue(e);
   };
+
+  const handleSendMessage= () => {
+    if (inputValue !== "") {
+      mutate({
+        userId: userId,
+        friendId: friendId,
+        content: inputValue,
+      });
+    }
+  }
   
   const findFriendId = (myId: string) => {
     if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
@@ -93,18 +103,7 @@ export default function DisplayMessages(props: {
               value={inputValue}
               disabled={sendingMessage}
               onChange={(e) => handleInputChange(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  if (inputValue !== "") {
-                    mutate({
-                      userId: userId,
-                      friendId: friendId,
-                      content: inputValue,
-                    });
-                  }
-                }
-              }}
+              onKeyDown={(e) => {if (e.key === "Enter") handleSendMessage}}
             />
           </div>
         </div>

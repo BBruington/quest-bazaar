@@ -52,21 +52,30 @@ model Message {
 }
 
 model Post {
-  id           String    @id @default(cuid())
-  userId       String
-  title        String
-  description  String
-  author       String
-  mainImage    String
-  body         String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  campaignId   String?
-  scheduleTime DateTime?
-  user         User      @relation(fields: [userId], references: [clerkId])
-  likes        Like[]
-  comments     Comment[]
-  campaign     Campaign? @relation("CampaignPosts", fields: [campaignId], references: [id])
+  id          String    @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  author      String
+  mainImage   String
+  body        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  campaignId  String?
+  user        User      @relation(fields: [userId], references: [clerkId])
+  likes       Like[]
+  comments    Comment[]
+  campaign    Campaign? @relation("CampaignPosts", fields: [campaignId], references: [id])
+}
+
+model CampaignSchedules {
+  id         String   @id @default(cuid())
+  campaignId String
+  time       String
+  date        DateTime
+  scheduledEvent      String
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
 }
 
 model Like {
@@ -89,20 +98,21 @@ model Comment {
 }
 
 model Campaign {
-  id             String         @id @default(cuid())
+  id             String              @id @default(cuid())
   name           String
   description    String
   image          String?
   password       String?
   dmUserId       String
   dmName         String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
   dmNotes        CampaignNote[]
-  posts          Post[]         @relation("CampaignPosts")
-  dm             User?          @relation("CampaignDm", fields: [dmUserId], references: [clerkId])
-  players        User[]         @relation("CampaignPlayers")
-  invitedPlayers User[]         @relation("InvitedGame")
+  schedules      CampaignSchedules[]
+  posts          Post[]              @relation("CampaignPosts")
+  dm             User?               @relation("CampaignDm", fields: [dmUserId], references: [clerkId])
+  players        User[]              @relation("CampaignPlayers")
+  invitedPlayers User[]              @relation("InvitedGame")
 }
 
 model CampaignNote {

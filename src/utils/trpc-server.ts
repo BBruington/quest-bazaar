@@ -1,5 +1,5 @@
 import { initTRPC } from "@trpc/server";
-import superjson from "superjson"
+import superjson from "superjson";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../utils/context";
 import { friendsForCampaignInvite } from "./types";
@@ -171,8 +171,9 @@ export const appRouter = t.router({
           data: {
             invitedPlayers: {
               connect:
-                input.friendsIds?.map((friendId) => ({ clerkId: friendId.id })) ||
-                [],
+                input.friendsIds?.map((friendId) => ({
+                  clerkId: friendId.id,
+                })) || [],
             },
           },
         });
@@ -189,15 +190,36 @@ export const appRouter = t.router({
     .mutation(async ({ input }) => {
       await prisma.campaignNote.deleteMany({
         where: {
-          campaignId: input.id
-        }
-      })
+          campaignId: input.id,
+        },
+      });
       const deleted = await prisma.campaign.delete({
         where: {
           id: input.id,
         },
       });
       return deleted;
+    }),
+  createCampaignScheduledEvent: t.procedure
+    .input(
+      z.object({
+        time: z.string(),
+        date: z.date(),
+        scheduledEvent: z.string(),
+        campaignId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const scheduledEvent = await prisma.campaignSchedules.create({
+        data: {
+          campaignId: input.campaignId,
+          time: input.time,
+          date: input.date,
+          scheduledEvent: input.scheduledEvent,
+        },
+      });
+
+      return scheduledEvent;
     }),
 
   inviteToCampaign: t.procedure
@@ -318,7 +340,7 @@ export const appRouter = t.router({
           include: {
             comments: true,
             likes: true,
-          }
+          },
         });
         return post;
       } catch (e) {

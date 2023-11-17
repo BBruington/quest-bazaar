@@ -18,7 +18,7 @@ import {
 export default function CreateCampaign() {
   const { user } = useUser();
   const router = useRouter();
-  const [imageFile, setImageFile] = useState<File | undefined | Blob>();
+  const [imageFile, setImageFile] = useState<string | undefined>();
   const [campaignProps, setCampaignProps] = useState({
     name: "",
     description: "",
@@ -31,7 +31,11 @@ export default function CreateCampaign() {
 
   const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null) {
-      setImageFile(event.target.files[0]);
+      const file = event.target.files[0];
+      if (file !== undefined) {
+        const fileString = URL.createObjectURL(file);
+        setImageFile(fileString);
+      }
     }
   };
 
@@ -88,7 +92,8 @@ export default function CreateCampaign() {
     if (campaignProps.name !== "" && campaignProps.description !== "") {
       mutate({
         id: user.id,
-        imageUrl: imageFile !== undefined ? URL.createObjectURL(imageFile) : "",
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        imageUrl: imageFile === undefined ? "" : imageFile,
         name: campaignProps.name,
         description: campaignProps.description,
         friendsIds:
@@ -101,7 +106,6 @@ export default function CreateCampaign() {
 
   return (
     <div>
-      {/* {imageFile ? <img src={URL.createObjectURL(imageFile)} /> : <></>} */}
       <div className="ml-2">
         <label className="text-white" htmlFor="name">
           Campaign Name:
@@ -112,7 +116,7 @@ export default function CreateCampaign() {
           name="name"
           value={campaignProps.name}
           onChange={handleChange}
-        />
+          />
       </div>
       <div className="ml-2">
         <label className="text-white" htmlFor="description">
@@ -123,7 +127,7 @@ export default function CreateCampaign() {
           name="description"
           value={campaignProps.description}
           onChange={handleChange}
-        />
+          />
       </div>
       <div className="ml-2">
         <label className="text-white" htmlFor="description">
@@ -133,10 +137,15 @@ export default function CreateCampaign() {
           type="file"
           id="imageUrl"
           name="imageUrl"
-          // value={
-          //   imageFile !== undefined ? URL.createObjectURL(imageFile) : undefined
-          // }
           onChange={handleImageFile}
+          />
+        <label className="text-white">Imgage Url</label>
+        <Input type="text" id="imageUrl" 
+        value={
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+          imageFile !== undefined ? imageFile : undefined
+        }
+        onChange={handleChange}
         />
       </div>
       <div className="m-2 flex gap-5">
@@ -153,18 +162,19 @@ export default function CreateCampaign() {
             {friends ? (
               friends.map((friend, index) => (
                 <DropdownMenuItem
-                  onClick={() => inviteFriendToCampaign(friend)}
-                  key={index}
+                onClick={() => inviteFriendToCampaign(friend)}
+                key={index}
                 >
                   {friend.name}
                 </DropdownMenuItem>
               ))
-            ) : (
-              <></>
-            )}
+              ) : (
+                <></>
+                )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      {imageFile ? <img src={imageFile} /> : <></>}
     </div>
   );
 }
