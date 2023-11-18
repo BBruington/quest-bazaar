@@ -3,6 +3,7 @@ import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import Scheduler from "./posts/scheduler";
 import type { Campaign, Post, User } from "@prisma/client";
 import NotesPage from "~/components/campaign/notes/notes";
 import Posts from "./posts/posts";
@@ -148,6 +149,7 @@ export default function CampaignComponent(props: {
       {uiToggle.posts && (
         <Posts campaignData={campaignData} campaignPosts={campaignPosts} />
       )}
+      <Scheduler campaignData={campaignData}/>
     </div>
   );
 }

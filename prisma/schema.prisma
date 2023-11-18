@@ -72,7 +72,7 @@ model CampaignSchedules {
   id         String   @id @default(cuid())
   campaignId String
   time       String
-  date        DateTime
+  date       String
   scheduledEvent      String
 
   campaign Campaign @relation(fields: [campaignId], references: [id])

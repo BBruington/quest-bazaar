@@ -204,12 +204,13 @@ export const appRouter = t.router({
     .input(
       z.object({
         time: z.string(),
-        date: z.date(),
+        date: z.string(),
         scheduledEvent: z.string(),
         campaignId: z.string(),
       })
     )
     .mutation(async ({ input }) => {
+      console.log("attemting to create")
       const scheduledEvent = await prisma.campaignSchedules.create({
         data: {
           campaignId: input.campaignId,
