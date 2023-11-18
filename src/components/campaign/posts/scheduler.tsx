@@ -15,9 +15,7 @@ export default function Scheduler(props: { campaignData: Campaign }) {
   const [scheduledEvent, setScheduledEvent] = useState("");
   const [time, setTime] = useState<Date | string | null>();
 
-  console.log(campaignData.id)
-
-  const { mutate: createCampaignEvent, isLoading } =
+  const { mutate: createCampaignEvent } =
     api.createCampaignScheduledEvent.useMutation();
 
   const handleScheduledEventChange = (e: string) => {
@@ -31,16 +29,6 @@ export default function Scheduler(props: { campaignData: Campaign }) {
       scheduledEvent !== "" &&
       typeof time === "string"
     ) {
-      console.log(
-        "date: ",
-        date,
-        "string ver: ",
-        date.toISOString(),
-        "time: ",
-        time,
-        "scheduled event: ",
-        scheduledEvent
-      );
       createCampaignEvent({
         campaignId: campaignData.id,
         time: time,
@@ -52,34 +40,39 @@ export default function Scheduler(props: { campaignData: Campaign }) {
 
   return (
     <>
-      <div className="flex items-center justify-center text-white">
-        <TimePicker value={time} onChange={setTime} />
-      </div>
-      <div className="mt-5 flex flex-col items-center justify-center">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border text-white"
-        />
-      </div>
-      <div className="mt-5 flex items-center justify-center space-x-8">
-        <div className="flex items-center space-x-3">
-          <label className="text-white">Event:</label>
-          <Input
-            className="mt-auto  border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            id="scheduledEvent"
-            name="scheduledEvent"
-            value={scheduledEvent}
-            onChange={(e) => handleScheduledEventChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSetSchedule;
-            }}
-          />
+      
+      <div className="mt-auto flex  items-center justify-center">
+        <div className="flex flex-col">
+          <div className="flex items-center justify-center text-white">
+            <TimePicker value={time} onChange={setTime} />
+          </div>
+          <div className="mt-5 flex flex-col items-center justify-center">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="rounded-md border text-white"
+            />
+          </div>
+          <div className="mt-5 flex items-center justify-center space-x-8">
+            <div className="flex items-center space-x-3">
+              <label className="text-white">Event:</label>
+              <Input
+                className="mt-auto  border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
+                id="scheduledEvent"
+                name="scheduledEvent"
+                value={scheduledEvent}
+                onChange={(e) => handleScheduledEventChange(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSetSchedule;
+                }}
+              />
+            </div>
+            <Button onClick={handleSetSchedule} className="">
+              Confirm
+            </Button>
+          </div>
         </div>
-        <Button onClick={handleSetSchedule} className="">
-          Confirm
-        </Button>
       </div>
     </>
   );

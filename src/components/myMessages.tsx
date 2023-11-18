@@ -48,20 +48,19 @@ export default function MyMessages() {
     },
   });
 
-  const { data: friendRequests } =
-    api.queryMyFriendRequests.useQuery({ id: user.id });
+  const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
+    id: user.id,
+  });
 
-  const { data: friends } =
-    api.queryMyFriends.useQuery({ id: user.id });
+  const { data: friends } = api.queryMyFriends.useQuery({ id: user.id });
 
-  const {
-    data: receivedInvitedCampaigns,
-  } = api.queryUserInvitedCampaigns.useQuery({ userId: user.id });
+  const { data: receivedInvitedCampaigns } =
+    api.queryUserInvitedCampaigns.useQuery({ userId: user.id });
 
   const pendingFriendRequests = friendRequests?.filter(function (request) {
     return request.status === "PENDING";
   });
-  
+
   let notificationsAmount = 0;
   if (receivedInvitedCampaigns && pendingFriendRequests)
     notificationsAmount =

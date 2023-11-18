@@ -200,6 +200,7 @@ export const appRouter = t.router({
       });
       return deleted;
     }),
+
   createCampaignScheduledEvent: t.procedure
     .input(
       z.object({
@@ -210,7 +211,6 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
-      console.log("attemting to create")
       const scheduledEvent = await prisma.campaignSchedules.create({
         data: {
           campaignId: input.campaignId,
@@ -221,6 +221,17 @@ export const appRouter = t.router({
       });
 
       return scheduledEvent;
+    }),
+    queryCampaignScheduledEvents: t.procedure.input(z.object({
+      campaignId: z.string()
+    })).query(async ({input}) => {
+      const scheduledEvents = await prisma.campaignSchedules.findMany({
+        where: {
+          campaignId: input.campaignId
+        }
+      })
+
+      return scheduledEvents;
     }),
 
   inviteToCampaign: t.procedure
