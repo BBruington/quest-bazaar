@@ -222,6 +222,33 @@ export const appRouter = t.router({
 
       return scheduledEvent;
     }),
+
+    queryCampaignMessages: t.procedure.input(z.object({
+      campaignId: z.string(),
+    })).query( async ({input}) => {
+      const messages = await prisma.campaignChat.findMany({
+        where: {
+          campaignId: input.campaignId
+        }
+      })
+      return messages;
+    }),
+
+    sendChatMessage: t.procedure.input(z.object({
+      campaignId: z.string(),
+      username: z.string(),
+      chat: z.string()
+    })).mutation(async ({input}) => {
+      const sentMessage = await prisma.campaignChat.create({
+        data: {
+          campaignId: input.campaignId,
+          username: input.username,
+          chat: input.chat
+        }
+      })
+      return sentMessage;
+    }),
+
     queryCampaignScheduledEvents: t.procedure.input(z.object({
       campaignId: z.string()
     })).query(async ({input}) => {

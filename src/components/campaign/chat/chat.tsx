@@ -1,22 +1,22 @@
-"use-client"; 
-import type { SelectedFriend } from "~/app/types/Message";
+"use-client";
+import type { Campaign } from "@prisma/client";
 import { Input } from "../../ui/input";
 import { api } from "~/utils/trpc";
 import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
-export default function DisplayMessages(props: {
-  selectedFriend: SelectedFriend,
-  userId: string,
-}) {
+export default function CampaignChat(props: { campaignProps: Campaign }) {
+  const { user } = useUser();
   const [inputValue, setInputValue] = useState("");
-  const { selectedFriend, userId } = props;
+  if(!user) return <div>failed to load user...</div>
+  const { campaignProps } = props;
 
   const utils = api.useContext();
 
-  const { mutate, isLoading: sendingMessage } = api.sendMessage.useMutation({
+  const { mutate, isLoading: sendingMessage } = api.sendChatMessage.useMutation({
     onSuccess: async() => {
       setInputValue("");
-      await utils.queryFriendMessages.invalidate()
+      await utils.queryCampaignMessages.invalidate()
     },
     onError: (e) => {
       console.error(e);
@@ -28,33 +28,25 @@ export default function DisplayMessages(props: {
   };
 
   const handleSendMessage= () => {
-    if (inputValue !== "") {
+    if (inputValue !== "" && user.username !== null) {
       mutate({
-        userId: userId,
-        friendId: friendId,
-        content: inputValue,
+        campaignId: campaignProps.id,
+        username: user.username,
+        chat: inputValue
       });
     }
   }
-  
-  const findFriendId = (myId: string) => {
-    if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
-    return selectedFriend.senderId;
-  };
-  const friendId = findFriendId(userId);
 
-  const { data: friendMessages, isLoading: loadingFriendMessages } =
-    api.queryFriendMessages.useQuery({
-      userId,
-      friendSenderId: friendId,
+  const { data: campaignMessages, isLoading: loadingChat } =
+    api.queryCampaignMessages.useQuery({
+      campaignId: campaignProps.id,
     });
-  if (!friendMessages) return <div>failed to load friend messages</div>;
-
+  if (!campaignMessages) return <div>failed to load friend messages</div>;
 
   return (
     <>
-      {loadingFriendMessages ? (
-        <div className="flex h-5/6 w-4/6 flex-col rounded-md bg-accent-foreground p-2 lg:w-4/6">
+      {loadingChat ? (
+        <div className="flex h-5/6 w-4/6 flex-col rounded-md bg-accent-foreground p-2 lg:w-5/6">
           <div className="mt-auto ">
             <div className="bg-accent-foreground p-2">
               <div className="flex justify-end text-right">
@@ -78,20 +70,19 @@ export default function DisplayMessages(props: {
         </div>
       ) : (
         <div className="flex h-5/6 w-4/6 flex-col rounded-md bg-accent-foreground p-2 lg:w-4/6">
-          <div className="mt-auto ">
-            {friendMessages.map((message) => (
+          <div className="mt-auto">
+            {campaignMessages.map((message) => (
               <div key={message.id} className="bg-accent-foreground p-2">
-                {message.senderId === userId && (
+                {message.username === user.username ? (
                   <div className="flex justify-end text-right" key={message.id}>
                     <span className="rounded-md bg-blue-500 p-2 text-black">
-                      {message.content}
+                      {message.chat}
                     </span>
                   </div>
-                )}
-                {message.senderId !== userId && (
+                ):(
                   <div className="justify-left mb-5 flex" key={message.id}>
                     <span className="rounded-md bg-slate-700 p-2 text-white">
-                      {message.content}
+                      {message.chat}
                     </span>
                   </div>
                 )}
@@ -103,7 +94,9 @@ export default function DisplayMessages(props: {
               value={inputValue}
               disabled={sendingMessage}
               onChange={(e) => handleInputChange(e.target.value)}
-              onKeyDown={(e) => {if (e.key === "Enter") handleSendMessage}}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSendMessage;
+              }}
             />
           </div>
         </div>

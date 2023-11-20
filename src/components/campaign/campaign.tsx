@@ -3,6 +3,7 @@ import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import CampaignChat from "./chat/chat";
 import CalendarComponent from "./posts/calendar";
 import type { Campaign, Post, User } from "@prisma/client";
 import NotesPage from "~/components/campaign/notes/notes";
@@ -39,8 +40,8 @@ export default function CampaignComponent(props: {
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
-    schedules: true,
-    chat: false,
+    schedules: false,
+    chat: true,
   });
 
   const { mutate } = api.deleteCampaign.useMutation({
@@ -52,7 +53,7 @@ export default function CampaignComponent(props: {
     },
   });
   return (
-    <div className="flex w-screen">
+    <div className="flex w-screen h-screen">
       <div className="mx-2 w-1/6">
         <Accordion type="single" collapsible className="ml-2 w-full">
           <AccordionItem value="item-1">
@@ -174,6 +175,8 @@ export default function CampaignComponent(props: {
         <Posts campaignData={campaignData} campaignPosts={campaignPosts} />
       )}
       {uiToggle.schedules && <CalendarComponent campaignData={campaignData} />}
+
+      {uiToggle.chat && <CampaignChat campaignProps={campaignData}/>}
     </div>
   );
 }

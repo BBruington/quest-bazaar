@@ -68,7 +68,6 @@ model Post {
   campaign    Campaign? @relation("CampaignPosts", fields: [campaignId], references: [id])
 }
 
-
 model Like {
   id        String   @id @default(cuid())
   postId    String
@@ -108,18 +107,20 @@ model Campaign {
 }
 
 model CampaignChat {
-  id String @id @default(cuid())
+  id         String   @id @default(cuid())
   campaignId String
-  chat String
-  campaign Campaign @relation(fields: [campaignId], references: [id])
+  username String
+  chat       String
+  createdAt  DateTime @default(now())
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
 }
 
 model CampaignSchedules {
-  id         String   @id @default(cuid())
-  campaignId String
-  time       String
-  date       String
-  scheduledEvent      String
+  id             String @id @default(cuid())
+  campaignId     String
+  time           String
+  date           String
+  scheduledEvent String
 
   campaign Campaign @relation(fields: [campaignId], references: [id])
 }
@@ -127,6 +128,8 @@ model CampaignSchedules {
 model CampaignNote {
   id         String   @id @default(cuid())
   campaignId String
+  userId     String?
+  public     Boolean?
   title      String
   content    String
   createdAt  DateTime @default(now())
