@@ -38,7 +38,7 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
 
   return (
     <div className="flex space-x-5 w-full">
-      <div className="flex w-1/3 flex-col items-center justify-center">
+      <div className="flex w-1/3 flex-col items-center">
         <Dialog>
           <DialogTrigger asChild>
             <Button className="mt-5" variant="outline">
@@ -47,7 +47,7 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
           </DialogTrigger>
           <DialogContent className="bg-black sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle className="text-white">Edit profile</DialogTitle>
+              <DialogTitle className="text-white">Set a Date</DialogTitle>
               <DialogDescription>
                 Make changes to the calendar here to add scheduled events.
               </DialogDescription>
@@ -55,7 +55,7 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
             <Scheduler campaignData={campaignData} />
           </DialogContent>
         </Dialog>
-        <div className="mt-auto flex  items-center justify-center">
+        {/* <div className="mt-auto flex  items-center justify-center"> */}
           <div className="flex flex-col">
             <div className="mt-5 flex flex-col items-center justify-center">
               <Calendar
@@ -66,7 +66,7 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
       <div className="flex flex-col space-y-5">
         {scheduledEvents.map((scheduledEvent) => (
           <div className="flex flex-col text-white border-b-2 border-white" key={scheduledEvent.id}>

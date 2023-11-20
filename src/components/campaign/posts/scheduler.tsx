@@ -41,10 +41,10 @@ export default function Scheduler(props: { campaignData: Campaign }) {
   return (
     <>
       
-      <div className="mt-auto flex  items-center justify-center">
+      <div className="mt-auto flex items-center justify-center">
         <div className="flex flex-col">
           <div className="flex items-center justify-center text-white">
-            <TimePicker value={time} onChange={setTime} />
+            <TimePicker openClockOnFocus={false} value={time} onChange={setTime} />
           </div>
           <div className="mt-5 flex flex-col items-center justify-center">
             <Calendar
