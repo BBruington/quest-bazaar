@@ -50,11 +50,10 @@ export default function CampaignComponent(props: {
       console.error(e);
     },
   });
-  if(isLoading) return <div>loading...</div>
-
+  if (isLoading) return <div>loading...</div>;
 
   return (
-    <div className="flex w-screen h-screen">
+    <div className="flex h-screen w-screen">
       <div className="mx-2 w-1/6">
         <Accordion type="single" collapsible className="ml-2 w-full">
           <AccordionItem value="item-1">
@@ -75,24 +74,23 @@ export default function CampaignComponent(props: {
             <AccordionContent></AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger>Players</AccordionTrigger>
-            <AccordionContent>
-              {campaignPlayers !== null ? (
-                campaignPlayers?.map((player) => (
-                  <div className="mb-2" key={player.id}>
-                    {player.username}
-                  </div>
-                ))
-              ) : (
-                <></>
-              )}
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>Posts</AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col items-start justify-start space-y-2">
-                <Button
+            <AccordionItem value="item-3">
+              <button
+                className="py-3 text-white hover:underline"
+                onClick={() =>
+                  setUiToggle({
+                    editNotes: false,
+                    posts: false,
+                    schedules: true,
+                    chat: false,
+                  })
+                }
+              >
+                Calendar
+              </button>
+              {/* <AccordionTrigger>Calendar</AccordionTrigger> */}
+              <AccordionContent>
+                {/* <Button
                   className="w-full"
                   onClick={() =>
                     setUiToggle({
@@ -118,8 +116,20 @@ export default function CampaignComponent(props: {
                   }
                 >
                   Scheduler
-                </Button>
-              </div>
+                </Button> */}
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionTrigger>Players</AccordionTrigger>
+            <AccordionContent>
+              {campaignPlayers !== null ? (
+                campaignPlayers?.map((player) => (
+                  <div className="mb-2" key={player.id}>
+                    {player.username}
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
@@ -177,7 +187,7 @@ export default function CampaignComponent(props: {
       )}
       {uiToggle.schedules && <CalendarComponent campaignData={campaignData} />}
 
-      {uiToggle.chat && <CampaignChat campaignProps={campaignData}/>}
+      {uiToggle.chat && <CampaignChat campaignProps={campaignData} />}
     </div>
   );
 }

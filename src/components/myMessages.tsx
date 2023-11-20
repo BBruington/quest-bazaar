@@ -16,8 +16,8 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 
-export default function MyMessages(props: {userId: string}) {
-  const {userId} = props
+export default function MyMessages(props: { userId: string }) {
+  const { userId } = props;
   const [selectedFriend, setSelectedFriend] = useState({
     id: "",
     status: "",
@@ -33,15 +33,15 @@ export default function MyMessages(props: {userId: string}) {
 
   const utils = api.useContext();
   const { user } = useUser();
-  
+
   const sendAddFriendRequest = api.addFriend.useMutation();
-  
+
   const handleReceivedFriendRequest = api.handleFriendRequest.useMutation({
     onSuccess: async () => {
       await utils.queryMyFriendRequests.invalidate();
     },
   });
-  
+
   const handleReceivedCampaignInvite = api.handleCampaignInvite.useMutation({
     onSuccess: async () => {
       await utils.queryUserInvitedCampaigns.invalidate();
@@ -51,13 +51,12 @@ export default function MyMessages(props: {userId: string}) {
   const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
     id: userId,
   });
-  
+
   const { data: friends } = api.queryMyFriends.useQuery({ id: userId });
-  
+
   const { data: receivedInvitedCampaigns } =
-  api.queryUserInvitedCampaigns.useQuery({ userId: userId});
+    api.queryUserInvitedCampaigns.useQuery({ userId: userId });
   if (!user) return <div>loading...</div>;
-  
 
   const pendingFriendRequests = friendRequests?.filter(function (request) {
     return request.status === "PENDING";
