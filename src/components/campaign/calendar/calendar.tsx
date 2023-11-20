@@ -7,6 +7,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -20,25 +21,34 @@ import type { Campaign } from "@prisma/client";
 export default function CalendarComponent(props: { campaignData: Campaign }) {
   const { campaignData } = props;
   const [updateEvents, setUpdateEvents] = useState(false);
-  const [eventDays, setEventDays] = useState<Date[]>([]);
   const utils = api.useContext();
+  const [eventDays, setEventDays] = useState<Date[] | undefined>([]);
   const { data: scheduledEvents } = api.queryCampaignScheduledEvents.useQuery({
     campaignId: campaignData.id,
   });
   const deleteEvent = api.deleteCampaignScheduledEvent.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignScheduledEvents.invalidate();
+      await utils.queryCampaignScheduledEvents.invalidate().then(() => {
+        handleUpdatingCalendar();
+      });
     },
   });
-
   if (!scheduledEvents) return <div>failed to load events</div>;
-  const allDates = scheduledEvents.map((eventDay) => {
-    const newDate = new Date(eventDay.date);
-    return newDate;
-  });
+  const handleUpdatingCalendar = () => {
+    if (updateEvents === true) {
+      setUpdateEvents(!updateEvents);
+    } else {
+      const allDates = scheduledEvents.map((eventDay) => {
+        const newDate = new Date(eventDay.date);
+        return newDate;
+      });
+      setEventDays(allDates);
+      setUpdateEvents(!updateEvents)
+    }
+  };
+
   if (updateEvents === false) {
-    setEventDays(allDates);
-    setUpdateEvents(true);
+    handleUpdatingCalendar();
   }
 
   const handleDeleteSchedule = (eventId: string) => {
@@ -48,8 +58,8 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
   };
 
   return (
-    <div className="flex w-full space-x-5">
-      <div className="flex w-1/3 flex-col items-center">
+    <>
+      <div className="flex w-4/6 flex-col items-center">
         <Dialog>
           <DialogTrigger asChild>
             <Button className="mt-5" variant="outline">
@@ -63,33 +73,38 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
                 Make changes to the calendar here to add scheduled events.
               </DialogDescription>
             </DialogHeader>
-            <Scheduler campaignData={campaignData} />
+            <Scheduler campaignData={campaignData} setUpdateEvents={setUpdateEvents}/>
+            <DialogFooter></DialogFooter>
           </DialogContent>
         </Dialog>
-        {/* <div className="mt-auto flex  items-center justify-center"> */}
         <div className="flex flex-col">
           <div className="mt-5 flex flex-col items-center justify-center">
             <Calendar
               mode="multiple"
-              selected={eventDays ? eventDays : undefined}
+              selected={eventDays}
               className="rounded-md border text-white"
             />
           </div>
         </div>
       </div>
-      {/* </div> */}
-      <div className="flex flex-col space-y-5">
+      <div className="flex w-1/6 flex-col space-y-5">
         {scheduledEvents.map((scheduledEvent) => (
-          <div className="flex items-center space-x-4 border-white text-white border-b-2 " key={scheduledEvent.id}>
+          <div
+            className="flex items-center justify-center space-x-4 border-b-2 border-white text-white "
+            key={scheduledEvent.id}
+          >
             <div className="flex flex-col">
               <div>{scheduledEvent.scheduledEvent}</div>
               <div>{scheduledEvent.date}</div>
               <div>{scheduledEvent.time}</div>
             </div>
-            <Trash2 className="text-white hover:cursor-pointer hover:text-slate-200" onClick={() => handleDeleteSchedule(scheduledEvent.id)} />
+            <Trash2
+              className="flex text-white hover:cursor-pointer hover:text-slate-200"
+              onClick={() => handleDeleteSchedule(scheduledEvent.id)}
+            />
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }

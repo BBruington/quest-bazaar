@@ -54,7 +54,7 @@ export default function CampaignComponent(props: {
 
   return (
     <div className="flex h-screen w-screen">
-      <div className="mx-2 w-1/6">
+      <div className="mx-2 basis-1/6">
         <Accordion type="single" collapsible className="ml-2 w-full">
           <AccordionItem value="item-1">
             <button
@@ -88,35 +88,7 @@ export default function CampaignComponent(props: {
               >
                 Calendar
               </button>
-              {/* <AccordionTrigger>Calendar</AccordionTrigger> */}
               <AccordionContent>
-                {/* <Button
-                  className="w-full"
-                  onClick={() =>
-                    setUiToggle({
-                      editNotes: false,
-                      posts: true,
-                      schedules: false,
-                      chat: false,
-                    })
-                  }
-                >
-                  View
-                </Button>
-                <Button className="w-full">Create</Button>
-                <Button
-                  className="w-full"
-                  onClick={() =>
-                    setUiToggle({
-                      editNotes: false,
-                      posts: false,
-                      schedules: true,
-                      chat: false,
-                    })
-                  }
-                >
-                  Scheduler
-                </Button> */}
               </AccordionContent>
             </AccordionItem>
             <AccordionTrigger>Players</AccordionTrigger>

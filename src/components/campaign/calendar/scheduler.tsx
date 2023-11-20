@@ -1,22 +1,31 @@
 "use client";
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { Calendar } from "~/components/ui/calendar";
 import { api } from "~/utils/trpc";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import TimePicker from "react-time-picker";
+import { DialogTrigger } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
 import type { Campaign } from "@prisma/client";
 
-export default function Scheduler(props: { campaignData: Campaign }) {
-  const { campaignData } = props;
+export default function Scheduler(props: {
+  campaignData: Campaign;
+  setUpdateEvents: Dispatch<SetStateAction<boolean>>;
+}) {
+  const { campaignData, setUpdateEvents } = props;
   const [date, setDate] = useState<Date | undefined>();
   const [scheduledEvent, setScheduledEvent] = useState("");
   const [time, setTime] = useState<Date | string | null>();
+  const utils = api.useContext();
 
   const { mutate: createCampaignEvent } =
-    api.createCampaignScheduledEvent.useMutation();
+    api.createCampaignScheduledEvent.useMutation({
+      onSuccess: async () => {
+        await utils.queryCampaignScheduledEvents.invalidate();
+        setUpdateEvents(false)
+      },
+    });
 
   const handleScheduledEventChange = (e: string) => {
     setScheduledEvent(e);
@@ -40,11 +49,14 @@ export default function Scheduler(props: { campaignData: Campaign }) {
 
   return (
     <>
-      
       <div className="mt-auto flex items-center justify-center">
         <div className="flex flex-col">
           <div className="flex items-center justify-center text-white">
-            <TimePicker openClockOnFocus={false} value={time} onChange={setTime} />
+            <TimePicker
+              openClockOnFocus={false}
+              value={time}
+              onChange={setTime}
+            />
           </div>
           <div className="mt-5 flex flex-col items-center justify-center">
             <Calendar
@@ -68,9 +80,12 @@ export default function Scheduler(props: { campaignData: Campaign }) {
                 }}
               />
             </div>
-            <Button onClick={handleSetSchedule} className="">
+            <DialogTrigger
+              className="rounded-md bg-primary p-2 text-primary-foreground hover:bg-primary/90 "
+              onClick={handleSetSchedule}
+            >
               Confirm
-            </Button>
+            </DialogTrigger>
           </div>
         </div>
       </div>
