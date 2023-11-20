@@ -1,14 +1,12 @@
 "use client";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Calendar } from "~/components/ui/calendar";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { Label } from "~/components/ui/label";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,9 +21,16 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
   const { campaignData } = props;
   const [updateEvents, setUpdateEvents] = useState(false);
   const [eventDays, setEventDays] = useState<Date[]>([]);
+  const utils = api.useContext();
   const { data: scheduledEvents } = api.queryCampaignScheduledEvents.useQuery({
     campaignId: campaignData.id,
   });
+  const deleteEvent = api.deleteCampaignScheduledEvent.useMutation({
+    onSuccess: async () => {
+      await utils.queryCampaignScheduledEvents.invalidate();
+    },
+  });
+
   if (!scheduledEvents) return <div>failed to load events</div>;
   const allDates = scheduledEvents.map((eventDay) => {
     const newDate = new Date(eventDay.date);
@@ -36,8 +41,14 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
     setUpdateEvents(true);
   }
 
+  const handleDeleteSchedule = (eventId: string) => {
+    deleteEvent.mutate({
+      eventId,
+    });
+  };
+
   return (
-    <div className="flex space-x-5 w-full">
+    <div className="flex w-full space-x-5">
       <div className="flex w-1/3 flex-col items-center">
         <Dialog>
           <DialogTrigger asChild>
@@ -56,23 +67,26 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
           </DialogContent>
         </Dialog>
         {/* <div className="mt-auto flex  items-center justify-center"> */}
-          <div className="flex flex-col">
-            <div className="mt-5 flex flex-col items-center justify-center">
-              <Calendar
-                mode="multiple"
-                selected={eventDays ? eventDays : undefined}
-                className="rounded-md border text-white"
-              />
-            </div>
+        <div className="flex flex-col">
+          <div className="mt-5 flex flex-col items-center justify-center">
+            <Calendar
+              mode="multiple"
+              selected={eventDays ? eventDays : undefined}
+              className="rounded-md border text-white"
+            />
           </div>
         </div>
+      </div>
       {/* </div> */}
       <div className="flex flex-col space-y-5">
         {scheduledEvents.map((scheduledEvent) => (
-          <div className="flex flex-col text-white border-b-2 border-white" key={scheduledEvent.id}>
-            <div>{scheduledEvent.scheduledEvent}</div>
-            <div>{scheduledEvent.date}</div>
-            <div>{scheduledEvent.time}</div>
+          <div className="flex items-center space-x-4 border-white text-white border-b-2 " key={scheduledEvent.id}>
+            <div className="flex flex-col">
+              <div>{scheduledEvent.scheduledEvent}</div>
+              <div>{scheduledEvent.date}</div>
+              <div>{scheduledEvent.time}</div>
+            </div>
+            <Trash2 className="text-white hover:cursor-pointer hover:text-slate-200" onClick={() => handleDeleteSchedule(scheduledEvent.id)} />
           </div>
         ))}
       </div>

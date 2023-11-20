@@ -264,6 +264,16 @@ export const appRouter = t.router({
       return scheduledEvents;
     }),
 
+    deleteCampaignScheduledEvent: t.procedure.input(z.object({
+      eventId: z.string()
+    })).mutation(async ({input}) => {
+      await prisma.campaignSchedules.delete({
+        where: {
+          id: input.eventId
+        }
+      })
+    }),
+
   inviteToCampaign: t.procedure
     .input(
       z.object({

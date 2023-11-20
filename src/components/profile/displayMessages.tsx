@@ -96,10 +96,10 @@ export default function DisplayMessages(props: {
           </div>
         ))}
         <Input
-          placeholder="Message"
+          placeholder={selectedFriend?.senderName ? "Message" : "Select a Friend"}
           className="mt-auto border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
           value={inputValue}
-          disabled={sendingMessage}
+          disabled={sendingMessage || selectedFriend === undefined}
           onChange={(e) => handleInputChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSendMessage;

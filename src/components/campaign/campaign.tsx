@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import CampaignChat from "./chat/chat";
-import CalendarComponent from "./posts/calendar";
+import CalendarComponent from "./calendar/calendar";
 import type { Campaign, Post, User } from "@prisma/client";
 import NotesPage from "~/components/campaign/notes/notes";
 import Posts from "./posts/posts";

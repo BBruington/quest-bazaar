@@ -198,6 +198,9 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
+                {receivedInvitedCampaigns && friendRequests && receivedInvitedCampaigns?.length + friendRequests?.length === 0 && (
+                  <span className="text-slate-400">No New Notifications</span>
+                )}
                 {friendRequests?.map((friendRequest) => (
                   <React.Fragment key={friendRequest.id}>
                     <div className="flex border-b border-white pb-3 md:flex-col">
