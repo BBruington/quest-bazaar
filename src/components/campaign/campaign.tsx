@@ -32,18 +32,16 @@ export default function CampaignComponent(props: {
   campaignPosts: Post[] | null;
 }) {
   const { campaignData, campaignPlayers, campaignPosts } = props;
-  const router = useRouter();
-  const { data: campaignNotes } = api.queryCampaignNotes.useQuery({
-    id: campaignData.id,
-  });
-
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
     schedules: false,
     chat: true,
   });
-
+  const router = useRouter();
+  const { data: campaignNotes, isLoading } = api.queryCampaignNotes.useQuery({
+    id: campaignData.id,
+  });
   const { mutate } = api.deleteCampaign.useMutation({
     onSuccess: () => {
       void router.push(`/myCampaigns`);
@@ -52,6 +50,9 @@ export default function CampaignComponent(props: {
       console.error(e);
     },
   });
+  if(isLoading) return <div>loading...</div>
+
+
   return (
     <div className="flex w-screen h-screen">
       <div className="mx-2 w-1/6">

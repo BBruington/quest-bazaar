@@ -6,13 +6,10 @@ import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 
 export default function CampaignChat(props: { campaignProps: Campaign }) {
-  const { user } = useUser();
-  const [inputValue, setInputValue] = useState("");
-  if(!user) return <div>failed to load user...</div>
   const { campaignProps } = props;
-
+  const { user } = useUser();
   const utils = api.useContext();
-
+  const [inputValue, setInputValue] = useState("");
   const { mutate, isLoading: sendingMessage } = api.sendChatMessage.useMutation({
     onSuccess: async() => {
       setInputValue("");
@@ -22,6 +19,14 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
       console.error(e);
     },
   });
+  const { data: campaignMessages, isLoading: loadingChat } =
+    api.queryCampaignMessages.useQuery({
+      campaignId: campaignProps.id,
+    });
+  if (!campaignMessages) return <div>failed to load friend messages</div>;
+  if(!user) return <div>failed to load user...</div>
+
+
 
   const handleInputChange = (e: string) => {
     setInputValue(e);
@@ -37,11 +42,6 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
     }
   }
 
-  const { data: campaignMessages, isLoading: loadingChat } =
-    api.queryCampaignMessages.useQuery({
-      campaignId: campaignProps.id,
-    });
-  if (!campaignMessages) return <div>failed to load friend messages</div>;
 
   return (
     <>
