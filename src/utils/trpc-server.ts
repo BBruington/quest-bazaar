@@ -228,6 +228,9 @@ export const appRouter = t.router({
       const scheduledEvents = await prisma.campaignSchedules.findMany({
         where: {
           campaignId: input.campaignId
+        },
+        orderBy: {
+          date: "asc"
         }
       })
 

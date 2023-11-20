@@ -35,11 +35,12 @@ export default function CampaignComponent(props: {
   const { data: campaignNotes } = api.queryCampaignNotes.useQuery({
     id: campaignData.id,
   });
- 
+
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
     schedules: true,
+    chat: false,
   });
 
   const { mutate } = api.deleteCampaign.useMutation({
@@ -52,126 +53,127 @@ export default function CampaignComponent(props: {
   });
   return (
     <div className="flex w-screen">
-      {/* <div className="flex h-screen space-x-3"> */}
-        <div className="mx-2 w-1/6">
-          <Accordion type="single" collapsible className="ml-2 w-full">
-            <AccordionItem value="item-1">
-              <button
-                className="py-3 text-white hover:underline"
-                onClick={() =>
-                  setUiToggle({
-                    editNotes: true,
-                    posts: false,
-                    schedules: false,
-                  })
-                }
-              >
-                Notes
-              </button>
-              {/* <AccordionTrigger>Notes</AccordionTrigger> */}
-              <AccordionContent></AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>Players</AccordionTrigger>
-              <AccordionContent>
-                {campaignPlayers !== null ? (
-                  campaignPlayers?.map((player) => (
-                    <div className="mb-2" key={player.id}>
-                      {player.username}
-                    </div>
-                  ))
-                ) : (
-                  <></>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Posts</AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col items-start justify-start space-y-2">
-                  <Button
-                    className="w-full"
-                    onClick={() =>
-                      setUiToggle({
-                        editNotes: false,
-                        posts: true,
-                        schedules: false,
-                      })
-                    }
-                  >
-                    View
-                  </Button>
-                  <Button className="w-full">Create</Button>
-                  <Button
-                    className="w-full"
-                    onClick={() =>
-                      setUiToggle({
-                        editNotes: false,
-                        posts: false,
-                        schedules: true,
-                      })
-                    }
-                  >
-                    Scheduler
-                  </Button>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger>Campaign</AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-3">
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Button variant="destructive" className="h-8">
-                        Delete
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your campaign and remove it from our servers.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={(e) => {
-                            e.preventDefault();
-                            mutate({
-                              id: campaignData.id,
-                            });
-                          }}
-                        >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+      <div className="mx-2 w-1/6">
+        <Accordion type="single" collapsible className="ml-2 w-full">
+          <AccordionItem value="item-1">
+            <button
+              className="py-3 text-white hover:underline"
+              onClick={() =>
+                setUiToggle({
+                  editNotes: true,
+                  posts: false,
+                  schedules: false,
+                  chat: false,
+                })
+              }
+            >
+              Notes
+            </button>
+            {/* <AccordionTrigger>Notes</AccordionTrigger> */}
+            <AccordionContent></AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Players</AccordionTrigger>
+            <AccordionContent>
+              {campaignPlayers !== null ? (
+                campaignPlayers?.map((player) => (
+                  <div className="mb-2" key={player.id}>
+                    {player.username}
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-3">
+            <AccordionTrigger>Posts</AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-col items-start justify-start space-y-2">
+                <Button
+                  className="w-full"
+                  onClick={() =>
+                    setUiToggle({
+                      editNotes: false,
+                      posts: true,
+                      schedules: false,
+                      chat: false,
+                    })
+                  }
+                >
+                  View
+                </Button>
+                <Button className="w-full">Create</Button>
+                <Button
+                  className="w-full"
+                  onClick={() =>
+                    setUiToggle({
+                      editNotes: false,
+                      posts: false,
+                      schedules: true,
+                      chat: false,
+                    })
+                  }
+                >
+                  Scheduler
+                </Button>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-4">
+            <AccordionTrigger>Campaign</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3">
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button variant="destructive" className="h-8">
+                      Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your campaign and remove it from our servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={(e) => {
+                          e.preventDefault();
+                          mutate({
+                            id: campaignData.id,
+                          });
+                        }}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+      {uiToggle.editNotes && (
+        <div className="w-full">
+          {campaignNotes !== undefined && (
+            <NotesPage
+              campaignData={campaignData}
+              campaignNotes={campaignNotes}
+            />
+          )}
         </div>
-        {uiToggle.editNotes && (
-          <div className="w-full">
-            {campaignNotes !== undefined && (
-              <NotesPage
-                campaignData={campaignData}
-                campaignNotes={campaignNotes}
-              />
-            )}
-          </div>
-        )}
-        {uiToggle.posts && (
-          <Posts campaignData={campaignData} campaignPosts={campaignPosts} />
-        )}
-      {/* </div> */}
-        {uiToggle.schedules && <CalendarComponent campaignData={campaignData} />}
+      )}
+      {uiToggle.posts && (
+        <Posts campaignData={campaignData} campaignPosts={campaignPosts} />
+      )}
+      {uiToggle.schedules && <CalendarComponent campaignData={campaignData} />}
     </div>
   );
 }
