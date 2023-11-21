@@ -107,7 +107,7 @@ export default function MyMessages(props: { userId: string }) {
     <div className="flex h-screen bg-foreground">
       <div className="mx-2 w-1/6">
         <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="item-2">
+          <AccordionItem value="item-1">
             <AccordionTrigger>Add Friend</AccordionTrigger>
             <AccordionContent>
               <div className="flex">
@@ -142,7 +142,7 @@ export default function MyMessages(props: { userId: string }) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-1">
+          <AccordionItem value="item-2">
             <AccordionTrigger>Friends</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col">
