@@ -1,5 +1,5 @@
 "use-client";
-import type { Campaign, Players} from '../types'
+import type { Campaign } from "../types";
 import { Textarea } from "../../ui/textarea";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/trpc";
@@ -9,8 +9,9 @@ import { Button } from "../../ui/button";
 const NoteViewer = (props: {
   note: CampaignNote | undefined;
   campaignData: Campaign;
+  showPublicNotes: boolean
 }) => {
-  const { note, campaignData } = props;
+  const { note, campaignData, showPublicNotes } = props;
   const utils = api.useContext();
   const [campaignNote, setCampaigNote] = useState(note);
   const [editMode, setEditmode] = useState(false);
@@ -19,7 +20,7 @@ const NoteViewer = (props: {
   }, [note]);
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignPersonalNotes.invalidate();
+      await utils.queryCampaignNotes.invalidate();
     },
   });
   const handleSaveNote = () => {

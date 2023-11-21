@@ -10,7 +10,7 @@ export default function CampaignPage({ params }: { params: { id: string } }) {
   });
   if (!user.user?.id) return <div>failed to load user</div>;
   if (!campaignData)
-    return <div className="text-white">something went wrong</div>;
+    return <div className="text-white">loading...</div>;
   return (
     <CampaignComponent
       userId={user.user?.id}

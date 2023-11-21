@@ -5,8 +5,8 @@ import NoteViewer from './noteViewer';
 import type { Campaign} from '../types'
 import type { CampaignNote } from "./types";
 
-const NotesPage = (props: {campaignData: Campaign, campaignNotes: CampaignNote[]}) => {
-  const {campaignData, campaignNotes} = props
+const NotesPage = (props: {campaignData: Campaign, campaignNotes: CampaignNote[], showPublicNotes: boolean}) => {
+  const {campaignData, campaignNotes, showPublicNotes} = props
   const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);
   if(campaignNotes === undefined) return <div>failed to load campaign notes</div>
 
@@ -19,8 +19,8 @@ const NotesPage = (props: {campaignData: Campaign, campaignNotes: CampaignNote[]
 
   return (
     <div className='flex'>
-      <NoteViewer note={selectedNote} campaignData={campaignData} />
-      <NoteList notes={campaignNotes} onNoteClick={handleNoteClick} campaignData={campaignData} note={selectedNote}/>
+      <NoteViewer note={selectedNote} campaignData={campaignData} showPublicNotes={showPublicNotes} />
+      <NoteList notes={campaignNotes} onNoteClick={handleNoteClick} campaignData={campaignData} note={selectedNote} showPublicNotes={showPublicNotes}/>
     </div>
   );
 };

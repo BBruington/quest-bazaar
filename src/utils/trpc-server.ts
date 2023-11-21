@@ -392,11 +392,10 @@ export const appRouter = t.router({
       }
     }),
 
-  queryCampaignPersonalNotes: t.procedure
+  queryCampaignNotes: t.procedure
     .input(
       z.object({
         campaignId: z.string(),
-        userId: z.string(),
       })
     )
     .query(async ({ input }) => {
@@ -404,7 +403,6 @@ export const appRouter = t.router({
         const notes = await prisma.campaignNote.findMany({
           where: {
             campaignId: input.campaignId,
-            userId: input.userId,
           },
         });
         return notes;

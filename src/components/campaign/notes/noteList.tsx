@@ -9,17 +9,18 @@ const NoteList = (props: {
   onNoteClick: (noteId: string) => CampaignNote | boolean;
   campaignData: Campaign;
   note: CampaignNote | undefined;
+  showPublicNotes: boolean
 }) => {
+  const { notes, onNoteClick, campaignData, note, showPublicNotes } = props;
   const utils = api.useContext();
-  const { notes, onNoteClick, campaignData, note } = props;
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignPersonalNotes.invalidate();
+      await utils.queryCampaignNotes.invalidate();
     },
   });
   const deleteNote = api.deleteCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignPersonalNotes.invalidate();
+      await utils.queryCampaignNotes.invalidate();
     },
   });
   return (

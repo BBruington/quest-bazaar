@@ -31,6 +31,7 @@ export default function CampaignComponent(props: {
   userId: string;
 }) {
   const { campaignData, campaignPlayers, userId } = props;
+  const [showPublicNotes, setShowPublicNotes] = useState(false);
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
@@ -39,9 +40,8 @@ export default function CampaignComponent(props: {
   });
   const router = useRouter();
   const { data: campaignNotes, isLoading } =
-    api.queryCampaignPersonalNotes.useQuery({
+    api.queryCampaignNotes.useQuery({
       campaignId: campaignData.id,
-      userId: userId,
     });
   const { mutate } = api.deleteCampaign.useMutation({
     onSuccess: () => {
@@ -168,6 +168,7 @@ export default function CampaignComponent(props: {
         <div className="w-full">
           {campaignNotes !== undefined && (
             <NotesPage
+              showPublicNotes={showPublicNotes}
               campaignData={campaignData}
               campaignNotes={campaignNotes}
             />
