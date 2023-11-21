@@ -5,9 +5,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
-import type { Campaign, Post, User } from "@prisma/client";
 import NotesPage from "~/components/campaign/notes/notes";
-import Posts from "./posts/posts";
 import {
   Accordion,
   AccordionContent,
@@ -25,13 +23,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import type { Campaign, Players} from "./types"
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
-  campaignPlayers: User[] | null;
-  campaignPosts: Post[] | null;
+  campaignPlayers: Players[] | null | undefined;
+  userId: string;
 }) {
-  const { campaignData, campaignPlayers, campaignPosts } = props;
+  const { campaignData, campaignPlayers, userId } = props;
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
@@ -39,9 +38,11 @@ export default function CampaignComponent(props: {
     chat: true,
   });
   const router = useRouter();
-  const { data: campaignNotes, isLoading } = api.queryCampaignNotes.useQuery({
-    id: campaignData.id,
-  });
+  const { data: campaignNotes, isLoading } =
+    api.queryCampaignPersonalNotes.useQuery({
+      campaignId: campaignData.id,
+      userId: userId,
+    });
   const { mutate } = api.deleteCampaign.useMutation({
     onSuccess: () => {
       void router.push(`/myCampaigns`);
@@ -61,36 +62,55 @@ export default function CampaignComponent(props: {
               className="py-3 text-white hover:underline"
               onClick={() =>
                 setUiToggle({
-                  editNotes: true,
+                  editNotes: false,
                   posts: false,
                   schedules: false,
+                  chat: true,
+                })
+              }
+            >
+              Chat
+            </button>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <button
+              className="py-3 text-white hover:underline"
+              onClick={() =>
+                setUiToggle({
+                  editNotes: false,
+                  posts: false,
+                  schedules: true,
                   chat: false,
                 })
               }
             >
-              Notes
+              Calendar
             </button>
-            {/* <AccordionTrigger>Notes</AccordionTrigger> */}
-            <AccordionContent></AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionItem value="item-3">
-              <button
-                className="py-3 text-white hover:underline"
-                onClick={() =>
-                  setUiToggle({
-                    editNotes: false,
-                    posts: false,
-                    schedules: true,
-                    chat: false,
-                  })
-                }
-              >
-                Calendar
-              </button>
-              <AccordionContent>
-              </AccordionContent>
-            </AccordionItem>
+          <AccordionItem value="item-3">
+            <AccordionTrigger>Notes</AccordionTrigger>
+            <AccordionContent>
+              <div className="flex justify-around">
+                <Button
+                  className="py-3 text-white hover:underline"
+                  onClick={() =>
+                    setUiToggle({
+                      editNotes: true,
+                      posts: false,
+                      schedules: false,
+                      chat: false,
+                    })
+                  }
+                >
+                  Public Notes
+                </Button>
+                <Button className="py-3 text-white hover:underline">
+                  Personal Notes
+                </Button>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-4">
             <AccordionTrigger>Players</AccordionTrigger>
             <AccordionContent>
               {campaignPlayers !== null ? (
@@ -104,7 +124,7 @@ export default function CampaignComponent(props: {
               )}
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-4">
+          <AccordionItem value="item-5">
             <AccordionTrigger>Campaign</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
@@ -153,9 +173,6 @@ export default function CampaignComponent(props: {
             />
           )}
         </div>
-      )}
-      {uiToggle.posts && (
-        <Posts campaignData={campaignData} campaignPosts={campaignPosts} />
       )}
       {uiToggle.schedules && <CalendarComponent campaignData={campaignData} />}
 

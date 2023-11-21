@@ -7,7 +7,7 @@ import "react-clock/dist/Clock.css";
 import TimePicker from "react-time-picker";
 import { DialogTrigger } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import type { Campaign } from "@prisma/client";
+import type { Campaign } from "../types";
 
 export default function Scheduler(props: {
   campaignData: Campaign;
@@ -23,7 +23,7 @@ export default function Scheduler(props: {
     api.createCampaignScheduledEvent.useMutation({
       onSuccess: async () => {
         await utils.queryCampaignScheduledEvents.invalidate();
-        setUpdateEvents(false)
+        setUpdateEvents(false);
       },
     });
 

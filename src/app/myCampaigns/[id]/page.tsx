@@ -1,22 +1,21 @@
-import { prisma } from "~/utils/context";
+"use client";
 import CampaignComponent from "~/components/campaign/campaign";
+import { useUser } from "@clerk/nextjs";
+import { api } from "~/utils/trpc";
 
-export default async function CampaignPage({ params }: {
-  params: { id: string; };
-}) {
-
-  const campaignData = await prisma.campaign.findUnique({
-    where: {
-      id: params.id
-    },
-    include: {
-      players: true,
-      posts: true
-    }
-  })
-
-  if( !campaignData ) return <div>Unable to fetch campaign</div>
+export default function CampaignPage({ params }: { params: { id: string } }) {
+  const user = useUser();
+  const { data: campaignData } = api.queryCampaignData.useQuery({
+    campaignId: params.id,
+  });
+  if (!user.user?.id) return <div>failed to load user</div>;
+  if (!campaignData)
+    return <div className="text-white">something went wrong</div>;
   return (
-    <CampaignComponent campaignData={campaignData} campaignPlayers={campaignData.players ? campaignData.players : null} campaignPosts={campaignData.posts ? campaignData.posts : null}/>
-  )
+    <CampaignComponent
+      userId={user.user?.id}
+      campaignData={campaignData}
+      campaignPlayers={campaignData?.players ? campaignData.players : null}
+    />
+  );
 }

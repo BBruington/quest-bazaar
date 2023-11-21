@@ -223,55 +223,71 @@ export const appRouter = t.router({
       return scheduledEvent;
     }),
 
-    queryCampaignMessages: t.procedure.input(z.object({
-      campaignId: z.string(),
-    })).query( async ({input}) => {
+  queryCampaignMessages: t.procedure
+    .input(
+      z.object({
+        campaignId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
       const messages = await prisma.campaignChat.findMany({
         where: {
-          campaignId: input.campaignId
-        }
-      })
+          campaignId: input.campaignId,
+        },
+      });
       return messages;
     }),
 
-    sendChatMessage: t.procedure.input(z.object({
-      campaignId: z.string(),
-      username: z.string(),
-      chat: z.string()
-    })).mutation(async ({input}) => {
+  sendChatMessage: t.procedure
+    .input(
+      z.object({
+        campaignId: z.string(),
+        username: z.string(),
+        chat: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
       const sentMessage = await prisma.campaignChat.create({
         data: {
           campaignId: input.campaignId,
           username: input.username,
-          chat: input.chat
-        }
-      })
+          chat: input.chat,
+        },
+      });
       return sentMessage;
     }),
 
-    queryCampaignScheduledEvents: t.procedure.input(z.object({
-      campaignId: z.string()
-    })).query(async ({input}) => {
+  queryCampaignScheduledEvents: t.procedure
+    .input(
+      z.object({
+        campaignId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
       const scheduledEvents = await prisma.campaignSchedules.findMany({
         where: {
-          campaignId: input.campaignId
+          campaignId: input.campaignId,
         },
         orderBy: {
-          date: "asc"
-        }
-      })
+          date: "asc",
+        },
+      });
 
       return scheduledEvents;
     }),
 
-    deleteCampaignScheduledEvent: t.procedure.input(z.object({
-      eventId: z.string()
-    })).mutation(async ({input}) => {
+  deleteCampaignScheduledEvent: t.procedure
+    .input(
+      z.object({
+        eventId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
       await prisma.campaignSchedules.delete({
         where: {
-          id: input.eventId
-        }
-      })
+          id: input.eventId,
+        },
+      });
     }),
 
   inviteToCampaign: t.procedure
@@ -311,6 +327,24 @@ export const appRouter = t.router({
       } catch (error) {
         console.error("error: ", error);
       }
+    }),
+
+  queryCampaignData: t.procedure
+    .input(
+      z.object({
+        campaignId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const campaignData = await prisma.campaign.findUnique({
+        where: {
+          id: input.campaignId,
+        },
+        include: {
+          players: true,
+        },
+      });
+      return campaignData;
     }),
 
   upsertCampaignNote: t.procedure
@@ -358,17 +392,19 @@ export const appRouter = t.router({
       }
     }),
 
-  queryCampaignNotes: t.procedure
+  queryCampaignPersonalNotes: t.procedure
     .input(
       z.object({
-        id: z.string(),
+        campaignId: z.string(),
+        userId: z.string(),
       })
     )
     .query(async ({ input }) => {
       try {
         const notes = await prisma.campaignNote.findMany({
           where: {
-            campaignId: input.id,
+            campaignId: input.campaignId,
+            userId: input.userId,
           },
         });
         return notes;

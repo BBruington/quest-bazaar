@@ -1,5 +1,5 @@
 "use-client";
-import type { Campaign } from "@prisma/client";
+import type { Campaign } from "../types";
 import { Input } from "../../ui/input";
 import { api } from "~/utils/trpc";
 import { useState } from "react";
@@ -10,38 +10,37 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
   const { user } = useUser();
   const utils = api.useContext();
   const [inputValue, setInputValue] = useState("");
-  const { mutate, isLoading: sendingMessage } = api.sendChatMessage.useMutation({
-    onSuccess: async() => {
-      setInputValue("");
-      await utils.queryCampaignMessages.invalidate()
-    },
-    onError: (e) => {
-      console.error(e);
-    },
-  });
+  const { mutate, isLoading: sendingMessage } = api.sendChatMessage.useMutation(
+    {
+      onSuccess: async () => {
+        setInputValue("");
+        await utils.queryCampaignMessages.invalidate();
+      },
+      onError: (e) => {
+        console.error(e);
+      },
+    }
+  );
   const { data: campaignMessages, isLoading: loadingChat } =
     api.queryCampaignMessages.useQuery({
       campaignId: campaignProps.id,
     });
   if (!campaignMessages) return <div>failed to load friend messages</div>;
-  if(!user) return <div>failed to load user...</div>
-
-
+  if (!user) return <div>failed to load user...</div>;
 
   const handleInputChange = (e: string) => {
     setInputValue(e);
   };
 
-  const handleSendMessage= () => {
+  const handleSendMessage = () => {
     if (inputValue !== "" && user.username !== null) {
       mutate({
         campaignId: campaignProps.id,
         username: user.username,
-        chat: inputValue
+        chat: inputValue,
       });
     }
-  }
-
+  };
 
   return (
     <>
@@ -79,7 +78,7 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
                       {message.chat}
                     </span>
                   </div>
-                ):(
+                ) : (
                   <div className="justify-left mb-5 flex" key={message.id}>
                     <span className="rounded-md bg-slate-700 p-2 text-white">
                       {message.chat}

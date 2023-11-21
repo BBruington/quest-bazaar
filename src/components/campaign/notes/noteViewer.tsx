@@ -1,5 +1,5 @@
 "use-client";
-import type { Campaign } from "@prisma/client";
+import type { Campaign, Players} from '../types'
 import { Textarea } from "../../ui/textarea";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/trpc";
@@ -19,7 +19,7 @@ const NoteViewer = (props: {
   }, [note]);
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignNotes.invalidate();
+      await utils.queryCampaignPersonalNotes.invalidate();
     },
   });
   const handleSaveNote = () => {

@@ -1,4 +1,4 @@
-import type { Campaign } from "@prisma/client";
+import type { Campaign} from '../types'
 import uuid from "react-uuid";
 import React from "react";
 import { api } from "~/utils/trpc";
@@ -14,12 +14,12 @@ const NoteList = (props: {
   const { notes, onNoteClick, campaignData, note } = props;
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignNotes.invalidate();
+      await utils.queryCampaignPersonalNotes.invalidate();
     },
   });
   const deleteNote = api.deleteCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignNotes.invalidate();
+      await utils.queryCampaignPersonalNotes.invalidate();
     },
   });
   return (

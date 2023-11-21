@@ -16,7 +16,7 @@ import { api } from "~/utils/trpc";
 import Scheduler from "./scheduler";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import type { Campaign } from "@prisma/client";
+import type { Campaign} from "../types"
 
 export default function CalendarComponent(props: { campaignData: Campaign }) {
   const { campaignData } = props;
