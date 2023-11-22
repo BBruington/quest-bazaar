@@ -1,5 +1,6 @@
 "use client";
 import { api } from "~/utils/trpc";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -88,7 +89,22 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-3">
             <AccordionTrigger>DM</AccordionTrigger>
-            <AccordionContent>{campaignData.dmName}</AccordionContent>
+            <AccordionContent>
+              <div>
+                <span>{campaignData.dmName}</span>
+                {/* <Avatar>
+                  <AvatarImage
+                    src={
+                      friend.imgUrl
+                        ? friend.imgUrl
+                        : `https://github.com/shadcn.png`
+                    }
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar> */}
+              </div>
+            </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
             <AccordionTrigger>Players</AccordionTrigger>
@@ -132,8 +148,14 @@ export default function CampaignComponent(props: {
             <AccordionContent>
               <div className="space-y-3">
                 <AlertDialog>
-                  <AlertDialogTrigger disabled={userId !== campaignData.dmUserId}>
-                    <Button variant="destructive" disabled={userId !== campaignData.dmUserId} className="h-8">
+                  <AlertDialogTrigger
+                    disabled={userId !== campaignData.dmUserId}
+                  >
+                    <Button
+                      variant="destructive"
+                      disabled={userId !== campaignData.dmUserId}
+                      className="h-8"
+                    >
                       Delete
                     </Button>
                   </AlertDialogTrigger>
