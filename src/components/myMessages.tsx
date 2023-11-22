@@ -159,7 +159,7 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src="https://github.com/shadcn.png"
+                              src={friend.imgUrl ? friend.imgUrl : `https://github.com/shadcn.png}`}
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>
@@ -170,7 +170,7 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src="https://github.com/shadcn.png"
+                              src={friend.imgUrl ? friend.imgUrl : `https://github.com/shadcn.png}`}
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>

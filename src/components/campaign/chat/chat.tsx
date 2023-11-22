@@ -71,10 +71,10 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
         <div className="flex h-5/6 w-4/6 flex-col rounded-md bg-accent-foreground p-2 lg:w-4/6">
           <div className="mt-auto">
             {campaignMessages.map((message) => (
-              <div key={message.id} className="bg-accent-foreground p-2">
+              <div key={message.id} className="bg-accent-foreground p-2 mb-1">
                 {message.username === user.username ? (
                   <>
-                    <span className="flex justify-end rounded-md p-2 text-xs text-slate-500">
+                    <span className="flex justify-end rounded-md p-2 pr-1 text-xs text-slate-500">
                       {message.username}
                     </span>
                     <div
@@ -88,7 +88,7 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
                   </>
                 ) : (
                   <>
-                    <span className="justify-left mb-5 rounded-md p-2 text-xs text-slate-500">
+                    <span className="justify-left mb-5 rounded-md p-2 pl-1 text-xs text-slate-500">
                       {message.username}
                     </span>
                     <div

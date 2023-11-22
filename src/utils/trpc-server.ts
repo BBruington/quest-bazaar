@@ -451,6 +451,7 @@ export const appRouter = t.router({
           },
           select: {
             clerkId: true,
+            imgUrl: true,
           },
         });
         if (recipient === null) {
@@ -461,6 +462,7 @@ export const appRouter = t.router({
           data: {
             receiverId: recipient.clerkId,
             receiverName: input.receiverName,
+            imgUrl: recipient.imgUrl,
             senderId: input.id,
             senderName: input.senderName,
             status: "PENDING",
