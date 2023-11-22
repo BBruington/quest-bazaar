@@ -109,7 +109,7 @@ model Campaign {
 model CampaignChat {
   id         String   @id @default(cuid())
   campaignId String
-  username String
+  username   String
   chat       String
   createdAt  DateTime @default(now())
   campaign   Campaign @relation(fields: [campaignId], references: [id])

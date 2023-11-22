@@ -73,17 +73,33 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
             {campaignMessages.map((message) => (
               <div key={message.id} className="bg-accent-foreground p-2">
                 {message.username === user.username ? (
-                  <div className="flex justify-end text-right" key={message.id}>
-                    <span className="rounded-md bg-blue-500 p-2 text-black">
-                      {message.chat}
+                  <>
+                    <span className="flex justify-end rounded-md p-2 text-xs text-slate-500">
+                      {message.username}
                     </span>
-                  </div>
+                    <div
+                      className="flex justify-end text-right"
+                      key={message.id}
+                    >
+                      <span className="mt-1 rounded-md bg-blue-500 p-2 text-black">
+                        {message.chat}
+                      </span>
+                    </div>
+                  </>
                 ) : (
-                  <div className="justify-left mb-5 flex" key={message.id}>
-                    <span className="rounded-md bg-slate-700 p-2 text-white">
-                      {message.chat}
+                  <>
+                    <span className="justify-left mb-5 rounded-md p-2 text-xs text-slate-500">
+                      {message.username}
                     </span>
-                  </div>
+                    <div
+                      className="justify-left mb-5 mt-1 flex"
+                      key={message.id}
+                    >
+                      <span className="rounded-md bg-slate-700 p-2 text-white">
+                        {message.chat}
+                      </span>
+                    </div>
+                  </>
                 )}
               </div>
             ))}
