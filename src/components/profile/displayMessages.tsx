@@ -49,8 +49,8 @@ export default function DisplayMessages(props: {
   };
 
   return (
-    <div className="flex h-5/6 w-4/6 flex-col rounded-md bg-accent-foreground p-2 lg:w-4/6">
-      <div className="mt-auto ">
+    <div className="flex h-5/6 w-4/6 flex-col rounded-md bg-accent-foreground overflow-y-auto p-2 lg:w-4/6">
+      <div className="mt-auto">
         {friendMessages?.map((message) => (
           <div key={message.id} className="bg-accent-foreground p-2">
             {message.senderId === userId && (

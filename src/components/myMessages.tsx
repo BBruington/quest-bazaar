@@ -48,10 +48,11 @@ export default function MyMessages(props: { userId: string }) {
     },
   });
 
+  
   const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
     id: userId,
   });
-
+  
   const { data: friends } = api.queryMyFriends.useQuery({ id: userId });
 
   const { data: receivedInvitedCampaigns } =
@@ -159,7 +160,7 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src={friend.imgUrl ? friend.imgUrl : `https://github.com/shadcn.png}`}
+                              src={friend.imgUrl ? friend.imgUrl : `https://github.com/shadcn.png`}
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>
@@ -170,7 +171,7 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src={friend.imgUrl ? friend.imgUrl : `https://github.com/shadcn.png}`}
+                              src={friend.imgUrl  ? `${friend.imgUrl}` : `https://github.com/shadcn.png`}
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>

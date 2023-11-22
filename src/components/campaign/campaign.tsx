@@ -23,7 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import type { Campaign, Players} from "./types"
+import type { Campaign, Players } from "./types";
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
@@ -39,10 +39,9 @@ export default function CampaignComponent(props: {
     chat: true,
   });
   const router = useRouter();
-  const { data: campaignNotes, isLoading } =
-    api.queryCampaignNotes.useQuery({
-      campaignId: campaignData.id,
-    });
+  const { data: campaignNotes, isLoading } = api.queryCampaignNotes.useQuery({
+    campaignId: campaignData.id,
+  });
   const { mutate } = api.deleteCampaign.useMutation({
     onSuccess: () => {
       void router.push(`/myCampaigns`);
@@ -88,6 +87,24 @@ export default function CampaignComponent(props: {
             </button>
           </AccordionItem>
           <AccordionItem value="item-3">
+            <AccordionTrigger>DM</AccordionTrigger>
+            <AccordionContent>{campaignData.dmName}</AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-4">
+            <AccordionTrigger>Players</AccordionTrigger>
+            <AccordionContent>
+              {campaignPlayers !== null ? (
+                campaignPlayers?.map((player) => (
+                  <div className="mb-2" key={player.id}>
+                    {player.username}
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-5">
             <AccordionTrigger>Notes</AccordionTrigger>
             <AccordionContent>
               <div className="flex justify-around">
@@ -110,27 +127,13 @@ export default function CampaignComponent(props: {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-4">
-            <AccordionTrigger>Players</AccordionTrigger>
-            <AccordionContent>
-              {campaignPlayers !== null ? (
-                campaignPlayers?.map((player) => (
-                  <div className="mb-2" key={player.id}>
-                    {player.username}
-                  </div>
-                ))
-              ) : (
-                <></>
-              )}
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-5">
+          <AccordionItem value="item-6">
             <AccordionTrigger>Campaign</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
                 <AlertDialog>
-                  <AlertDialogTrigger>
-                    <Button variant="destructive" className="h-8">
+                  <AlertDialogTrigger disabled={userId !== campaignData.dmUserId}>
+                    <Button variant="destructive" disabled={userId !== campaignData.dmUserId} className="h-8">
                       Delete
                     </Button>
                   </AlertDialogTrigger>
