@@ -94,7 +94,7 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
               disabled={sendingMessage}
               onChange={(e) => handleInputChange(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleSendMessage;
+                if (e.key === "Enter") handleSendMessage();
               }}
             />
           </div>

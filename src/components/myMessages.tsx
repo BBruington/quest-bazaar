@@ -146,6 +146,7 @@ export default function MyMessages(props: { userId: string }) {
             <AccordionTrigger>Friends</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col">
+                {!friends || friends.length === 0 ? (<span className="text-slate-400">Empty</span>) : (<></>)}
                 {friends?.map((friend) => (
                   <div
                     key={friend.id}
