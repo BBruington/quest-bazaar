@@ -411,24 +411,16 @@ export const appRouter = t.router({
       }
     }),
 
-  queryPost: t.procedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .query(async ({ input }) => {
+  queryCampaignPosts: t.procedure
+    .query(async () => {
       try {
-        const post = await prisma.post.findUnique({
-          where: {
-            id: input.id,
-          },
+        const posts = await prisma.post.findMany({
           include: {
             comments: true,
             likes: true,
           },
         });
-        return post;
+        return posts;
       } catch (e) {
         console.error(e);
         return null;

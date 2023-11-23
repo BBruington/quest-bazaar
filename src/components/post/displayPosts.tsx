@@ -1,12 +1,15 @@
+"use client"
 import { Link } from "lucide-react";
-const campaignPosts = [0,0]
+import { api } from "~/utils/trpc";
 
 export default function DisplayPosts() {
+  const {data: campaignPosts} = api.queryCampaignPosts.useQuery()
+
   return (
     <>
       <div className="grid grid-cols-1 gap-3 p-3 items-center lg:grid-cols-2 md:gap-6 md:p-6 2xl:grid-cols-3 ">
-        {campaignPosts?.map((post, index) => (
-          <Link className="" key={index} href={`/post/${index}`}>
+        {campaignPosts?.map((post) => (
+          <Link className="" key={post.id} href={`/post/${post.id}`}>
             <div className="group cursor-pointer overflow-hidden rounded-lg border border-primary-foreground">
               <img
                 className="h-60 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105"
@@ -16,11 +19,11 @@ export default function DisplayPosts() {
               <div className="flex justify-between bg-accent-foreground p-5 ">
                 <div>
                   <p className="text-lg font-bold text-white">
-                    {"awesome title for the game".substring(0, 30)}
+                    {post.title.substring(0, 30)}
                   </p>
                   <div className="flex space-x-5">
                     <p className="flex text-xs text-white">
-                        <>By: author</>
+                        <>By: {post.author}</>
                     </p>
                   </div>
                 </div>
@@ -29,6 +32,9 @@ export default function DisplayPosts() {
           </Link>
         ))}
       </div>
+      {campaignPosts?.length === 0 || campaignPosts === null ? (
+      <div className="text-white">There seems to be an issue finding any posts...</div>
+    ) : (<></>)}
     </>
   )
 }
