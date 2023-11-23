@@ -92,17 +92,6 @@ export default function CampaignComponent(props: {
             <AccordionContent>
               <div>
                 <span>{campaignData.dmName}</span>
-                {/* <Avatar>
-                  <AvatarImage
-                    src={
-                      friend.imgUrl
-                        ? friend.imgUrl
-                        : `https://github.com/shadcn.png`
-                    }
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar> */}
               </div>
             </AccordionContent>
           </AccordionItem>

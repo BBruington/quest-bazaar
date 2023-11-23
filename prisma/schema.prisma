@@ -56,6 +56,9 @@ model Message {
 model Post {
   id          String    @id @default(cuid())
   userId      String
+  players     Int?
+  startingLevel      Int?
+  finishingLevel Int?
   title       String
   description String
   author      String
