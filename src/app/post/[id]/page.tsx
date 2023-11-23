@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
+import CampaignPost from "~/components/post/Post";
 
 export default function Post({ params }: { params: { id: string } }) {
   const { data: post, isLoading: postLoading } = api.queryPost.useQuery({
