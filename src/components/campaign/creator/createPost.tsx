@@ -14,23 +14,20 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Label } from "~/components/ui/label";
-import { Link } from "lucide-react";
 
-export default function CampaignCreator(props: {
+export default function CreatePostComponent(props: {
   userId: string;
   username: string | undefined;
 }) {
   const { userId, username } = props;
   const router = useRouter();
   const [imageFile, setImageFile] = useState<string | undefined>();
-  const [campaignProps, setCampaignProps] = useState({
+  const [postProps, setPostProps] = useState({
     name: "",
     description: "",
     friends: [{ id: "", name: "" }],
   });
   const [friends, setFriends] = useState([{ name: "", id: "" }]);
-  const { data: friendsList } = api.queryMyFriends.useQuery({ id: userId });
-  console.log(imageFile, campaignProps, username);
 
   const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null) {
@@ -46,7 +43,7 @@ export default function CampaignCreator(props: {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setCampaignProps({ ...campaignProps, [name]: value });
+    setPostProps({ ...postProps, [name]: value });
   };
 
   type FriendList = {
@@ -54,31 +51,16 @@ export default function CampaignCreator(props: {
     name: string;
   };
   const inviteFriendToCampaign = (invitedFriend: FriendList) => {
-    if (campaignProps.friends.find((friend) => friend.id === invitedFriend.id))
+    if (postProps.friends.find((friend) => friend.id === invitedFriend.id))
       return;
     if (
-      campaignProps.friends[0] !== undefined &&
-      campaignProps.friends[0].name === ""
+      postProps.friends[0] !== undefined &&
+      postProps.friends[0].name === ""
     ) {
-      campaignProps.friends[0] = invitedFriend;
+      postProps.friends[0] = invitedFriend;
     } else {
-      campaignProps.friends.push(invitedFriend);
+      postProps.friends.push(invitedFriend);
     }
-  };
-
-  const findFriendsIds = () => {
-    const array: FriendList[] = [];
-    friendsList?.map((friend) => {
-      if (friend.receiverId === userId)
-        array.push({ id: friend.senderId, name: friend.senderName });
-      else if (friend.senderId === userId)
-        array.push({ id: friend.receiverId, name: friend.receiverName });
-      if (array.length === 0) {
-        setFriends([{ name: "You don't seem to have anyone to add", id: "" }]);
-      } else {
-        setFriends(array);
-      }
-    });
   };
   const { mutate } = api.createCampaign.useMutation({
     onSuccess: () => {
@@ -89,20 +71,18 @@ export default function CampaignCreator(props: {
     },
   });
 
-  if (friends[0]?.id === "") findFriendsIds();
-
-  const handleCreateCampaign = () => {
-    if (campaignProps.name !== "" && campaignProps.description !== "") {
+  const handleCreatePost = () => {
+    if (postProps.name !== "" && postProps.description !== "") {
       mutate({
         id: userId,
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         imageUrl: imageFile === undefined ? "" : imageFile,
-        name: campaignProps.name,
-        description: campaignProps.description,
+        name: postProps.name,
+        description: postProps.description,
         friendsIds:
-          campaignProps.friends[0]?.id === ""
+          postProps.friends[0]?.id === ""
             ? undefined
-            : campaignProps.friends,
+            : postProps.friends,
       });
     }
   };
@@ -119,7 +99,7 @@ export default function CampaignCreator(props: {
             type="text"
             id="name"
             name="name"
-            value={campaignProps.name}
+            value={postProps.name}
             onChange={handleChange}
           />
           d
@@ -132,7 +112,7 @@ export default function CampaignCreator(props: {
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
             id="description"
             name="description"
-            value={campaignProps.description}
+            value={postProps.description}
             onChange={handleChange}
           />
         </div>
@@ -162,7 +142,7 @@ export default function CampaignCreator(props: {
           />
         </div>
         <div className="m-2 flex justify-between gap-5">
-          <Button className="w-30 h-10" onClick={handleCreateCampaign}>
+          <Button className="w-30 h-10" onClick={handleCreatePost}>
             Create Campaign
           </Button>
           <DropdownMenu>
@@ -205,7 +185,7 @@ export default function CampaignCreator(props: {
           <div className="flex justify-between bg-accent-foreground p-5 ">
             <div>
               <p className="text-lg font-bold text-white">
-                {campaignProps.name !== undefined ? campaignProps.name.substring(0, 30) : <></>}
+                {postProps.name !== undefined ? postProps.name.substring(0, 30) : <></>}
               </p>
               <div className="flex space-x-5">
                 <p className="flex text-xs text-white">

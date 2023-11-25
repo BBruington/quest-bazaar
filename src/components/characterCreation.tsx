@@ -1,11 +1,13 @@
-import { useState } from "react"
-import { blankCharacterSheetInfo, handleSkillMod } from "helpers/characterSheetHelpers"
+import { useState } from "react";
+import {
+  blankCharacterSheetInfo,
+  handleSkillMod,
+} from "helpers/characterSheetHelpers";
 
 export default function CharacterCreation() {
+  const logChar = () => console.log(character);
 
-  const logChar = () => console.log(character)
-
-  const [character, setCharacter] = useState(blankCharacterSheetInfo)
+  const [character, setCharacter] = useState(blankCharacterSheetInfo);
 
   return (
     <>
@@ -14,8 +16,8 @@ export default function CharacterCreation() {
         type="text"
         placeholder="Character Name"
         value={character.name}
-        onChange={(e) => setCharacter({...character})}
+        onChange={(e) => setCharacter({ ...character })}
       />
     </>
-  )
+  );
 }
