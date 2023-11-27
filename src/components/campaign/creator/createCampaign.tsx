@@ -93,8 +93,7 @@ export default function CreateCampaignComponent(props: {
     if (campaignProps.name !== "" && campaignProps.description !== "") {
       mutate({
         id: userId,
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        imageUrl: imageFile === undefined ? "" : imageFile,
+        imageUrl: imageFile ? imageFile : "",
         name: campaignProps.name,
         description: campaignProps.description,
         friendsIds:
@@ -153,8 +152,7 @@ export default function CreateCampaignComponent(props: {
             type="text"
             id="imageUrl"
             value={
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              imageFile !== undefined ? imageFile : undefined
+              imageFile ? imageFile : undefined
             }
             onChange={handleChange}
           />

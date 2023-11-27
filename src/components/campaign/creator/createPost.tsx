@@ -75,8 +75,7 @@ export default function CreatePostComponent(props: {
     if (postProps.name !== "" && postProps.description !== "") {
       mutate({
         id: userId,
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        imageUrl: imageFile === undefined ? "" : imageFile,
+        imageUrl: imageFile ? imageFile : "",
         name: postProps.name,
         description: postProps.description,
         friendsIds:
@@ -135,8 +134,7 @@ export default function CreatePostComponent(props: {
             type="text"
             id="imageUrl"
             value={
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              imageFile !== undefined ? imageFile : undefined
+              imageFile ? imageFile : undefined
             }
             onChange={handleChange}
           />
