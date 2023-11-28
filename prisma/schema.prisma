@@ -30,17 +30,18 @@ model User {
 }
 
 model Friendship {
-  id           String           @id @default(cuid())
-  senderId     String
-  senderName   String
-  receiverId   String
-  receiverName String
-  imgUrl       String?
-  status       FriendshipStatus
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  sender       User             @relation("sentRequests", fields: [senderId], references: [clerkId])
-  receiver     User             @relation("receivedRequests", fields: [receiverId], references: [clerkId])
+  id             String           @id @default(cuid())
+  senderId       String
+  senderName     String
+  receiverId     String
+  receiverName   String
+  senderImgUrl   String?
+  receiverImgUrl String?
+  status         FriendshipStatus
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  sender         User             @relation("sentRequests", fields: [senderId], references: [clerkId])
+  receiver       User             @relation("receivedRequests", fields: [receiverId], references: [clerkId])
 }
 
 model Message {
@@ -54,23 +55,23 @@ model Message {
 }
 
 model Post {
-  id          String    @id @default(cuid())
-  userId      String
-  players     Int?
-  startingLevel      Int?
+  id             String    @id @default(cuid())
+  userId         String
+  players        Int?
+  startingLevel  Int?
   finishingLevel Int?
-  title       String
-  description String
-  author      String
-  mainImage   String
-  body        String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  campaignId  String?
-  user        User      @relation(fields: [userId], references: [clerkId])
-  likes       Like[]
-  comments    Comment[]
-  campaign    Campaign? @relation("CampaignPosts", fields: [campaignId], references: [id])
+  title          String
+  description    String
+  author         String
+  mainImage      String
+  body           String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  campaignId     String?
+  user           User      @relation(fields: [userId], references: [clerkId])
+  likes          Like[]
+  comments       Comment[]
+  campaign       Campaign? @relation("CampaignPosts", fields: [campaignId], references: [id])
 }
 
 model Like {

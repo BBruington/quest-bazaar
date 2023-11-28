@@ -2,7 +2,7 @@
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { api } from "~/utils/trpc";
-import type { SelectedFriend } from "~/app/types/Message";
+import type { SelectedFriendType } from "~/app/types/Message";
 
 import {
   DropdownMenu,
@@ -14,19 +14,25 @@ import {
 } from "../ui/dropdown-menu";
 
 export default function SelectedFriend(props: {
-  selectedFriend: SelectedFriend;
+  selectedFriend: SelectedFriendType;
   userId: string;
 }) {
   const { selectedFriend, userId } = props;
 
-  const { data: userCampaigns, isLoading: loadingUserCampaigns } =
+  const { data: userCampaigns } =
     api.queryUserCampaigns.useQuery({ id: userId });
 
   const sendCampaignInvite = api.inviteToCampaign.useMutation();
   const handleRemoveFriend = api.handleFriendRequest.useMutation();
+  
+  let profilePic: string;
 
   const findFriendId = (myId: string) => {
-    if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
+    if (myId === selectedFriend.senderId) {
+      profilePic = selectedFriend.receiverImgUrl!
+      return selectedFriend.receiverId;
+    }
+    profilePic = selectedFriend.senderImgUrl!
     return selectedFriend.senderId;
   };
 
@@ -50,15 +56,15 @@ export default function SelectedFriend(props: {
   };
 
   return (
-    <div className="w-1/6">
+    <div className="w-full">
       {selectedFriend?.senderName && (
-        <div className="mx-2 flex h-60 items-center justify-center bg-accent-foreground">
+        <div className="mx-2 flex xl:h-60 h-80 items-center justify-center bg-accent-foreground">
           <div className="justify-top flex h-4/6 w-5/6 flex-col items-center bg-foreground">
             <div className="mt-5 text-white">
               <Avatar>
                 <AvatarImage
                   className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
-                  src="https://github.com/shadcn.png"
+                  src={profilePic ? profilePic : "https://github.com/shadcn.png"}
                   alt="@shadcn"
                 />
                 <AvatarFallback>CN</AvatarFallback>
@@ -69,10 +75,10 @@ export default function SelectedFriend(props: {
                 ? selectedFriend.receiverName
                 : selectedFriend.senderName}
             </div>
-            <div className="mb-5 mt-auto flex justify-center">
+            <div className="mb-5 mt-auto flex flex-col xl:flex-row space-y-2 xl:space-y-0 xl:space-x-2 items-center justify-center">
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Button className="mr-5">Invite</Button>
+                  <Button className="w-20">Invite</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
@@ -106,7 +112,7 @@ export default function SelectedFriend(props: {
               <Button
                 onClick={() => handleFriendRemove()}
                 variant="destructive"
-                className="px-none w-1/3"
+                className="px-none w-20"
               >
                 Remove
               </Button>

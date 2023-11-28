@@ -1,4 +1,5 @@
 "use client";
+import type { SelectedFriendType } from "~/app/types/Message";
 import DisplayMessages from "./profile/displayMessages";
 import SelectedFriend from "./profile/selectedFriend";
 import { api } from "~/utils/trpc";
@@ -18,13 +19,15 @@ import {
 
 export default function MyMessages(props: { userId: string }) {
   const { userId } = props;
-  const [selectedFriend, setSelectedFriend] = useState({
+  const [selectedFriend, setSelectedFriend] = useState<SelectedFriendType>({
     id: "",
     status: "",
     receiverName: "",
+    receiverId: "",
+    receiverImgUrl: null,
     senderName: "",
     senderId: "",
-    receiverId: "",
+    senderImgUrl: null,
     createdAt: "",
     updatedAt: "",
   });
@@ -67,12 +70,14 @@ export default function MyMessages(props: { userId: string }) {
   if (receivedInvitedCampaigns && pendingFriendRequests)
     notificationsAmount =
       receivedInvitedCampaigns.length + pendingFriendRequests.length;
+
   const handleAddFriendChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { value } = e.target;
     setAddFriendInput(value);
   };
+
   const handleAddFriend = (friendName: string) => {
     sendAddFriendRequest.mutate({
       receiverName: friendName,
@@ -103,10 +108,11 @@ export default function MyMessages(props: { userId: string }) {
       response: requestResponse,
     });
   };
+  console.log(friends)
 
   return (
     <div className="flex h-screen bg-foreground">
-      <div className="mx-2 w-1/6">
+      <div className="flex flex-col mx-2 w-1/3 lg:w-1/6">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>Add Friend</AccordionTrigger>
@@ -160,7 +166,7 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src={friend.imgUrl ? friend.imgUrl : `https://github.com/shadcn.png`}
+                              src={friend.receiverId === userId ? friend.senderImgUrl! : friend.receiverImgUrl!}
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>
@@ -171,7 +177,7 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src={friend.imgUrl  ? `${friend.imgUrl}` : `https://github.com/shadcn.png`}
+                              src={friend.receiverId === userId ? friend.senderImgUrl! : friend.receiverImgUrl!}
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>
@@ -269,11 +275,15 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        <div className="w-full visible lg:invisible mt-5">
+          <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
+        </div>
       </div>
 
       <DisplayMessages selectedFriend={selectedFriend} userId={user.id} />
-
-      <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
+      <div className="w-0 lg:w-1/6 invisible lg:visible">
+        <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
+      </div>
     </div>
   );
 }

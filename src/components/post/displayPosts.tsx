@@ -1,16 +1,16 @@
 "use client"
-import { Link } from "lucide-react";
+import Link from "next/link";
 import { api } from "~/utils/trpc";
 
 export default function DisplayPosts() {
   const {data: campaignPosts} = api.queryCampaignPosts.useQuery()
 
   return (
-    <>
-      <div className="grid grid-cols-1 gap-3 p-3 items-center lg:grid-cols-2 md:gap-6 md:p-6 2xl:grid-cols-3 ">
+    <div className="w-full">
+      <div className="grid grid-cols-1 gap-3 p-3 items-center lg:grid-cols-2 md:gap-6 md:p-6 2xl:grid-cols-3">
         {campaignPosts?.map((post) => (
-          <Link className="" key={post.id} href={`/post/${post.id}`}>
-            <div className="group cursor-pointer overflow-hidden rounded-lg border border-primary-foreground">
+          <Link className="w-full" key={post.id} href={`/post/${post.id}`}>
+            <div className="group cursor-pointer overflow-hidden rounded-lg border border-primary-foregroun">
               <img
                 className="h-60 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105"
                 src="https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
@@ -35,6 +35,6 @@ export default function DisplayPosts() {
       {campaignPosts?.length === 0 || campaignPosts === null ? (
       <div className="text-white">There seems to be an issue finding any posts...</div>
     ) : (<></>)}
-    </>
+    </div>
   )
 }

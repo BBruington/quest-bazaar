@@ -3,17 +3,19 @@ export interface Message {
   content: string;
   senderId: string;
   recipientId: string;
-  sentAt: Date; 
+  sentAt: Date;
 }
-export interface SelectedFriend {
-    id: string;
-    status: string;
-    receiverName: string;
-    senderName: string;
-    senderId: string;
-    receiverId: string;
-    createdAt: string;
-    updatedAt: string;
+export interface SelectedFriendType {
+  id: string;
+  status: string;
+  receiverName: string;
+  senderName: string;
+  senderId: string;
+  receiverId: string;
+  senderImgUrl: string | null;
+  receiverImgUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface MyMessagesProps {
