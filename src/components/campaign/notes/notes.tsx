@@ -13,9 +13,15 @@ const NotesPage = (props: {campaignData: Campaign, campaignNotes: CampaignNote[]
   if(campaignNotes === undefined || privateNotesData === undefined) return <div>failed to load campaign notes</div>
 
   const handleNoteClick = (noteId: string): CampaignNote | boolean=> {
-    const selected = campaignNotes.find((note) => note.id === noteId);
-    setSelectedNote(selected);
-    if(selected) return selected;
+    if( privateNotes === false) {
+      const selected = campaignNotes.find((note) => note.id === noteId);
+      setSelectedNote(selected);
+      if(selected) return selected;
+    } else {
+      const selected = privateNotesData.find((note) => note.id === noteId);
+      setSelectedNote(selected)
+      if(selected) return selected;
+    }
     return false;
   };
 

@@ -17,12 +17,20 @@ const NoteList = (props: {
   const utils = api.useContext();
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignNotes.invalidate();
+      if(privateNotes === false) {
+        await utils.queryCampaignNotes.invalidate();
+      } else {
+        await utils.queryCampaignPrivateNotes.invalidate();
+      }
     },
   });
   const deleteNote = api.deleteCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignNotes.invalidate();
+      if(privateNotes === false) {
+        await utils.queryCampaignNotes.invalidate();
+      } else {
+        await utils.queryCampaignPrivateNotes.invalidate();
+      }
     },
   });
   return (
@@ -60,25 +68,45 @@ const NoteList = (props: {
         </div>
       </div>
       <ul className="mt-1 w-full space-y-3 text-center">
-        {notes.map((note) => (
-          <React.Fragment key={note.id}>
-            <div
-              className="hover:cursor-pointer hover:bg-slate-800"
-              onClick={() => onNoteClick(note.id)}
-            >
-              <li key={note.id} className="text-lg text-white">
-                {note.title}
-              </li>
-              <li className="text-xs text-white">
-                Last Modified:{" "}
-                {new Date(note.updatedAt).toLocaleDateString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </li>
-            </div>
-          </React.Fragment>
-        ))}
+        {privateNotes ? privateNotesData.map((note) => (
+            <React.Fragment key={note.id}>
+              <div
+                className="hover:cursor-pointer hover:bg-slate-800"
+                onClick={() => onNoteClick(note.id)}
+              >
+                <li key={note.id} className="text-lg text-white">
+                  {note.title}
+                </li>
+                <li className="text-xs text-white">
+                  Last Modified:{" "}
+                  {new Date(note.updatedAt).toLocaleDateString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </li>
+              </div>
+            </React.Fragment>
+          )) :
+          notes.map((note) => (
+            <React.Fragment key={note.id}>
+              <div
+                className="hover:cursor-pointer hover:bg-slate-800"
+                onClick={() => onNoteClick(note.id)}
+              >
+                <li key={note.id} className="text-lg text-white">
+                  {note.title}
+                </li>
+                <li className="text-xs text-white">
+                  Last Modified:{" "}
+                  {new Date(note.updatedAt).toLocaleDateString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </li>
+              </div>
+            </React.Fragment>
+          ))
+        }
       </ul>
     </div>
   );

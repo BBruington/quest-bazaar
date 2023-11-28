@@ -21,7 +21,11 @@ const NoteViewer = (props: {
   }, [note]);
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
-      await utils.queryCampaignNotes.invalidate();
+      if(privateNotes === false) {
+        await utils.queryCampaignNotes.invalidate();
+      } else {
+        await utils.queryCampaignPrivateNotes.invalidate();
+      }
     },
   });
   const handleSaveNote = () => {

@@ -422,6 +422,7 @@ export const appRouter = t.router({
         const notes = await prisma.campaignNote.findMany({
           where: {
             campaignId: input.campaignId,
+            private: false
           },
         });
         return notes;
