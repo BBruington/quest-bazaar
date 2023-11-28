@@ -9,9 +9,9 @@ import { Button } from "../../ui/button";
 const NoteViewer = (props: {
   note: CampaignNote | undefined;
   campaignData: Campaign;
-  showPublicNotes: boolean
+  privateNotes: boolean
 }) => {
-  const { note, campaignData, showPublicNotes } = props;
+  const { note, campaignData, privateNotes } = props;
   const utils = api.useContext();
   const [campaignNote, setCampaigNote] = useState(note);
   const [editMode, setEditmode] = useState(false);

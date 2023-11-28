@@ -9,9 +9,9 @@ const NoteList = (props: {
   onNoteClick: (noteId: string) => CampaignNote | boolean;
   campaignData: Campaign;
   note: CampaignNote | undefined;
-  showPublicNotes: boolean
+  privateNotes: boolean
 }) => {
-  const { notes, onNoteClick, campaignData, note, showPublicNotes } = props;
+  const { notes, onNoteClick, campaignData, note, privateNotes } = props;
   const utils = api.useContext();
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {

@@ -432,7 +432,7 @@ export const appRouter = t.router({
       z.object({
         receiverName: z.string(),
         senderName: z.string(),
-        id: z.string(),
+        userId: z.string(),
       })
     )
     .mutation(async ({ input }) => {
@@ -450,13 +450,27 @@ export const appRouter = t.router({
           console.log("failed to find friend");
           return false;
         }
+        const sender = await prisma.user.findUnique({
+          where: {
+            clerkId: input.userId,
+          },
+          select: {
+            clerkId: true,
+            imgUrl: true,
+          },
+        });
+        if (sender === null) {
+          console.log("failed to find friend");
+          return false;
+        }
         const pendingFriend = await prisma.friendship.create({
           data: {
             receiverId: recipient.clerkId,
             receiverName: input.receiverName,
-            imgUrl: recipient.imgUrl,
-            senderId: input.id,
+            receiverImgUrl: recipient.imgUrl,
+            senderId: input.userId,
             senderName: input.senderName,
+            senderImgUrl: sender.imgUrl,
             status: "PENDING",
           },
         });

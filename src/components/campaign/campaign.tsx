@@ -32,7 +32,7 @@ export default function CampaignComponent(props: {
   userId: string;
 }) {
   const { campaignData, campaignPlayers, userId } = props;
-  const [showPublicNotes, setShowPublicNotes] = useState(false);
+  const [privateNotes, setPrivateNotes] = useState(false)
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
@@ -182,7 +182,7 @@ export default function CampaignComponent(props: {
         <div className="w-full">
           {campaignNotes !== undefined && (
             <NotesPage
-              showPublicNotes={showPublicNotes}
+              privateNotes={privateNotes}
               campaignData={campaignData}
               campaignNotes={campaignNotes}
             />
