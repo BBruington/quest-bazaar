@@ -9,9 +9,10 @@ import { Button } from "../../ui/button";
 const NoteViewer = (props: {
   note: CampaignNote | undefined;
   campaignData: Campaign;
-  privateNotes: boolean
+  privateNotes: boolean;
+  userId: string;
 }) => {
-  const { note, campaignData, privateNotes } = props;
+  const { note, campaignData, privateNotes, userId } = props;
   const utils = api.useContext();
   const [campaignNote, setCampaigNote] = useState(note);
   const [editMode, setEditmode] = useState(false);
@@ -30,6 +31,8 @@ const NoteViewer = (props: {
     ) {
       upsertNote.mutate({
         id: campaignNote.id,
+        userId: userId,
+        private: privateNotes ? true : false,
         campaignId: campaignData.id,
         title: campaignNote.title,
         content: campaignNote.content,

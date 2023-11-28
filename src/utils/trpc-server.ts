@@ -351,6 +351,8 @@ export const appRouter = t.router({
     .input(
       z.object({
         id: z.string().optional(),
+        userId: z.string(),
+        private: z.boolean(),
         campaignId: z.string(),
         title: z.string(),
         content: z.string(),
@@ -366,6 +368,8 @@ export const appRouter = t.router({
           content: input.content,
         },
         create: {
+          userId: input.userId,
+          private: input.private,
           campaignId: input.campaignId,
           title: input.title,
           content: input.content,
@@ -391,6 +395,21 @@ export const appRouter = t.router({
         }
       }
     }),
+
+  queryCampaignPrivateNotes: t.procedure.input(z.object({ campaignId: z.string(), userId: z.string()})).query(async ({input}) => {
+    try {
+      const myNotes = await prisma.campaignNote.findMany({
+        where: {
+          campaignId: input.campaignId,
+          userId: input.userId,
+          private: true
+        }
+      })
+      return myNotes
+    } catch (e) {
+      console.error(e)
+    }
+  }),
 
   queryCampaignNotes: t.procedure
     .input(

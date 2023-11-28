@@ -45,7 +45,7 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
   return (
     <>
       {loadingChat ? (
-        <div className="flex h-5/6 w-4/6 flex-col self-center lg:self-start rounded-md bg-accent-foreground p-2 lg:w-5/6">
+        <div className="flex h-5/6 w-5/6 lg:w-4/6 flex-col self-center lg:self-start rounded-md bg-accent-foreground p-2">
           <div className="mt-auto">
             <div className="bg-accent-foreground p-2">
               <div className="flex justify-end text-right">
@@ -68,7 +68,7 @@ export default function CampaignChat(props: { campaignProps: Campaign }) {
           </div>
         </div>
       ) : (
-        <div className="flex h-5/6 w-4/6 flex-col self-center lg:self-start rounded-md bg-accent-foreground p-2 lg:w-4/6">
+        <div className="flex h-5/6 w-5/6 lg:w-4/6 flex-col self-center lg:self-start rounded-md bg-accent-foreground p-2">
           <div className="mt-auto">
             {campaignMessages.map((message) => (
               <div key={message.id} className="bg-accent-foreground p-2 mb-1">

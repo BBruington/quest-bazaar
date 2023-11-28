@@ -135,7 +135,7 @@ model CampaignNote {
   id         String   @id @default(cuid())
   campaignId String
   userId     String?
-  public     Boolean?
+  private     Boolean?
   title      String
   content    String
   createdAt  DateTime @default(now())

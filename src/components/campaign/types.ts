@@ -14,7 +14,9 @@ export interface Players {
   email: string;
   id: string;
   username: string | null;
+  imgUrl: string;
   clerkId: string;
   createdAt: string;
   updatedAt: string;
-} []
+}
+[];

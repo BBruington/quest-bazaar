@@ -90,7 +90,11 @@ export default function CampaignComponent(props: {
           <AccordionItem value="item-3">
             <AccordionTrigger className="justify-center lg:justify-between">DM</AccordionTrigger>
             <AccordionContent>
-              <div>
+              <div className="flex items-center space-x-6 justify-center lg:justify-start">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
                 <span>{campaignData.dmName}</span>
               </div>
             </AccordionContent>
@@ -100,8 +104,12 @@ export default function CampaignComponent(props: {
             <AccordionContent>
               {campaignPlayers !== null ? (
                 campaignPlayers?.map((player) => (
-                  <div className="mb-2" key={player.id}>
-                    {player.username}
+                  <div className="mb-2 flex space-x-6 items-center justify-center lg:justify-start" key={player.id}>
+                    <Avatar>
+                      <AvatarImage src={player.imgUrl ? player.imgUrl : "https://github.com/shadcn.png"} alt="@shadcn" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <span>{player.username}</span>
                   </div>
                 ))
               ) : (
@@ -114,19 +122,31 @@ export default function CampaignComponent(props: {
             <AccordionContent>
               <div className="flex justify-center space-x-5 lg:justify-around">
                 <Button
-                  className="py-3 text-white hover:underline w-40"
-                  onClick={() =>
+                  className="py-3 text-sm text-white hover:underline h-8 w-36"
+                  onClick={() => {
+                    setPrivateNotes(false)
                     setUiToggle({
                       editNotes: true,
                       posts: false,
                       schedules: false,
                       chat: false,
-                    })
+                    })}
                   }
                 >
                   Public Notes
                 </Button>
-                <Button className="py-3 text-white hover:underline w-40">
+                <Button  
+                  className="py-3 text-sm text-white hover:underline h-8 w-36"
+                  onClick={() => {
+                    setPrivateNotes(true)
+                    setUiToggle({
+                      editNotes: true,
+                      posts: false,
+                      schedules: false,
+                      chat: false,
+                    })}
+                  }
+                  >
                   Personal Notes
                 </Button>
               </div>
@@ -137,17 +157,20 @@ export default function CampaignComponent(props: {
             <AccordionContent>
               <div className="space-y-3">
                 <AlertDialog>
-                  <AlertDialogTrigger
-                    disabled={userId !== campaignData.dmUserId}
-                  >
-                    <Button
-                      variant="destructive"
+                  <div className="flex justify-center space-x-5">
+                    <AlertDialogTrigger
                       disabled={userId !== campaignData.dmUserId}
-                      className="h-8"
                     >
-                      Delete
-                    </Button>
-                  </AlertDialogTrigger>
+                        <Button
+                          variant="destructive"
+                          disabled={userId !== campaignData.dmUserId}
+                          className="h-8 w-36"
+                        >
+                          Delete
+                        </Button>
+                    </AlertDialogTrigger>
+                    <Button disabled={userId !== campaignData.dmUserId} className="h-8 w-36">Create Post</Button>
+                  </div>
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>
@@ -182,6 +205,7 @@ export default function CampaignComponent(props: {
         <div className="w-full">
           {campaignNotes !== undefined && (
             <NotesPage
+              userId={userId}
               privateNotes={privateNotes}
               campaignData={campaignData}
               campaignNotes={campaignNotes}
