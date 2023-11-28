@@ -54,9 +54,9 @@ export default function CampaignComponent(props: {
   if (isLoading) return <div>loading...</div>;
 
   return (
-    <div className="flex h-screen w-screen">
-      <div className="mx-2 basis-1/6">
-        <Accordion type="single" collapsible className="ml-2 w-full">
+    <div className="flex flex-col lg:flex-row h-screen w-screen">
+      <div className="mx-2 basis-1/6 mb-2">
+        <Accordion type="single" collapsible className="ml-2 w-full text-center lg:text-left">
           <AccordionItem value="item-1">
             <button
               className="py-3 text-white hover:underline"
@@ -88,7 +88,7 @@ export default function CampaignComponent(props: {
             </button>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>DM</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">DM</AccordionTrigger>
             <AccordionContent>
               <div>
                 <span>{campaignData.dmName}</span>
@@ -96,7 +96,7 @@ export default function CampaignComponent(props: {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
-            <AccordionTrigger>Players</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">Players</AccordionTrigger>
             <AccordionContent>
               {campaignPlayers !== null ? (
                 campaignPlayers?.map((player) => (
@@ -110,11 +110,11 @@ export default function CampaignComponent(props: {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
-            <AccordionTrigger>Notes</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">Notes</AccordionTrigger>
             <AccordionContent>
-              <div className="flex justify-around">
+              <div className="flex justify-center space-x-5 lg:justify-around">
                 <Button
-                  className="py-3 text-white hover:underline"
+                  className="py-3 text-white hover:underline w-40"
                   onClick={() =>
                     setUiToggle({
                       editNotes: true,
@@ -126,14 +126,14 @@ export default function CampaignComponent(props: {
                 >
                   Public Notes
                 </Button>
-                <Button className="py-3 text-white hover:underline">
+                <Button className="py-3 text-white hover:underline w-40">
                   Personal Notes
                 </Button>
               </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-6">
-            <AccordionTrigger>Campaign</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">Campaign</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
                 <AlertDialog>

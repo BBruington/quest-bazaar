@@ -29,7 +29,7 @@ const NoteList = (props: {
         <h2 className="mt-5 w-full border-b-2 border-slate-600 pb-3 text-center text-xl text-white">
           Notes
         </h2>
-        <div className="my-2 flex justify-center gap-5">
+        <div className="my-2 flex flex-col xl:flex-row items-center justify-center gap-5">
           <Button
             className="w-20"
             onClick={() =>

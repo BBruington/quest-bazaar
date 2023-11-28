@@ -108,7 +108,6 @@ export default function MyMessages(props: { userId: string }) {
       response: requestResponse,
     });
   };
-  console.log(friends)
 
   return (
     <div className="flex h-screen bg-foreground">
