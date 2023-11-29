@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import Navigation from "~/components/navigation";
+import Navigation from "../components/navigation";
 import { TrpcProvider } from "./TrpcProvider";
 import "../styles/globals.css";
 
