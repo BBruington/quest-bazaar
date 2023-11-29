@@ -4,6 +4,6 @@ export interface Campaign {
     description: string;
     password: string | null;
     dmUserId: string | null;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date | string;
+    updatedAt: Date | string;
 }

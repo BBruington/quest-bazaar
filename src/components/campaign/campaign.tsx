@@ -7,12 +7,14 @@ import { Button } from "../ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
 import NotesPage from "../../components/campaign/notes/notes";
+import PostCreator from "~/app/post/create";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,7 +34,7 @@ export default function CampaignComponent(props: {
   userId: string;
 }) {
   const { campaignData, campaignPlayers, userId } = props;
-  const [privateNotes, setPrivateNotes] = useState(false)
+  const [privateNotes, setPrivateNotes] = useState(false);
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
@@ -54,9 +56,13 @@ export default function CampaignComponent(props: {
   if (isLoading) return <div>loading...</div>;
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen w-screen">
-      <div className="mx-2 basis-1/6 mb-2">
-        <Accordion type="single" collapsible className="ml-2 w-full text-center lg:text-left">
+    <div className="flex h-screen w-screen flex-col lg:flex-row">
+      <div className="mx-2 mb-2 basis-1/6">
+        <Accordion
+          type="single"
+          collapsible
+          className="ml-2 w-full text-center lg:text-left"
+        >
           <AccordionItem value="item-1">
             <button
               className="py-3 text-white hover:underline"
@@ -88,11 +94,16 @@ export default function CampaignComponent(props: {
             </button>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger className="justify-center lg:justify-between">DM</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">
+              DM
+            </AccordionTrigger>
             <AccordionContent>
-              <div className="flex items-center space-x-6 justify-center lg:justify-start">
+              <div className="flex items-center justify-center space-x-6 lg:justify-start">
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <span>{campaignData.dmName}</span>
@@ -100,13 +111,25 @@ export default function CampaignComponent(props: {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
-            <AccordionTrigger className="justify-center lg:justify-between">Players</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">
+              Players
+            </AccordionTrigger>
             <AccordionContent>
               {campaignPlayers !== null ? (
                 campaignPlayers?.map((player) => (
-                  <div className="mb-2 flex space-x-6 items-center justify-center lg:justify-start" key={player.id}>
+                  <div
+                    className="mb-2 flex items-center justify-center space-x-6 lg:justify-start"
+                    key={player.id}
+                  >
                     <Avatar>
-                      <AvatarImage src={player.imgUrl ? player.imgUrl : "https://github.com/shadcn.png"} alt="@shadcn" />
+                      <AvatarImage
+                        src={
+                          player.imgUrl
+                            ? player.imgUrl
+                            : "https://github.com/shadcn.png"
+                        }
+                        alt="@shadcn"
+                      />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <span>{player.username}</span>
@@ -118,42 +141,46 @@ export default function CampaignComponent(props: {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
-            <AccordionTrigger className="justify-center lg:justify-between">Notes</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">
+              Notes
+            </AccordionTrigger>
             <AccordionContent>
               <div className="flex justify-center space-x-5 lg:justify-around">
                 <Button
-                  className="py-3 text-sm text-white hover:underline h-8 w-36"
+                  className="h-8 w-36 py-3 text-sm text-white hover:underline"
                   onClick={() => {
-                    setPrivateNotes(false)
+                    setPrivateNotes(false);
                     setUiToggle({
                       editNotes: true,
                       posts: false,
                       schedules: false,
                       chat: false,
-                    })}
-                  }
+                    });
+                  }}
                 >
                   Public Notes
                 </Button>
-                <Button  
-                  className="py-3 text-sm text-white hover:underline h-8 w-36"
+                <Button
+                  className="h-8 w-36 py-3 text-sm text-white hover:underline"
                   onClick={() => {
-                    setPrivateNotes(true)
+                    setPrivateNotes(true);
                     setUiToggle({
                       editNotes: true,
                       posts: false,
                       schedules: false,
                       chat: false,
-                    })}
-                  }
-                  >
+                    });
+                  }}
+                >
                   Personal Notes
                 </Button>
               </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-6">
-            <AccordionTrigger className="justify-center lg:justify-between">Campaign</AccordionTrigger>
+            <AccordionTrigger className="justify-center lg:justify-between">
+              Campaign
+            </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
                 <AlertDialog>
@@ -161,15 +188,31 @@ export default function CampaignComponent(props: {
                     <AlertDialogTrigger
                       disabled={userId !== campaignData.dmUserId}
                     >
+                      <Button
+                        variant="destructive"
+                        disabled={userId !== campaignData.dmUserId}
+                        className="h-8 w-36"
+                      >
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <Dialog>
+                      <DialogTrigger
+                        className="m-0"
+                        disabled={userId !== campaignData.dmUserId}
+                        asChild
+                      >
                         <Button
-                          variant="destructive"
                           disabled={userId !== campaignData.dmUserId}
                           className="h-8 w-36"
                         >
-                          Delete
+                          Create Post
                         </Button>
-                    </AlertDialogTrigger>
-                    <Button disabled={userId !== campaignData.dmUserId} className="h-8 w-36">Create Post</Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-h-[1000px] bg-black sm:max-w-[1200px]">
+                        <PostCreator />
+                      </DialogContent>
+                    </Dialog>
                   </div>
                   <AlertDialogContent>
                     <AlertDialogHeader>
