@@ -290,6 +290,38 @@ export const appRouter = t.router({
       });
     }),
 
+  requestInviteToCampaign: t.procedure.input(z.object({userId: z.string(), campaignId: z.string()})).mutation(async ({input}) => {
+    try {
+      const campaign = await prisma.campaign.findUnique({
+        where: { id: input.campaignId },
+        include: { invitedPlayers: true, players: true }, // Include invitedPlayers relation
+      });
+      if (!campaign) {
+        throw new Error("Campaign not found");
+      }
+      if (
+        campaign.players.find((player) => player.clerkId === input.userId)
+      ) {
+        return "ALREADY_PLAYER";
+      }
+      const updatedCampaign = await prisma.campaign.update({
+        where: {
+          id: input.campaignId,
+        },
+        data: {
+          invitedPlayers: {
+            connect: {
+              clerkId: input.userId,
+            },
+          },
+        },
+      });
+      return updatedCampaign;
+    } catch (error) {
+      console.error("error: ", error);
+    }
+  }),
+
   inviteToCampaign: t.procedure
     .input(
       z.object({
@@ -396,20 +428,22 @@ export const appRouter = t.router({
       }
     }),
 
-  queryCampaignPrivateNotes: t.procedure.input(z.object({ campaignId: z.string(), userId: z.string()})).query(async ({input}) => {
-    try {
-      const myNotes = await prisma.campaignNote.findMany({
-        where: {
-          campaignId: input.campaignId,
-          userId: input.userId,
-          private: true
-        }
-      })
-      return myNotes
-    } catch (e) {
-      console.error(e)
-    }
-  }),
+  queryCampaignPrivateNotes: t.procedure
+    .input(z.object({ campaignId: z.string(), userId: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        const myNotes = await prisma.campaignNote.findMany({
+          where: {
+            campaignId: input.campaignId,
+            userId: input.userId,
+            private: true,
+          },
+        });
+        return myNotes;
+      } catch (e) {
+        console.error(e);
+      }
+    }),
 
   queryCampaignNotes: t.procedure
     .input(
@@ -422,7 +456,7 @@ export const appRouter = t.router({
         const notes = await prisma.campaignNote.findMany({
           where: {
             campaignId: input.campaignId,
-            private: false
+            private: false,
           },
         });
         return notes;
@@ -431,21 +465,38 @@ export const appRouter = t.router({
       }
     }),
 
-  queryCampaignPosts: t.procedure
-    .query(async () => {
-      try {
-        const posts = await prisma.post.findMany({
-          include: {
-            comments: true,
-            likes: true,
-          },
-        });
-        return posts;
-      } catch (e) {
-        console.error(e);
-        return null;
-      }
-    }),
+  queryCampaignPosts: t.procedure.query(async () => {
+    try {
+      const posts = await prisma.post.findMany({
+        include: {
+          comments: true,
+          likes: true,
+        },
+      });
+      return posts;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }),
+
+  querySinglePost: t.procedure.input(z.object({postId: z.string()})).query(async ({input}) => {
+    try {
+      const post = await prisma.post.findUnique({
+        where: {
+          id: input.postId
+        },
+        include: {
+          comments: true,
+          likes: true,
+        },
+      });
+      return post;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }),
 
   addFriend: t.procedure
     .input(
