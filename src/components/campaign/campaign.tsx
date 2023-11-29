@@ -210,7 +210,7 @@ export default function CampaignComponent(props: {
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-h-[1000px] bg-black sm:max-w-[1200px]">
-                        <PostCreator />
+                        <PostCreator campaignId={campaignData.id}/>
                       </DialogContent>
                     </Dialog>
                   </div>

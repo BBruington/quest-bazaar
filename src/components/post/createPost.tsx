@@ -10,16 +10,19 @@ import { Label } from "~/components/ui/label";
 export default function CreatePostComponent(props: {
   userId: string;
   username: string | undefined;
+  campaignId: string
 }) {
-  const { userId, username } = props;
+  const { userId, username, campaignId } = props;
   const router = useRouter();
   const [imageFile, setImageFile] = useState<string | undefined>();
   const [postProps, setPostProps] = useState({
-    name: "",
+    title: "",
     description: "",
-    friends: [{ id: "", name: "" }],
+    body: "",
+    players: 0,
+    startingLevel: 1,
+    finishingLevel: 1,
   });
-  const [friends, setFriends] = useState([{ name: "", id: "" }]);
 
   const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null) {
@@ -37,24 +40,7 @@ export default function CreatePostComponent(props: {
     const { name, value } = e.target;
     setPostProps({ ...postProps, [name]: value });
   };
-
-  type FriendList = {
-    id: string;
-    name: string;
-  };
-  const inviteFriendToCampaign = (invitedFriend: FriendList) => {
-    if (postProps.friends.find((friend) => friend.id === invitedFriend.id))
-      return;
-    if (
-      postProps.friends[0] !== undefined &&
-      postProps.friends[0].name === ""
-    ) {
-      postProps.friends[0] = invitedFriend;
-    } else {
-      postProps.friends.push(invitedFriend);
-    }
-  };
-  const { mutate } = api.createCampaign.useMutation({
+  const { mutate } = api.createCampaignPost.useMutation({
     onSuccess: () => {
       void router.push(`/myCampaigns`);
     },
@@ -63,28 +49,36 @@ export default function CreatePostComponent(props: {
     },
   });
 
+  // campaignId: input.campaignId,
+  // userId: input.userId,
+  // players: input.players,
+  // startingLevel: input.startingLevel,
+  // finishingLevel: input.finishingLevel,
+  // title: input.title,
+  // description: input.description,
+  // author: input.author,
+  // mainImage: input.mainImage,
+  // body: input.body,
+
   const handleCreatePost = () => {
-    if (postProps.name !== "" && postProps.description !== "") {
+    if (postProps.title !== "" && postProps.description !== "") {
       mutate({
-        id: userId,
-        imageUrl: imageFile ? imageFile : "",
-        name: postProps.name,
+        userId: userId,
+        campaignId,
+        players: postProps.players,
+        startingLevel: postProps.startingLevel,
+        finishingLevel: postProps.finishingLevel,
+        title: postProps.title,
         description: postProps.description,
-        friendsIds:
-          postProps.friends[0]?.id === "" ? undefined : postProps.friends,
+        author: username!,
+        body: postProps.body,
+        mainImage: imageFile ? imageFile : "",
       });
     }
   };
 
   return (
-    //   players        Int?
-    // startingLevel  Int?
-    // finishingLevel Int?
-    // title          String
-    // description    String
-    // author         String
-    // mainImage      String
-    // body           String
+   
     <div className="flex h-[600px] max-h-[1200px] w-full flex-col bg-black lg:flex-row">
       <div className="flex w-full flex-col">
         <div className="mx-2">
@@ -96,7 +90,7 @@ export default function CreatePostComponent(props: {
             type="text"
             id="name"
             name="name"
-            value={postProps.name}
+            value={postProps.title}
             onChange={handleChange}
           />
         </div>
@@ -120,7 +114,7 @@ export default function CreatePostComponent(props: {
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
             id="description"
             name="description"
-            value={postProps.description}
+            value={postProps.body}
             onChange={handleChange}
           />
         </div>
@@ -155,8 +149,8 @@ export default function CreatePostComponent(props: {
                 type="number"
                 min="1"
                 max="20"
-                id="imageUrl"
-                value={imageFile ? imageFile : undefined}
+                id="startingLevel"
+                value={postProps.startingLevel}
                 onChange={handleChange}
               />
             </div>
@@ -167,8 +161,8 @@ export default function CreatePostComponent(props: {
                 type="number"
                 min="1"
                 max="20"
-                id="imageUrl"
-                value={imageFile ? imageFile : undefined}
+                id="finishingLevel"
+                value={postProps.finishingLevel}
                 onChange={handleChange}
               />
             </div>
@@ -177,7 +171,8 @@ export default function CreatePostComponent(props: {
               <Input
                 className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
                 type="number"
-                id="imageUrl"
+                id="players"
+                value={postProps.players}
                 onChange={handleChange}
               />
             </div>

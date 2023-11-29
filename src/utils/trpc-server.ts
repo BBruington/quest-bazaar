@@ -290,37 +290,39 @@ export const appRouter = t.router({
       });
     }),
 
-  requestInviteToCampaign: t.procedure.input(z.object({userId: z.string(), campaignId: z.string()})).mutation(async ({input}) => {
-    try {
-      const campaign = await prisma.campaign.findUnique({
-        where: { id: input.campaignId },
-        include: { invitedPlayers: true, players: true }, // Include invitedPlayers relation
-      });
-      if (!campaign) {
-        throw new Error("Campaign not found");
-      }
-      if (
-        campaign.players.find((player) => player.clerkId === input.userId)
-      ) {
-        return "ALREADY_PLAYER";
-      }
-      const updatedCampaign = await prisma.campaign.update({
-        where: {
-          id: input.campaignId,
-        },
-        data: {
-          invitedPlayers: {
-            connect: {
-              clerkId: input.userId,
+  requestInviteToCampaign: t.procedure
+    .input(z.object({ userId: z.string(), campaignId: z.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const campaign = await prisma.campaign.findUnique({
+          where: { id: input.campaignId },
+          include: { invitedPlayers: true, players: true }, // Include invitedPlayers relation
+        });
+        if (!campaign) {
+          throw new Error("Campaign not found");
+        }
+        if (
+          campaign.players.find((player) => player.clerkId === input.userId)
+        ) {
+          return "ALREADY_PLAYER";
+        }
+        const updatedCampaign = await prisma.campaign.update({
+          where: {
+            id: input.campaignId,
+          },
+          data: {
+            invitedPlayers: {
+              connect: {
+                clerkId: input.userId,
+              },
             },
           },
-        },
-      });
-      return updatedCampaign;
-    } catch (error) {
-      console.error("error: ", error);
-    }
-  }),
+        });
+        return updatedCampaign;
+      } catch (error) {
+        console.error("error: ", error);
+      }
+    }),
 
   inviteToCampaign: t.procedure
     .input(
@@ -464,6 +466,67 @@ export const appRouter = t.router({
         console.error("error", e);
       }
     }),
+  // userId         String
+  // players        Int?
+  // startingLevel  Int?
+  // finishingLevel Int?
+  // title          String
+  // description    String
+  // author         String
+  // mainImage      String
+  // body           String
+  // campaignId     String
+
+  createCampaignPost: t.procedure
+    .input(
+      z.object({
+        userId: z.string(),
+        campaignId: z.string(),
+        players: z.number(),
+        startingLevel: z.number(),
+        finishingLevel: z.number(),
+        title: z.string(),
+        description: z.string(),
+        author: z.string(),
+        mainImage: z.string(),
+        body: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const post = await prisma.post.upsert({
+          where: {
+            id: "123",
+            // campaignId: input.campaignId
+          },
+          update: {
+            players: input.players,
+            startingLevel: input.startingLevel,
+            finishingLevel: input.finishingLevel,
+            title: input.title,
+            description: input.description,
+            author: input.author,
+            mainImage: input.mainImage,
+            body: input.body,
+          },
+          create: {
+            campaignId: input.campaignId,
+            userId: input.userId,
+            players: input.players,
+            startingLevel: input.startingLevel,
+            finishingLevel: input.finishingLevel,
+            title: input.title,
+            description: input.description,
+            author: input.author,
+            mainImage: input.mainImage,
+            body: input.body,
+          },
+        });
+        return post;
+      } catch (e) {
+        console.error(e);
+      }
+    }),
 
   queryCampaignPosts: t.procedure.query(async () => {
     try {
@@ -480,23 +543,25 @@ export const appRouter = t.router({
     }
   }),
 
-  querySinglePost: t.procedure.input(z.object({postId: z.string()})).query(async ({input}) => {
-    try {
-      const post = await prisma.post.findUnique({
-        where: {
-          id: input.postId
-        },
-        include: {
-          comments: true,
-          likes: true,
-        },
-      });
-      return post;
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
-  }),
+  querySinglePost: t.procedure
+    .input(z.object({ postId: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        const post = await prisma.post.findUnique({
+          where: {
+            id: input.postId,
+          },
+          include: {
+            comments: true,
+            likes: true,
+          },
+        });
+        return post;
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    }),
 
   addFriend: t.procedure
     .input(
