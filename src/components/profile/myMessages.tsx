@@ -1,13 +1,13 @@
 "use client";
 import type { SelectedFriendType } from "~/app/types/Message";
-import DisplayMessages from "./profile/displayMessages";
-import SelectedFriend from "./profile/selectedFriend";
+import DisplayMessages from "./displayMessages";
+import SelectedFriend from "./selectedFriend";
 import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import type { ChangeEvent } from "react";
 import React from "react";
 import {
@@ -15,7 +15,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./ui/accordion";
+} from "../ui/accordion";
 
 export default function MyMessages(props: { userId: string }) {
   const { userId } = props;
@@ -81,7 +81,7 @@ export default function MyMessages(props: { userId: string }) {
   const handleAddFriend = (friendName: string) => {
     sendAddFriendRequest.mutate({
       receiverName: friendName,
-      id: user.id,
+      userId: user.id,
       senderName: user.username!,
     });
     setAddFriendInput("");
@@ -110,8 +110,8 @@ export default function MyMessages(props: { userId: string }) {
   };
 
   return (
-    <div className="flex h-screen bg-foreground">
-      <div className="flex flex-col mx-2 w-1/3 lg:w-1/6">
+    <div className="flex flex-col sm:flex-row h-screen bg-foreground">
+      <div className="flex flex-col mx-2 w-full sm:w-1/3 lg:w-1/6">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>Add Friend</AccordionTrigger>
@@ -274,7 +274,7 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <div className="w-full visible lg:invisible mt-5">
+        <div className="flex w-full visible lg:invisible mt-5 ">
           <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
         </div>
       </div>

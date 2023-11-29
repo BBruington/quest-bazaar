@@ -2,19 +2,17 @@
 import type { Post } from "../../app/types/Posts";
 import { api } from "~/utils/trpc";
 import { Button } from "../ui/button";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 
 export default function CampaignPost(props: {postData: Post, userId: string}) {
 
-  const {postData, userId} = props
   const router = useRouter()
+  const {postData, userId} = props
 
-  const requestInviteToCampaign = api.inviteToCampaign.useMutation(
-    {
-      onSuccess: () => router.push('')
-    }
-  )
+  const requestInviteToCampaign = api.inviteToCampaign.useMutation({
+    onSuccess: () => router.push('/')
+  })
 
   const handleInviteToCampaign = () => {
     requestInviteToCampaign.mutate({
@@ -27,9 +25,9 @@ export default function CampaignPost(props: {postData: Post, userId: string}) {
     <div className="flex flex-col bg-accent-foreground w-full justify-center m-5">
       <img
           className="h-40 w-full object-cover"
-          src={"https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
+          src={postData.mainImage ? postData.mainImage : "https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
           }
-          alt=""
+          alt="post main image"
         />
         <article className="mx-auto max-w-3xl p-5">
           <h1 className="mb-3 mt-8 text-slate-300 text-4xl p-2">{postData.title}</h1>
@@ -52,7 +50,9 @@ export default function CampaignPost(props: {postData: Post, userId: string}) {
             </div>
           </div>
           <div className="py-5 mx-2 text-slate-300">{postData.description}</div>
-            <Button onClick={handleInviteToCampaign}>Join</Button>
+          <div className="flex justify-center">
+            <Button className="w-40 h-10 mb-1" onClick={handleInviteToCampaign}>Join</Button>
+          </div>
         </div>
       </div>
 
@@ -61,7 +61,6 @@ export default function CampaignPost(props: {postData: Post, userId: string}) {
           {postData.body}
         </div>
       </div>
-
     </div>
   )
 }

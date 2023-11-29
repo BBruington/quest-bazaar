@@ -1,11 +1,11 @@
 "use-client";
-import type { SelectedFriend } from "~/app/types/Message";
+import type { SelectedFriendType } from "~/app/types/Message";
 import { Input } from "../ui/input";
 import { api } from "~/utils/trpc";
 import { useState } from "react";
 
 export default function DisplayMessages(props: {
-  selectedFriend: SelectedFriend;
+  selectedFriend: SelectedFriendType;
   userId: string;
 }) {
   const [inputValue, setInputValue] = useState("");
@@ -49,7 +49,7 @@ export default function DisplayMessages(props: {
   };
 
   return (
-    <div className="flex h-5/6 w-4/6 flex-col rounded-md bg-accent-foreground overflow-y-auto p-2 lg:w-4/6">
+    <div className="flex h-full w-full sm:w-4/6 flex-col rounded-md bg-accent-foreground overflow-y-auto p-2 lg:w-4/6">
       <div className="mt-auto">
         {friendMessages?.map((message) => (
           <div key={message.id} className="bg-accent-foreground p-2">

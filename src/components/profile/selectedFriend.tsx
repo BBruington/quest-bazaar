@@ -56,29 +56,31 @@ export default function SelectedFriend(props: {
   };
 
   return (
-    <div className="w-full">
+    <div className="flex justify-center items-center w-2/3 sm:w-full m-8 sm:m-0">
       {selectedFriend?.senderName && (
-        <div className="mx-2 flex xl:h-60 h-80 items-center justify-center bg-accent-foreground">
-          <div className="justify-top flex h-4/6 w-5/6 flex-col items-center bg-foreground">
-            <div className="mt-5 text-white">
-              <Avatar>
-                <AvatarImage
-                  className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
-                  src={profilePic ? profilePic : "https://github.com/shadcn.png"}
-                  alt="@shadcn"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+        <div className="mx-2 flex xl:h-60 sm:h-80 h-40 sm:h-50 w-full items-center justify-center bg-accent-foreground">
+          <div className="justify-top flex  h-2/3 sm:h-4/6 w-5/6 sm:flex-col items-center bg-foreground">
+            <div className="flex flex-col items-center">
+              <div className="mt-5 text-white">
+                <Avatar>
+                  <AvatarImage
+                    className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
+                    src={profilePic ? profilePic : "https://github.com/shadcn.png"}
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="mt-1 text-white">
+                {selectedFriend.senderId === userId
+                  ? selectedFriend.receiverName
+                  : selectedFriend.senderName}
+              </div>
             </div>
-            <div className="mt-1 text-white">
-              {selectedFriend.senderId === userId
-                ? selectedFriend.receiverName
-                : selectedFriend.senderName}
-            </div>
-            <div className="mb-5 mt-auto flex flex-col xl:flex-row space-y-2 xl:space-y-0 xl:space-x-2 items-center justify-center">
+            <div className="mb-5 mt-auto flex flex-row sm:flex-col xl:flex-row sm:space-y-2 xl:space-y-0 xl:space-x-2 items-center justify-center">
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Button className="w-20">Invite</Button>
+                  <Button className="w-20 h-8">Invite</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
@@ -112,7 +114,7 @@ export default function SelectedFriend(props: {
               <Button
                 onClick={() => handleFriendRemove()}
                 variant="destructive"
-                className="px-none w-20"
+                className="px-none w-20 h-8"
               >
                 Remove
               </Button>
