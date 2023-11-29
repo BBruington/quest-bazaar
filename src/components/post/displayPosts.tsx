@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link";
-import { api } from "~/utils/trpc";
+import { api } from "../../utils/trpc";
 
 export default function DisplayPosts() {
   const {data: campaignPosts} = api.queryCampaignPosts.useQuery()

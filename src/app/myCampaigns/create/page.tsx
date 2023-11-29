@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import CreateCampaignComponent from "~/components/campaign/creator/createCampaign";
+import CreateCampaignComponent from "../../../components/campaign/creator/createCampaign";
 
 export default function CreateCampaign() {
   const user = useUser()

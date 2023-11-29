@@ -1,8 +1,8 @@
 "use client";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Calendar } from "~/components/ui/calendar";
-import { Button } from "~/components/ui/button";
+import { Calendar } from "../../../components/ui/calendar";
+import { Button } from "../../../components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "~/components/ui/dialog";
-import { api } from "~/utils/trpc";
+} from "../../../components/ui/dialog";
+import { api } from "../../../utils/trpc";
 import Scheduler from "./scheduler";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";

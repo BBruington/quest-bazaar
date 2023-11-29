@@ -3,6 +3,6 @@ export type CampaignNote = {
   campaignId: string;
   title: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }

@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { api } from "~/utils/trpc";
-import type { SelectedFriendType } from "~/app/types/Message";
+import { api } from "../../utils/trpc";
+import type { SelectedFriendType } from "../../app/types/Message";
 
 import {
   DropdownMenu,

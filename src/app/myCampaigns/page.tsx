@@ -1,5 +1,5 @@
 'use client'
-import { api } from "~/utils/trpc"
+import { api } from "../../utils/trpc"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link";
 

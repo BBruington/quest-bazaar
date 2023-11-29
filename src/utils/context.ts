@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'; 
-import { env } from "~/env.mjs";
+import { env } from "../env.mjs";
 /**
  * Creates context for an incoming request
  * @link https://trpc.io/docs/context

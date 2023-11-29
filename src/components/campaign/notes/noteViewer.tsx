@@ -2,7 +2,7 @@
 import type { Campaign } from "../types";
 import { Textarea } from "../../ui/textarea";
 import { useEffect, useState } from "react";
-import { api } from "~/utils/trpc";
+import { api } from "../../../utils/trpc";
 import type { CampaignNote } from "./types";
 import { Button } from "../../ui/button";
 

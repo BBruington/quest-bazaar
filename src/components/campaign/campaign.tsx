@@ -1,12 +1,12 @@
 "use client";
-import { api } from "~/utils/trpc";
+import { api } from "../../utils/trpc";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
-import NotesPage from "~/components/campaign/notes/notes";
+import NotesPage from "../../components/campaign/notes/notes";
 import {
   Accordion,
   AccordionContent,

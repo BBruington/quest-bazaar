@@ -14,8 +14,8 @@ export interface SelectedFriendType {
   receiverId: string;
   senderImgUrl: string | null;
   receiverImgUrl: string | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
 
 export interface MyMessagesProps {

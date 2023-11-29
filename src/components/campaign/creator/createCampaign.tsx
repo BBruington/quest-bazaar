@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { api } from "~/utils/trpc";
+import { api } from "../../../utils/trpc";
 import { useRouter } from "next/navigation";
-import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,8 +12,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { Label } from "~/components/ui/label";
+} from "../../../components/ui/dropdown-menu";
+import { Label } from "../../../components/ui/label";
 
 export default function CreateCampaignComponent(props: {
   userId: string;

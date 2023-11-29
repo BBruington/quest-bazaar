@@ -1,7 +1,7 @@
 "use client";
-import CampaignComponent from "~/components/campaign/campaign";
+import CampaignComponent from "../../../components/campaign/campaign";
 import { useUser } from "@clerk/nextjs";
-import { api } from "~/utils/trpc";
+import { api } from "../../../utils/trpc";
 
 export default function CampaignPage({ params }: { params: { id: string } }) {
   const user = useUser();

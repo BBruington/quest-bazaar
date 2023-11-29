@@ -1,8 +1,8 @@
 "use client";
-import type { SelectedFriendType } from "~/app/types/Message";
+import type { SelectedFriendType } from "../../app/types/Message";
 import DisplayMessages from "./displayMessages";
 import SelectedFriend from "./selectedFriend";
-import { api } from "~/utils/trpc";
+import { api } from "../../utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Input } from "../ui/input";

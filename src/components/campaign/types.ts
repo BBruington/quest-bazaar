@@ -6,8 +6,8 @@ export interface Campaign {
   password: string | null;
   dmUserId: string;
   dmName: string | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
 
 export interface Players {
@@ -16,7 +16,7 @@ export interface Players {
   username: string | null;
   imgUrl: string;
   clerkId: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
 [];
