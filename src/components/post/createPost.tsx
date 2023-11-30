@@ -3,7 +3,6 @@ import { useState } from "react";
 import type { ChangeEvent } from "react";
 import toast, {Toaster} from 'react-hot-toast'
 import { api } from "~/utils/trpc";
-import { useRouter } from "next/navigation";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
@@ -14,7 +13,6 @@ export default function CreatePostComponent(props: {
   campaignId: string;
 }) {
   const { userId, username, campaignId } = props;
-  const router = useRouter();
   const [imageFile, setImageFile] = useState<string | undefined>();
   const [postProps, setPostProps] = useState({
     title: "",

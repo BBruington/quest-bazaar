@@ -7,6 +7,7 @@ import {
   Users,
   Scroll,
   Settings,
+  Loader2
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useRouter } from "next/navigation";
@@ -61,7 +62,7 @@ export default function CampaignComponent(props: {
       console.error(e);
     },
   });
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <div><Loader2 /></div>;
 
   return (
     <div className="flex h-screen w-screen flex-col lg:flex-row">
@@ -220,7 +221,7 @@ export default function CampaignComponent(props: {
                       >
                         <Button
                           disabled={userId !== campaignData.dmUserId}
-                          
+
                           className="h-8 w-36"
                         >
                           Create Post
