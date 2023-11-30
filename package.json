@@ -37,6 +37,7 @@
     "react-day-picker": "^8.8.2",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",
+    "react-hot-toast": "^2.4.1",
     "react-markdown": "^8.0.7",
     "react-time-picker": "^6.5.2",
     "react-uuid": "^2.0.0",

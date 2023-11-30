@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
+import toast, {Toaster} from 'react-hot-toast'
 import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
 import { Input } from "~/components/ui/input";
@@ -43,10 +44,11 @@ export default function CreatePostComponent(props: {
   };
   const { mutate } = api.createCampaignPost.useMutation({
     onSuccess: () => {
-      void router.push(`/`);
+      toast.success("Post Created")
     },
     onError: (e) => {
       console.error(e);
+      toast.error("Failed to Create")
     },
   });
 
@@ -69,6 +71,7 @@ export default function CreatePostComponent(props: {
 
   return (
     <div className="flex h-[600px] max-h-[1200px] w-full flex-col bg-black lg:flex-row">
+      <Toaster position="top-center"/>
       <div className="flex w-full flex-col">
         <div className="mx-2">
           <Label className="text-white" htmlFor="name">
@@ -172,7 +175,7 @@ export default function CreatePostComponent(props: {
             Create Post
           </Button>
         </div>
-      </div>
+      T</div>
     </div>
   );
 }

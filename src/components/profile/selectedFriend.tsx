@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import toast, { Toaster } from "react-hot-toast";
 import { api } from "../../utils/trpc";
 import type { SelectedFriendType } from "../../app/types/Message";
 
@@ -19,20 +20,25 @@ export default function SelectedFriend(props: {
 }) {
   const { selectedFriend, userId } = props;
 
-  const { data: userCampaigns } =
-    api.queryUserCampaigns.useQuery({ id: userId });
+  const { data: userCampaigns } = api.queryUserCampaigns.useQuery({
+    id: userId,
+  });
 
-  const sendCampaignInvite = api.inviteToCampaign.useMutation();
+  const sendCampaignInvite = api.inviteToCampaign.useMutation({
+    onSuccess: () => {
+      toast.success("Invite Sent");
+    },
+  });
   const handleRemoveFriend = api.handleFriendRequest.useMutation();
-  
+
   let profilePic: string;
 
   const findFriendId = (myId: string) => {
     if (myId === selectedFriend.senderId) {
-      profilePic = selectedFriend.receiverImgUrl!
+      profilePic = selectedFriend.receiverImgUrl!;
       return selectedFriend.receiverId;
     }
-    profilePic = selectedFriend.senderImgUrl!
+    profilePic = selectedFriend.senderImgUrl!;
     return selectedFriend.senderId;
   };
 
@@ -56,16 +62,19 @@ export default function SelectedFriend(props: {
   };
 
   return (
-    <div className="flex justify-center items-center w-2/3 sm:w-full m-8 sm:m-0">
+    <div className="m-8 flex w-2/3 items-center justify-center sm:m-0 sm:w-full">
+      <Toaster />
       {selectedFriend?.senderName && (
-        <div className="mx-2 flex xl:h-60 sm:h-80 h-40 sm:h-50 w-full items-center justify-center bg-accent-foreground">
-          <div className="justify-top flex  h-2/3 sm:h-4/6 w-5/6 sm:flex-col items-center bg-foreground">
+        <div className="sm:h-50 mx-2 flex h-40 w-full items-center justify-center bg-accent-foreground sm:h-80 xl:h-60">
+          <div className="justify-top flex  h-2/3 w-5/6 items-center bg-foreground sm:h-4/6 sm:flex-col">
             <div className="flex flex-col items-center">
               <div className="mt-5 text-white">
                 <Avatar>
                   <AvatarImage
                     className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
-                    src={profilePic ? profilePic : "https://github.com/shadcn.png"}
+                    src={
+                      profilePic ? profilePic : "https://github.com/shadcn.png"
+                    }
                     alt="@shadcn"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -77,10 +86,10 @@ export default function SelectedFriend(props: {
                   : selectedFriend.senderName}
               </div>
             </div>
-            <div className="mb-5 mt-auto flex flex-row sm:flex-col xl:flex-row sm:space-y-2 xl:space-y-0 xl:space-x-2 items-center justify-center">
+            <div className="mb-5 mt-auto flex flex-row items-center justify-center sm:flex-col sm:space-y-2 xl:flex-row xl:space-x-2 xl:space-y-0">
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Button className="w-20 h-8">Invite</Button>
+                  <Button className="h-8 w-20">Invite</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
@@ -114,7 +123,7 @@ export default function SelectedFriend(props: {
               <Button
                 onClick={() => handleFriendRemove()}
                 variant="destructive"
-                className="px-none w-20 h-8"
+                className="px-none h-8 w-20"
               >
                 Remove
               </Button>
