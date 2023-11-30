@@ -51,6 +51,11 @@ export default function CreateCampaignComponent(props: {
     id: string;
     name: string;
   };
+  const removeFriend = (friend: number) => {
+    campaignProps.friends.splice(friend, 1)
+    router.refresh()
+  };
+
   const inviteFriendToCampaign = (invitedFriend: FriendList) => {
     if (campaignProps.friends.find((friend) => friend.id === invitedFriend.id))
       return;
@@ -62,6 +67,7 @@ export default function CreateCampaignComponent(props: {
     } else {
       campaignProps.friends.push(invitedFriend);
     }
+    router.refresh()
   };
 
   const findFriendsIds = () => {
@@ -151,9 +157,7 @@ export default function CreateCampaignComponent(props: {
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
             type="text"
             id="imageUrl"
-            value={
-              imageFile ? imageFile : undefined
-            }
+            value={imageFile ? imageFile : undefined}
             onChange={handleChange}
           />
         </div>
@@ -184,10 +188,8 @@ export default function CreateCampaignComponent(props: {
           </DropdownMenu>
         </div>
       </div>
-      <div className="flex flex-col h-full w-full lg:w-1/2 p-3 items-center justify-center">
-        <h1 className="mb-5 w-full text-2xl text-white text-center">
-          Preview
-        </h1>
+      <div className="flex h-full w-full flex-col items-center justify-center p-3 lg:w-1/2">
+        <h1 className="mb-5 w-full text-center text-2xl text-white">Preview</h1>
         <div className="group cursor-pointer items-center overflow-hidden rounded-md border border-primary-foreground lg:w-4/6 xl:w-1/2">
           <img
             className="h-60 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105"
@@ -201,7 +203,11 @@ export default function CreateCampaignComponent(props: {
           <div className="flex justify-between bg-accent-foreground p-5 ">
             <div>
               <p className="text-lg font-bold text-white">
-                {campaignProps.name !== undefined ? campaignProps.name.substring(0, 30) : <></>}
+                {campaignProps.name !== undefined ? (
+                  campaignProps.name.substring(0, 30)
+                ) : (
+                  <></>
+                )}
               </p>
               <div className="flex space-x-5">
                 <p className="flex text-xs text-white">
@@ -209,6 +215,27 @@ export default function CreateCampaignComponent(props: {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="mt-2 flex flex-col items-center text-white">
+          <span className="text-lg font-bold">Friends Invited:</span>
+          <div className="space-x-4">
+            {campaignProps.friends[0]?.name !== "" && campaignProps.friends[0]?.name !== undefined &&
+              campaignProps.friends.map((friend, index) => (
+                <DropdownMenu key={friend.id}>
+                  <DropdownMenuTrigger className="inline-flex h-10 w-40 items-center justify-center rounded-md bg-primary text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                    {friend.name}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-blue-900 ">
+                    <DropdownMenuItem
+                      className=" bg-blue-900 text-white hover:bg-primary-foreground"
+                      onClick={() => removeFriend(index)}
+                    >
+                      Remove
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ))}
           </div>
         </div>
       </div>

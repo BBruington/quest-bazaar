@@ -6,5 +6,10 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <DisplayPosts />;
+  return (
+    <div className="flex flex-col">
+      <h1 className=" self-center text-white text-4xl font-bold">Find the Right Game For You</h1>
+      <DisplayPosts />
+    </div> 
+  )
 }

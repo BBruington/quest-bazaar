@@ -10,7 +10,7 @@ import { Label } from "~/components/ui/label";
 export default function CreatePostComponent(props: {
   userId: string;
   username: string | undefined;
-  campaignId: string
+  campaignId: string;
 }) {
   const { userId, username, campaignId } = props;
   const router = useRouter();
@@ -38,27 +38,17 @@ export default function CreatePostComponent(props: {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    console.log(postProps)
     setPostProps({ ...postProps, [name]: value });
   };
   const { mutate } = api.createCampaignPost.useMutation({
     onSuccess: () => {
-      void router.push(`/myCampaigns`);
+      void router.push(`/`);
     },
     onError: (e) => {
       console.error(e);
     },
   });
-
-  // campaignId: input.campaignId,
-  // userId: input.userId,
-  // players: input.players,
-  // startingLevel: input.startingLevel,
-  // finishingLevel: input.finishingLevel,
-  // title: input.title,
-  // description: input.description,
-  // author: input.author,
-  // mainImage: input.mainImage,
-  // body: input.body,
 
   const handleCreatePost = () => {
     if (postProps.title !== "" && postProps.description !== "") {
@@ -78,7 +68,6 @@ export default function CreatePostComponent(props: {
   };
 
   return (
-   
     <div className="flex h-[600px] max-h-[1200px] w-full flex-col bg-black lg:flex-row">
       <div className="flex w-full flex-col">
         <div className="mx-2">
