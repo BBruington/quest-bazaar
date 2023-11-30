@@ -114,8 +114,8 @@ export default function MyMessages(props: { userId: string }) {
       <div className="mx-2 flex w-full flex-col sm:w-1/3 lg:w-1/6">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger className="flex justify-center hover:text-slate-200">
-              <div className="flex sm:justify-between md:w-1/2">
+            <AccordionTrigger className="flex justify-center sm:justify-start hover:text-slate-200">
+              <div className="flex sm:justify-between sm:w-2/3">
                 <span>Add Friend</span>{" "}
                 <Plus className="invisible sm:visible sm:ml-2" />
               </div>
@@ -154,8 +154,8 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger className="flex justify-center hover:text-slate-200">
-              <div className="flex sm:justify-between md:w-1/2">
+            <AccordionTrigger className="flex justify-center sm:justify-start hover:text-slate-200">
+              <div className="flex sm:justify-between sm:w-2/3">
                 <span>Friends</span>{" "}
                 <User className="invisible sm:visible sm:ml-2" />
               </div>
@@ -213,8 +213,8 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger className="flex justify-center hover:text-slate-200">
-              <div className="flex sm:justify-between md:w-1/2">
+            <AccordionTrigger className="flex justify-center sm:justify-start hover:text-slate-200">
+              <div className="flex sm:justify-between sm:w-2/3">
                 <span>Notifications</span>{" "}
                 <Mail className="invisible sm:visible sm:ml-2" />
               </div>
@@ -335,7 +335,7 @@ export default function MyMessages(props: { userId: string }) {
             <span className="text-white">{selectedFriend.receiverName}</span>
           </div>
         )}
-        <div className="invisible mt-5 flex w-full md:visible lg:invisible h-0">
+        <div className="invisible mt-5 flex w-full md:visible lg:invisible h-0 md:h-60 lg:h-0">
           <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />d
         </div>
       </div>
