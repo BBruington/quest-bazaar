@@ -7,8 +7,8 @@ import {
   Users,
   Scroll,
   Settings,
-  Loader2
 } from "lucide-react";
+import Spinner from "../spinner/spinner";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -62,7 +62,7 @@ export default function CampaignComponent(props: {
       console.error(e);
     },
   });
-  if (isLoading) return <div><Loader2 /></div>;
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="flex h-screen w-screen flex-col lg:flex-row">

@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import Spinner from "../spinner/spinner";
 import { api } from "../../utils/trpc";
 
 export default function DisplayPosts() {
   const { data: campaignPosts, isLoading: loadingPosts } = api.queryCampaignPosts.useQuery();
 
-  if(loadingPosts) return <div className="text-white flex justify-center items-center"><Loader2 className="h-32 w-32 animate-spin"/></div>;
+  if(loadingPosts) return <Spinner />;
 
   return (
     <div className="w-full">

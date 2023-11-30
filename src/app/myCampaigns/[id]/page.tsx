@@ -1,6 +1,6 @@
 "use client";
 import CampaignComponent from "../../../components/campaign/campaign";
-import { Loader2 } from "lucide-react";
+import Spinner from "~/components/spinner/spinner";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../utils/trpc";
 
@@ -11,15 +11,11 @@ export default function CampaignPage({ params }: { params: { id: string } }) {
   });
   if (!user.user?.id)
     return (
-      <div className="flex items-center justify-center text-white">
-        <Loader2 className="h-32 w-32 animate-spin" />
-      </div>
+      <Spinner />
     );
   if (!campaignData)
     return (
-      <div className="flex items-center justify-center text-white">
-        <Loader2 className="h-32 w-32 animate-spin" />
-      </div>
+      <Spinner />
     );
   return (
     <CampaignComponent

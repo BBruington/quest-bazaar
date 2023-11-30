@@ -11,6 +11,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import type { ChangeEvent } from "react";
+import Spinner from "../spinner/spinner";
 import React from "react";
 import {
   Accordion,
@@ -44,8 +45,8 @@ export default function MyMessages(props: { userId: string }) {
       toast.success("Friend Request Sent");
     },
     onError: () => {
-      toast.error("Failed to Send Request")
-    },    
+      toast.error("Failed to Send Request");
+    },
   });
 
   const handleReceivedFriendRequest = api.handleFriendRequest.useMutation({
@@ -68,7 +69,7 @@ export default function MyMessages(props: { userId: string }) {
 
   const { data: receivedInvitedCampaigns } =
     api.queryUserInvitedCampaigns.useQuery({ userId: userId });
-  if (!user) return <div>loading...</div>;
+  if (!user) return <Spinner />;
 
   const pendingFriendRequests = friendRequests?.filter(function (request) {
     return request.status === "PENDING";

@@ -1,6 +1,6 @@
 "use client";
 import { api } from "../../utils/trpc";
-import { Loader2 } from "lucide-react";
+import Spinner from "~/components/spinner/spinner";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ export default function MyCampaigns() {
   const { data, isLoading: campaignsLoading } = api.queryUserCampaigns.useQuery(
     { id: user.id }
   );
-  if (campaignsLoading) return <div className="text-white flex justify-center items-center"><Loader2 className="h-32 w-32 animate-spin"/></div>;
+  if (campaignsLoading) return <Spinner />;
   if (!data) return <div className="text-white">error fetching campaigns</div>;
   return (
     <>
