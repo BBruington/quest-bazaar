@@ -1,5 +1,6 @@
 "use client";
 import type { SelectedFriendType } from "../../app/types/Message";
+import { Mail, User, Plus } from "lucide-react";
 import DisplayMessages from "./displayMessages";
 import SelectedFriend from "./selectedFriend";
 import { api } from "../../utils/trpc";
@@ -51,11 +52,10 @@ export default function MyMessages(props: { userId: string }) {
     },
   });
 
-  
   const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
     id: userId,
   });
-  
+
   const { data: friends } = api.queryMyFriends.useQuery({ id: userId });
 
   const { data: receivedInvitedCampaigns } =
@@ -110,11 +110,16 @@ export default function MyMessages(props: { userId: string }) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row h-screen bg-foreground">
-      <div className="flex flex-col mx-2 w-full sm:w-1/3 lg:w-1/6">
+    <div className="flex h-screen flex-col bg-foreground sm:flex-row">
+      <div className="mx-2 flex w-full flex-col sm:w-1/3 lg:w-1/6">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Add Friend</AccordionTrigger>
+            <AccordionTrigger className="flex justify-center hover:text-slate-200">
+              <div className="flex sm:justify-between md:w-1/2">
+                <span>Add Friend</span>{" "}
+                <Plus className="invisible sm:visible sm:ml-2" />
+              </div>
+            </AccordionTrigger>
             <AccordionContent>
               <div className="flex">
                 <Input
@@ -149,10 +154,19 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger>Friends</AccordionTrigger>
+            <AccordionTrigger className="flex justify-center hover:text-slate-200">
+              <div className="flex sm:justify-between md:w-1/2">
+                <span>Friends</span>{" "}
+                <User className="invisible sm:visible sm:ml-2" />
+              </div>
+            </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col">
-                {!friends || friends.length === 0 ? (<span className="text-slate-400">Empty</span>) : (<></>)}
+                {!friends || friends.length === 0 ? (
+                  <span className="text-slate-400">Empty</span>
+                ) : (
+                  <></>
+                )}
                 {friends?.map((friend) => (
                   <div
                     key={friend.id}
@@ -165,7 +179,11 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src={friend.receiverId === userId ? friend.senderImgUrl! : friend.receiverImgUrl!}
+                              src={
+                                friend.receiverId === userId
+                                  ? friend.senderImgUrl!
+                                  : friend.receiverImgUrl!
+                              }
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>
@@ -176,7 +194,11 @@ export default function MyMessages(props: { userId: string }) {
                         <>
                           <Avatar>
                             <AvatarImage
-                              src={friend.receiverId === userId ? friend.senderImgUrl! : friend.receiverImgUrl!}
+                              src={
+                                friend.receiverId === userId
+                                  ? friend.senderImgUrl!
+                                  : friend.receiverImgUrl!
+                              }
                               alt="@shadcn"
                             />
                             <AvatarFallback>CN</AvatarFallback>
@@ -191,8 +213,11 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>
-              Notifications{" "}
+            <AccordionTrigger className="flex justify-center hover:text-slate-200">
+              <div className="flex sm:justify-between md:w-1/2">
+                <span>Notifications</span>{" "}
+                <Mail className="invisible sm:visible sm:ml-2" />
+              </div>
               <span
                 className={`${
                   notificationsAmount > 0
@@ -205,9 +230,14 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">
-                {receivedInvitedCampaigns && friendRequests && receivedInvitedCampaigns?.length + friendRequests?.length === 0 && (
-                  <span className="text-slate-400">No New Notifications</span>
-                )}
+                {receivedInvitedCampaigns &&
+                  friendRequests &&
+                  receivedInvitedCampaigns?.length + friendRequests?.length ===
+                    0 && (
+                    <span className="flex justify-center text-slate-400">
+                      No New Notifications
+                    </span>
+                  )}
                 {friendRequests?.map((friendRequest) => (
                   <React.Fragment key={friendRequest.id}>
                     <div className="flex border-b border-white pb-3 md:flex-col">
@@ -274,13 +304,44 @@ export default function MyMessages(props: { userId: string }) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <div className="flex w-full visible lg:invisible mt-5 ">
-          <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
+        {selectedFriend.id !== "" && selectedFriend.receiverId === user.id ? (
+          <div className={selectedFriend.id === "" ? "invisible h-0" : "visible mt-8 mb-1 flex justify-center space-x-2 items-center sm:invisible h-0"}>
+            <Avatar className={selectedFriend.id === "" ? "invisible" : ""}>
+              <AvatarImage
+                src={
+                  selectedFriend.receiverId === userId
+                    ? selectedFriend.senderImgUrl!
+                    : selectedFriend.receiverImgUrl!
+                }
+                alt="@shadcn"
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <span className="text-white">{selectedFriend.senderName}</span>
+          </div>
+        ) : (
+          <div className={selectedFriend.id === "" ? "invisible h-0" : "visible mt-8 mb-1 flex justify-center space-x-2 items-center sm:invisible h-0"}>
+            <Avatar>
+              <AvatarImage
+                src={
+                  selectedFriend.receiverId === userId
+                    ? selectedFriend.senderImgUrl!
+                    : selectedFriend.receiverImgUrl!
+                }
+                alt="@shadcn"
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <span className="text-white">{selectedFriend.receiverName}</span>
+          </div>
+        )}
+        <div className="invisible mt-5 flex w-full md:visible lg:invisible h-0">
+          <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />d
         </div>
       </div>
 
       <DisplayMessages selectedFriend={selectedFriend} userId={user.id} />
-      <div className="w-0 lg:w-1/6 invisible lg:visible">
+      <div className="invisible w-0 lg:visible lg:w-1/6">
         <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
       </div>
     </div>

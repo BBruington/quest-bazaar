@@ -51,8 +51,8 @@ export default function CreateCampaignComponent(props: {
     id: string;
     name: string;
   };
-  const removeFriend = (friend: number) => {
-    campaignProps.friends.splice(friend, 1)
+  const removeFriend = (friendIndex: number) => {
+    campaignProps.friends.splice(friendIndex, 1)
     router.refresh()
   };
 

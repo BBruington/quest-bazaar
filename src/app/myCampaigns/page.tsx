@@ -14,16 +14,15 @@ export default function MyCampaigns() {
   return (
     <>
       <h1 className="flex justify-center text-4xl font-bold text-white">
-        Here are Your Current Games
+        Your Current Games
       </h1>
       <div className="h-30 flex justify-around">
         <Link
-          className="my-5 w-1/2 md:w-1/6 whitespace-nowrap rounded-md bg-accent-foreground px-5 py-3 text-center text-white hover:bg-gray-700 lg:py-4"
+          className="my-5 w-1/2 whitespace-nowrap rounded-md bg-blue-800 px-5 py-3 text-center text-white hover:bg-blue-700 md:w-1/6 lg:py-4"
           href={`/myCampaigns/create`}
         >
           Create New
         </Link>
-        {/* <button className="my-5 lg:py-4  bg-accent-foreground text-white py-3 px-5 rounded-md hover:bg-gray-700 whitespace-nowrap w-1/6 text-center hover:disabled" disabled>Join</button> */}
       </div>
       {!campaignsLoading && data.length !== 0 && (
         <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3 ">

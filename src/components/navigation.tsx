@@ -1,7 +1,8 @@
-"use client"; 
+"use client";
 import { UserButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { MessageSquare } from 'lucide-react';
 
 export default function Navigation() {
   const { user } = useUser();
@@ -28,12 +29,11 @@ export default function Navigation() {
         My Campaigns
       </Link>
       <div className="flex items-center space-x-2">
-        {user && <div>{user.username}</div>}
         <Link
-          className="text-primary hover:text-primary-foreground"
+          className="text-primary hover:text-primary-foreground flex"
           href={`/messages`}
         >
-          Messages
+          {user.username} <MessageSquare className="ml-2" />
         </Link>
         <UserButton />
       </div>
