@@ -1,5 +1,13 @@
 "use client";
 import { api } from "../../utils/trpc";
+import {
+  MessageCircle,
+  CalendarDays,
+  User,
+  Users,
+  Scroll,
+  Settings,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -65,7 +73,7 @@ export default function CampaignComponent(props: {
         >
           <AccordionItem value="item-1">
             <button
-              className="py-3 text-white hover:underline"
+              className="flex w-full lg:w-2/3 justify-center lg:justify-between py-2 text-white hover:underline"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -75,12 +83,12 @@ export default function CampaignComponent(props: {
                 })
               }
             >
-              Chat
+              <span>Chat</span> <MessageCircle className="ml-2" />
             </button>
           </AccordionItem>
           <AccordionItem value="item-2">
             <button
-              className="py-3 text-white hover:underline"
+              className="flex w-full lg:w-2/3 justify-center lg:justify-between py-3 text-white hover:underline"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -90,12 +98,14 @@ export default function CampaignComponent(props: {
                 })
               }
             >
-              Calendar
+              <span>Calendar</span> <CalendarDays className="ml-2" />
             </button>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger className="justify-center lg:justify-between">
-              DM
+            <AccordionTrigger className="flex justify-center sm:justify-between">
+              <div className="flex w-full lg:w-2/3 justify-center lg:justify-between text-white hover:underline">
+                <span>DM</span> <User className="ml-2" />
+              </div>
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex items-center justify-center space-x-6 lg:justify-start">
@@ -112,7 +122,9 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-4">
             <AccordionTrigger className="justify-center lg:justify-between">
-              Players
+              <div className="flex lg:w-2/3 justify-between">
+                <span>Players</span> <Users className="ml-2" />
+              </div>
             </AccordionTrigger>
             <AccordionContent>
               {campaignPlayers !== null ? (
@@ -142,7 +154,9 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-5">
             <AccordionTrigger className="justify-center lg:justify-between">
-              Notes
+              <div className="flex lg:w-2/3 justify-between">
+                <span>Notes</span> <Scroll className="ml-2" />
+              </div>
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex justify-center space-x-5 lg:justify-around">
@@ -179,7 +193,9 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-6">
             <AccordionTrigger className="justify-center lg:justify-between">
-              Campaign
+              <div className="flex lg:w-2/3 justify-between">
+                <span>Campaign</span> <Settings className="ml-2" />
+              </div>
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-3">

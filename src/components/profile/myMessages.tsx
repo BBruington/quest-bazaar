@@ -335,7 +335,7 @@ export default function MyMessages(props: { userId: string }) {
             <span className="text-white">{selectedFriend.receiverName}</span>
           </div>
         )}
-        <div className="invisible mt-5 flex w-full md:visible lg:invisible h-0 md:h-60 lg:h-0">
+        <div className="invisible mt-5 flex w-full sm:visible lg:invisible h-0 sm:h-60 lg:h-0">
           <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />d
         </div>
       </div>
