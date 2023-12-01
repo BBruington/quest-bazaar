@@ -1,66 +1,74 @@
-"use client"
-import type { Post } from "~//app/types/Posts";
+"use client";
+import type { Post } from "~/app/types/Posts";
 import { api } from "~/utils/trpc";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 
-
-export default function CampaignPost(props: {postData: Post, userId: string}) {
-
-  const router = useRouter()
-  const {postData, userId} = props
+export default function CampaignPost(props: {
+  postData: Post;
+  userId: string;
+}) {
+  const router = useRouter();
+  const { postData, userId } = props;
 
   const requestInviteToCampaign = api.inviteToCampaign.useMutation({
-    onSuccess: () => router.push('/')
-  })
+    onSuccess: () => router.push("/"),
+  });
 
   const handleInviteToCampaign = () => {
     requestInviteToCampaign.mutate({
       playerId: userId,
-      campaignId: postData.id
-    })
-  }
+      campaignId: postData.id,
+    });
+  };
 
   return (
-    <div className="flex flex-col bg-accent-foreground w-full justify-center m-5">
+    <div className="m-5 flex w-full flex-col justify-center bg-accent-foreground">
       <img
-          className="h-40 w-full object-cover"
-          src={postData.mainImage ? postData.mainImage : "https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
-          }
-          alt="post main image"
-        />
-        <article className="mx-auto max-w-3xl p-5">
-          <h1 className="mb-3 mt-8 text-slate-300 text-4xl p-2">{postData.title}</h1>
+        className="h-40 w-full object-cover"
+        src={
+          postData.mainImage
+            ? postData.mainImage
+            : "https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
+        }
+        alt="post main image"
+      />
+      <article className="mx-auto max-w-3xl p-5">
+        <h1 className="mb-3 mt-8 p-2 text-4xl text-slate-300">
+          {postData.title}
+        </h1>
 
-          <div className="flex items-center space-x-2">
-            {/* <img className="h-10 w-10 rounded-full" src={urlFor(post.author.image).url()} alt='' /> */}
+        <div className="flex items-center space-x-2">
 
-            <p className="text-sm font-extralight text-slate-300">
-              By: <span className="text-green-300">{postData.author}</span> -
-              Published at {new Date().toLocaleString()}
-            </p>
-          </div>
-        </article>
-      <div className="flex justify-around m-2 mt-5 items-center">
-        <div className="flex flex-col pt-5 bg-slate-800 rounded-lg space-y-5 w-full lg:w-2/3 xl:w-1/2">
-          <div className="flex flex-col text-slate-300 space-y-1 ml-2">
+          <p className="text-sm font-extralight text-slate-300">
+            By: <span className="text-green-300">{postData.author}</span> -
+            Published at {new Date().toLocaleString()}
+          </p>
+        </div>
+      </article>
+      <div className="m-2 mt-5 flex items-center justify-around">
+        <div className="flex w-full flex-col space-y-5 rounded-lg bg-slate-800 pt-5 lg:w-2/3 xl:w-1/2">
+          <div className="ml-2 flex flex-col space-y-1 text-slate-300">
             <span>{postData.players} Players</span>
             <div>
-              from <span>level {postData.startingLevel}</span> to <span>level {postData.finishingLevel}</span>
+              from <span>level {postData.startingLevel}</span> to{" "}
+              <span>level {postData.finishingLevel}</span>
             </div>
           </div>
-          <div className="py-5 mx-2 text-slate-300">{postData.description}</div>
+          <div className="mx-2 py-5 text-slate-300">{postData.description}</div>
           <div className="flex justify-center">
-            <Button className="w-40 h-10 mb-1" onClick={handleInviteToCampaign}>Join</Button>
+            <Button className="mb-1 h-10 w-40" onClick={handleInviteToCampaign}>
+              Join
+            </Button>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-center rounded-lg w-full text-slate-300 bg-accent-foreground">
-        <div className=" flex w-full xl:w-1/2 lg:w-2/3 bg-foreground m-3 rounded-lg p-2">
+      <div className="flex w-full justify-center rounded-lg bg-accent-foreground text-slate-300">
+        <div className=" m-3 flex w-full rounded-lg bg-foreground p-2 lg:w-2/3 xl:w-1/2">
           {postData.body}
         </div>
       </div>
     </div>
-  )
+  );
 }
