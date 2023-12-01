@@ -12,7 +12,7 @@ export default function Post({ params }: { params: { id: string } }) {
 
   if (postLoading) return <Spinner />;
   if (!post) return <div>error fetching post</div>;
-  if (!user) return null;
+  if (!user) return <div>failed to fetch user</div>;
 
   return (
     <CampaignPost postData={post} userId={user.id} />
