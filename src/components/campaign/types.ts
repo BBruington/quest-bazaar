@@ -14,7 +14,7 @@ export interface Players {
   email: string;
   id: string;
   username: string | null;
-  imgUrl: string;
+  imgUrl: string | null;
   clerkId: string;
   createdAt: string | Date;
   updatedAt: string | Date;

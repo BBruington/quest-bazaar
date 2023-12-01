@@ -31,7 +31,7 @@ export default function SelectedFriend(props: {
   });
   const handleRemoveFriend = api.handleFriendRequest.useMutation();
 
-  let profilePic: string;
+  let profilePic: string | undefined;
 
   const findFriendId = (myId: string) => {
     if (myId === selectedFriend.senderId) {

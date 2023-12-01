@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   blankCharacterSheetInfo,
   handleSkillMod,
-} from "helpers/characterSheetHelpers";
+} from "../../helpers/characterSheetHelpers";
 
 export default function CharacterCreation() {
   const logChar = () => console.log(character);
