@@ -1,7 +1,7 @@
 "use client";
 import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
-import CampaignPost from "~/components/post/post";
+import CampaignPost from "~/components/post/singlePost";
 import Spinner from "~/components/spinner/spinner";
 
 export default function Post({ params }: { params: { id: string } }) {
