@@ -2,7 +2,7 @@
 import { useState } from "react";
 import NoteList from "./noteList";
 import NoteViewer from "./noteViewer";
-import { api } from "../../../utils/trpc";
+import { api } from "~/utils/trpc";
 import type { Campaign } from "../types";
 import type { CampaignNote } from "./types";
 

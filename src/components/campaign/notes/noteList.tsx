@@ -1,8 +1,8 @@
 import type { Campaign} from '../types'
 import uuid from "react-uuid";
 import React from "react";
-import { api } from "../../../utils/trpc";
-import { Button } from "../../ui/button";
+import { api } from "~/utils/trpc";
+import { Button } from "~/components/ui/button";
 import type { CampaignNote } from "./types";
 const NoteList = (props: {
   notes: CampaignNote[];

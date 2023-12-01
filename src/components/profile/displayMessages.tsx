@@ -1,7 +1,7 @@
 "use-client";
-import type { SelectedFriendType } from "../../app/types/Message";
-import { Input } from "../ui/input";
-import { api } from "../../utils/trpc";
+import type { SelectedFriendType } from "~/app/types/Message";
+import { Input } from "~/components/ui/input";
+import { api } from "~/utils/trpc";
 import { useState } from "react";
 
 export default function DisplayMessages(props: {

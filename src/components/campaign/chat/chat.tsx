@@ -1,7 +1,7 @@
 "use-client";
 import type { Campaign } from "../types";
-import { Input } from "../../ui/input";
-import { api } from "../../../utils/trpc";
+import { Input } from "~/components/ui/input";
+import { api } from "~/utils/trpc";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 

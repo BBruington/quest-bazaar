@@ -2,7 +2,7 @@ import {
   type FetchCreateContextFnOptions,
   fetchRequestHandler,
 } from "@trpc/server/adapters/fetch";
-import { appRouter } from "../../../../utils/trpc-server";
+import { appRouter } from "~/utils/trpc-server";
 
 // this is the server RPC API handler
 

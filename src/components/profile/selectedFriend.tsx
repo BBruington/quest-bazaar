@@ -1,9 +1,9 @@
 "use client";
-import { Button } from "../ui/button";
+import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import toast, { Toaster } from "react-hot-toast";
-import { api } from "../../utils/trpc";
-import type { SelectedFriendType } from "../../app/types/Message";
+import { api } from "~/utils/trpc";
+import type { SelectedFriendType } from "~/app/types/Message";
 
 import {
   DropdownMenu,
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "~/components/ui/dropdown-menu";
 
 export default function SelectedFriend(props: {
   selectedFriend: SelectedFriendType;

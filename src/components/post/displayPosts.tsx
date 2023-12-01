@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import Spinner from "../spinner/spinner";
-import { api } from "../../utils/trpc";
+import Spinner from "~/components/spinner/spinner";
+import { api } from "~/utils/trpc";
 
 export default function DisplayPosts() {
   const { data: campaignPosts, isLoading: loadingPosts } = api.queryCampaignPosts.useQuery();

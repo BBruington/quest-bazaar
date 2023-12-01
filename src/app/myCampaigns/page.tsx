@@ -1,6 +1,6 @@
 "use client";
-import { api } from "../../utils/trpc";
-import Spinner from "../../components/spinner/spinner";
+import { api } from "~/utils/trpc";
+import Spinner from "~/components/spinner/spinner";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 

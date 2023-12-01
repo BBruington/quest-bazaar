@@ -1,12 +1,12 @@
 "use client";
 import { type Dispatch, type SetStateAction, useState } from "react";
-import { Calendar } from "../../../components/ui/calendar";
-import { api } from "../../../utils/trpc";
+import { Calendar } from "~/components/ui/calendar";
+import { api } from "~/utils/trpc";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import TimePicker from "react-time-picker";
-import { DialogTrigger } from "../../../components/ui/dialog";
-import { Input } from "../../../components/ui/input";
+import { DialogTrigger } from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
 import type { Campaign } from "../types";
 
 export default function Scheduler(props: {

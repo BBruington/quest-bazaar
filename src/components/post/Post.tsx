@@ -1,7 +1,7 @@
 "use client"
-import type { Post } from "../../app/types/Posts";
-import { api } from "../../utils/trpc";
-import { Button } from "../ui/button";
+import type { Post } from "~//app/types/Posts";
+import { api } from "~/utils/trpc";
+import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 
 

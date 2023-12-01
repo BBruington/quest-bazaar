@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import MyMessages from "../../components/profile/myMessages";
+import MyMessages from "~/components/profile/myMessages";
 
 export default function Messages() {
   const user = useUser();

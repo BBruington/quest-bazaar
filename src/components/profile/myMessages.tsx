@@ -1,24 +1,24 @@
 "use client";
-import type { SelectedFriendType } from "../../app/types/Message";
+import type { SelectedFriendType } from "~/app/types/Message";
 import { Mail, User, Plus } from "lucide-react";
 import DisplayMessages from "./displayMessages";
 import SelectedFriend from "./selectedFriend";
 import toast, { Toaster } from "react-hot-toast";
-import { api } from "../../utils/trpc";
+import { api } from "~/utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import type { ChangeEvent } from "react";
-import Spinner from "../spinner/spinner";
+import Spinner from "~/components/spinner/spinner";
 import React from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
+} from "~/components/ui/accordion";
 
 export default function MyMessages(props: { userId: string }) {
   const { userId } = props;

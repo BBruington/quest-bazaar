@@ -1,5 +1,5 @@
 "use client";
-import { api } from "../../utils/trpc";
+import { api } from "~/utils/trpc";
 import {
   MessageCircle,
   CalendarDays,
@@ -8,22 +8,22 @@ import {
   Scroll,
   Settings,
 } from "lucide-react";
-import Spinner from "../spinner/spinner";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import Spinner from "~/components/spinner/spinner";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "~/components/ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
-import NotesPage from "../../components/campaign/notes/notes";
-import PostCreator from "../../app/post/create";
+import NotesPage from "~/components/campaign/notes/notes";
+import PostCreator from "~/app/post/create";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
-import { Dialog, DialogContent, DialogTrigger } from "../../components/ui/dialog";
+} from "~/components/ui/accordion";
+import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,7 +34,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
+} from "~/components/ui/alert-dialog";
 import type { Campaign, Players } from "./types";
 
 export default function CampaignComponent(props: {
