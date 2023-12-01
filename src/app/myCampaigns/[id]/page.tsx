@@ -1,6 +1,6 @@
 "use client";
 import CampaignComponent from "../../../components/campaign/campaign";
-import Spinner from "~/components/spinner/spinner";
+import Spinner from "../../../components/spinner/spinner";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../utils/trpc";
 

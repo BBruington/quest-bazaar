@@ -1,5 +1,5 @@
 "use client";
-import CreatePostComponent from "~/components/post/createPost";
+import CreatePostComponent from "../../components/post/createPost";
 import { useUser } from "@clerk/nextjs";
 
 export default function PostCreator(props: {campaignId: string}) {

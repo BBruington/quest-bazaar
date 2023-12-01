@@ -2,7 +2,7 @@
 import { api } from "../../../utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import CampaignPost from "../../../components/post/post";
-import Spinner from "~/components/spinner/spinner";
+import Spinner from "../../../components/spinner/spinner";
 
 export default function Post({ params }: { params: { id: string } }) {
   const { data: post, isLoading: postLoading } = api.querySinglePost.useQuery({

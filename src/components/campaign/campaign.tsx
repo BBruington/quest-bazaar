@@ -16,14 +16,14 @@ import { Button } from "../ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
 import NotesPage from "../../components/campaign/notes/notes";
-import PostCreator from "~/app/post/create";
+import PostCreator from "../../app/post/create";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../../components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
