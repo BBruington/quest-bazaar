@@ -5,6 +5,7 @@ export interface Campaign {
   image: string | null;
   password: string | null;
   dmUserId: string;
+  dmProfileImg: string | null;
   dmName: string | null;
   createdAt: string | Date;
   updatedAt: string | Date;

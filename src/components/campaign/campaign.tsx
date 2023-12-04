@@ -74,7 +74,7 @@ export default function CampaignComponent(props: {
         >
           <AccordionItem value="item-1">
             <button
-              className="flex w-full lg:w-2/3 justify-center lg:justify-between py-2 text-white hover:underline"
+              className="flex w-full justify-center py-2 text-white hover:underline lg:w-2/3 lg:justify-between"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -89,7 +89,7 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-2">
             <button
-              className="flex w-full lg:w-2/3 justify-center lg:justify-between py-3 text-white hover:underline"
+              className="flex w-full justify-center py-3 text-white hover:underline lg:w-2/3 lg:justify-between"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -104,7 +104,7 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-3">
             <AccordionTrigger className="flex justify-center sm:justify-between">
-              <div className="flex w-full lg:w-2/3 justify-center lg:justify-between text-white hover:underline">
+              <div className="flex w-full justify-center text-white hover:underline lg:w-2/3 lg:justify-between">
                 <span>DM</span> <User className="ml-2" />
               </div>
             </AccordionTrigger>
@@ -112,7 +112,11 @@ export default function CampaignComponent(props: {
               <div className="flex items-center justify-center space-x-6 lg:justify-start">
                 <Avatar>
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={
+                      campaignData.dmProfileImg
+                        ? campaignData.dmProfileImg
+                        : "https://github.com/shadcn.png"
+                    }
                     alt="@shadcn"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -123,7 +127,7 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-4">
             <AccordionTrigger className="justify-center lg:justify-between">
-              <div className="flex lg:w-2/3 justify-between">
+              <div className="flex justify-between lg:w-2/3">
                 <span>Players</span> <Users className="ml-2" />
               </div>
             </AccordionTrigger>
@@ -155,7 +159,7 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-5">
             <AccordionTrigger className="justify-center lg:justify-between">
-              <div className="flex lg:w-2/3 justify-between">
+              <div className="flex justify-between lg:w-2/3">
                 <span>Notes</span> <Scroll className="ml-2" />
               </div>
             </AccordionTrigger>
@@ -194,7 +198,7 @@ export default function CampaignComponent(props: {
           </AccordionItem>
           <AccordionItem value="item-6">
             <AccordionTrigger className="justify-center lg:justify-between">
-              <div className="flex lg:w-2/3 justify-between">
+              <div className="flex justify-between lg:w-2/3">
                 <span>Campaign</span> <Settings className="ml-2" />
               </div>
             </AccordionTrigger>
@@ -221,7 +225,6 @@ export default function CampaignComponent(props: {
                       >
                         <Button
                           disabled={userId !== campaignData.dmUserId}
-
                           className="h-8 w-36"
                         >
                           Create Post

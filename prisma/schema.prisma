@@ -101,6 +101,7 @@ model Campaign {
   password       String?
   dmUserId       String
   dmName         String?
+  dmProfileImg   String?
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
   dmNotes        CampaignNote[]

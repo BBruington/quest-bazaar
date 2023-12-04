@@ -18,8 +18,9 @@ import { Label } from "~/components/ui/label";
 export default function CreateCampaignComponent(props: {
   userId: string;
   username: string | undefined;
+  userImgUrl: string | null
 }) {
-  const { userId, username } = props;
+  const { userId, username, userImgUrl } = props;
   const router = useRouter();
   const [imageFile, setImageFile] = useState<string | undefined>();
   const [campaignProps, setCampaignProps] = useState({
@@ -100,6 +101,7 @@ export default function CreateCampaignComponent(props: {
       mutate({
         id: userId,
         imageUrl: imageFile ? imageFile : "",
+        dmProfileImg: userImgUrl ?  userImgUrl : undefined,
         name: campaignProps.name,
         description: campaignProps.description,
         friendsIds:

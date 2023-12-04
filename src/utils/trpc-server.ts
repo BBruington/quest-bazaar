@@ -149,6 +149,7 @@ export const appRouter = t.router({
         id: z.string(),
         name: z.string(),
         description: z.string(),
+        dmProfileImg: z.string().optional(),
         imageUrl: z.string(),
         friendsIds: z.array(friendsForCampaignInvite).optional(),
       })
@@ -159,6 +160,7 @@ export const appRouter = t.router({
           name: input.name,
           description: input.description,
           image: input.imageUrl,
+          dmProfileImg: input.dmProfileImg,
           dmUserId: input.id,
         },
       });
