@@ -74,7 +74,7 @@ export default function CampaignComponent(props: {
         >
           <AccordionItem value="item-1">
             <button
-              className="flex w-full justify-center py-2 text-white hover:underline lg:w-2/3 lg:justify-between"
+              className="flex w-full justify-center lg:justify-start py-2 text-white hover:underline"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -84,12 +84,12 @@ export default function CampaignComponent(props: {
                 })
               }
             >
-              <span>Chat</span> <MessageCircle className="ml-2" />
+              <span className="flex justify-start lg:ml-3 w-20">Chat</span> <MessageCircle className="ml-2" />
             </button>
           </AccordionItem>
           <AccordionItem value="item-2">
             <button
-              className="flex w-full justify-center py-3 text-white hover:underline lg:w-2/3 lg:justify-between"
+              className="flex w-full justify-center lg:justify-start py-3 text-white hover:underline"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -99,13 +99,13 @@ export default function CampaignComponent(props: {
                 })
               }
             >
-              <span>Calendar</span> <CalendarDays className="ml-2" />
+              <span className="flex justify-start lg:ml-3 w-20">Calendar</span> <CalendarDays className="ml-2" />
             </button>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger className="flex justify-center sm:justify-between">
-              <div className="flex w-full justify-center text-white hover:underline lg:w-2/3 lg:justify-between">
-                <span>DM</span> <User className="ml-2" />
+            <AccordionTrigger className="flex justify-center lg:justify-start">
+              <div className="flex">
+                <span className="flex justify-start ml-3 w-20">DM</span> <User className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -126,9 +126,9 @@ export default function CampaignComponent(props: {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
-            <AccordionTrigger className="justify-center lg:justify-between">
-              <div className="flex justify-between lg:w-2/3">
-                <span>Players</span> <Users className="ml-2" />
+            <AccordionTrigger className="justify-center lg:justify-start">
+              <div className="flex">
+                <span className="flex justify-start ml-3 w-20">Players</span> <Users className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -158,9 +158,9 @@ export default function CampaignComponent(props: {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
-            <AccordionTrigger className="justify-center lg:justify-between">
-              <div className="flex justify-between lg:w-2/3">
-                <span>Notes</span> <Scroll className="ml-2" />
+            <AccordionTrigger className="justify-center lg:justify-start">
+              <div className="flex">
+                <span className="flex justify-start ml-3 w-20">Notes</span> <Scroll className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -197,9 +197,9 @@ export default function CampaignComponent(props: {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-6">
-            <AccordionTrigger className="justify-center lg:justify-between">
-              <div className="flex justify-between lg:w-2/3">
-                <span>Campaign</span> <Settings className="ml-2" />
+            <AccordionTrigger className="justify-center lg:justify-start">
+              <div className="flex">
+                <span className="flex justify-start ml-3 w-20">Campaign</span> <Settings className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
