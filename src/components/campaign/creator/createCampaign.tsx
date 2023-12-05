@@ -102,6 +102,7 @@ export default function CreateCampaignComponent(props: {
         id: userId,
         imageUrl: imageFile ? imageFile : "",
         dmProfileImg: userImgUrl ?  userImgUrl : undefined,
+        dmName: username,
         name: campaignProps.name,
         description: campaignProps.description,
         friendsIds:
