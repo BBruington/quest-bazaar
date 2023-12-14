@@ -49,6 +49,9 @@ export default function CampaignComponent(props: {
     userId,
     campaignRequestingInvitePlayers,
   } = props;
+
+  const utils = api.useContext();
+
   const [privateNotes, setPrivateNotes] = useState(false);
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
@@ -68,15 +71,23 @@ export default function CampaignComponent(props: {
       console.error(e);
     },
   });
-  const handleRequestToJoinGame =  api.handleRequestToJoinGame.useMutation()
+  
+  const handleRequestToJoinGame = api.handleRequestToJoinGame.useMutation({
+    onSuccess: async () => {
+      await utils.queryCampaignData.invalidate();
+    },
+  });
 
-  const handleRequestToJoinGameResponse = (playerId: string, response: string) => {
+  const handleRequestToJoinGameResponse = (
+    playerId: string,
+    response: string
+  ) => {
     handleRequestToJoinGame.mutate({
       campaignId: campaignData.id,
       userId: playerId,
-      campaignRes: response
-    })
-  }
+      campaignRes: response,
+    });
+  };
   if (isLoading) return <Spinner />;
 
   return (
@@ -291,7 +302,10 @@ export default function CampaignComponent(props: {
                         className="h-6"
                         disabled={handleRequestToJoinGame.isLoading}
                         onClick={() =>
-                          handleRequestToJoinGameResponse(player.clerkId, "ACCEPTED")
+                          handleRequestToJoinGameResponse(
+                            player.clerkId,
+                            "ACCEPTED"
+                          )
                         }
                       >
                         Accept
@@ -300,7 +314,10 @@ export default function CampaignComponent(props: {
                         className="h-6"
                         disabled={handleRequestToJoinGame.isLoading}
                         onClick={() =>
-                          handleRequestToJoinGameResponse(player.clerkId, "DECLINED")
+                          handleRequestToJoinGameResponse(
+                            player.clerkId,
+                            "DECLINED"
+                          )
                         }
                       >
                         Decline
