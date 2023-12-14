@@ -22,6 +22,7 @@ export default function CampaignPage({ params }: { params: { id: string } }) {
       userId={user.user?.id}
       campaignData={campaignData}
       campaignPlayers={campaignData?.players ? campaignData.players : null}
+      campaignRequestingInvitePlayers={campaignData?.requestingInvitePlayers ? campaignData.requestingInvitePlayers : null}
     />
   );
 }

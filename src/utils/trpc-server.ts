@@ -185,6 +185,59 @@ export const appRouter = t.router({
       return campaignData;
     }),
 
+    handleRequestToJoinGame: t.procedure.input(
+      z.object({
+        campaignId: z.string(),
+        userId: z.string(),
+        campaignRes: z.string()
+      })
+    ).mutation(async ({input}) => {
+      if (input.campaignRes === "ACCEPTED") {
+        try {
+          const updatedCampaign = await prisma.campaign.update({
+            where: {
+              id: input.campaignId,
+            },
+            data: {
+              players: {
+                connect: {
+                  clerkId: input.userId,
+                },
+              },
+              requestingInvitePlayers: {
+                disconnect: {
+                  clerkId: input.userId,
+                },
+              },
+            },
+          });
+          return updatedCampaign;
+        } catch (error) {
+          console.error("Error updating campaign: ", error);
+          throw error;
+        }
+      } else {
+        try {
+          const updatedCampaign = await prisma.campaign.update({
+            where: {
+              id: input.campaignId,
+            },
+            data: {
+              requestingInvitePlayers: {
+                disconnect: {
+                  clerkId: input.userId,
+                },
+              },
+            },
+          });
+          return updatedCampaign;
+        } catch (error) {
+          console.error("Error updating campaign: ", error);
+          throw error;
+        }
+      }
+    }),
+
   deleteCampaign: t.procedure
     .input(
       z.object({
@@ -380,6 +433,7 @@ export const appRouter = t.router({
         },
         include: {
           players: true,
+          requestingInvitePlayers: true,
         },
       });
       return campaignData;

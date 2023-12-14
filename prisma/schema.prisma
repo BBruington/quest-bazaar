@@ -9,24 +9,25 @@ datasource db {
 }
 
 model User {
-  id                     String       @id @default(cuid())
-  clerkId                String       @unique
-  username               String?      @unique
-  imgUrl                 String?
-  email                  String       @unique
-  createdAt              DateTime     @default(now())
-  updatedAt              DateTime     @updatedAt
-  characters             Character[]
-  campaignplayer         Campaign[]   @relation("CampaignPlayers")
-  campaigndm             Campaign[]   @relation("CampaignDm")
-  invitedCampaigns       Campaign[]   @relation("InvitedGame")
-  userPosts              Post[]
-  likes                  Like[]
-  comments               Comment[]
-  sentFriendRequests     Friendship[] @relation("sentRequests")
-  receivedFriendRequests Friendship[] @relation("receivedRequests")
-  sentMessages           Message[]    @relation("sender")
-  receivedMessages       Message[]    @relation("recipient")
+  id                       String       @id @default(cuid())
+  clerkId                  String       @unique
+  username                 String?      @unique
+  imgUrl                   String?
+  email                    String       @unique
+  createdAt                DateTime     @default(now())
+  updatedAt                DateTime     @updatedAt
+  characters               Character[]
+  campaignplayer           Campaign[]   @relation("CampaignPlayers")
+  campaigndm               Campaign[]   @relation("CampaignDm")
+  requrestInvitetoCampaign Campaign[]   @relation("RequestingInvite")
+  invitedCampaigns         Campaign[]   @relation("InvitedGame")
+  userPosts                Post[]
+  likes                    Like[]
+  comments                 Comment[]
+  sentFriendRequests       Friendship[] @relation("sentRequests")
+  receivedFriendRequests   Friendship[] @relation("receivedRequests")
+  sentMessages             Message[]    @relation("sender")
+  receivedMessages         Message[]    @relation("recipient")
 }
 
 model Friendship {
@@ -94,23 +95,24 @@ model Comment {
 }
 
 model Campaign {
-  id             String              @id @default(cuid())
-  name           String
-  description    String
-  image          String?
-  password       String?
-  dmUserId       String
-  dmName         String?
-  dmProfileImg   String?
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
-  dmNotes        CampaignNote[]
-  schedules      CampaignSchedules[]
-  chat           CampaignChat[]
-  posts          Post[]              @relation("CampaignPosts")
-  dm             User?               @relation("CampaignDm", fields: [dmUserId], references: [clerkId])
-  players        User[]              @relation("CampaignPlayers")
-  invitedPlayers User[]              @relation("InvitedGame")
+  id                      String              @id @default(cuid())
+  name                    String
+  description             String
+  image                   String?
+  password                String?
+  dmUserId                String
+  dmName                  String?
+  dmProfileImg            String?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  dmNotes                 CampaignNote[]
+  schedules               CampaignSchedules[]
+  chat                    CampaignChat[]
+  posts                   Post[]              @relation("CampaignPosts")
+  dm                      User?               @relation("CampaignDm", fields: [dmUserId], references: [clerkId])
+  players                 User[]              @relation("CampaignPlayers")
+  requestingInvitePlayers User[]              @relation("RequestingInvite")
+  invitedPlayers          User[]              @relation("InvitedGame")
 }
 
 model CampaignChat {
@@ -136,7 +138,7 @@ model CampaignNote {
   id         String   @id @default(cuid())
   campaignId String
   userId     String?
-  private     Boolean?
+  private    Boolean?
   title      String
   content    String
   createdAt  DateTime @default(now())

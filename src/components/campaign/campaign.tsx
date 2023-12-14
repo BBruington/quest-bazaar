@@ -41,8 +41,14 @@ export default function CampaignComponent(props: {
   campaignData: Campaign;
   campaignPlayers: Players[] | null | undefined;
   userId: string;
+  campaignRequestingInvitePlayers: Players[] | null | undefined;
 }) {
-  const { campaignData, campaignPlayers, userId } = props;
+  const {
+    campaignData,
+    campaignPlayers,
+    userId,
+    campaignRequestingInvitePlayers,
+  } = props;
   const [privateNotes, setPrivateNotes] = useState(false);
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
@@ -62,6 +68,15 @@ export default function CampaignComponent(props: {
       console.error(e);
     },
   });
+  const handleRequestToJoinGame =  api.handleRequestToJoinGame.useMutation()
+
+  const handleRequestToJoinGameResponse = (playerId: string, response: string) => {
+    handleRequestToJoinGame.mutate({
+      campaignId: campaignData.id,
+      userId: playerId,
+      campaignRes: response
+    })
+  }
   if (isLoading) return <Spinner />;
 
   return (
@@ -74,7 +89,7 @@ export default function CampaignComponent(props: {
         >
           <AccordionItem value="item-1">
             <button
-              className="flex w-full justify-center lg:justify-start py-2 text-white hover:underline"
+              className="flex w-full justify-center py-2 text-white hover:underline lg:justify-start"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -84,12 +99,13 @@ export default function CampaignComponent(props: {
                 })
               }
             >
-              <span className="flex justify-start lg:ml-3 w-20">Chat</span> <MessageCircle className="ml-2" />
+              <span className="flex w-20 justify-start lg:ml-3">Chat</span>{" "}
+              <MessageCircle className="ml-2" />
             </button>
           </AccordionItem>
           <AccordionItem value="item-2">
             <button
-              className="flex w-full justify-center lg:justify-start py-3 text-white hover:underline"
+              className="flex w-full justify-center py-3 text-white hover:underline lg:justify-start"
               onClick={() =>
                 setUiToggle({
                   editNotes: false,
@@ -99,13 +115,15 @@ export default function CampaignComponent(props: {
                 })
               }
             >
-              <span className="flex justify-start lg:ml-3 w-20">Calendar</span> <CalendarDays className="ml-2" />
+              <span className="flex w-20 justify-start lg:ml-3">Calendar</span>{" "}
+              <CalendarDays className="ml-2" />
             </button>
           </AccordionItem>
           <AccordionItem value="item-3">
             <AccordionTrigger className="flex justify-center lg:justify-start">
               <div className="flex">
-                <span className="flex justify-start ml-3 w-20">DM</span> <User className="ml-2" />
+                <span className="ml-3 flex w-20 justify-start">DM</span>{" "}
+                <User className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -128,7 +146,8 @@ export default function CampaignComponent(props: {
           <AccordionItem value="item-4">
             <AccordionTrigger className="justify-center lg:justify-start">
               <div className="flex">
-                <span className="flex justify-start ml-3 w-20">Players</span> <Users className="ml-2" />
+                <span className="ml-3 flex w-20 justify-start">Players</span>{" "}
+                <Users className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -160,7 +179,8 @@ export default function CampaignComponent(props: {
           <AccordionItem value="item-5">
             <AccordionTrigger className="justify-center lg:justify-start">
               <div className="flex">
-                <span className="flex justify-start ml-3 w-20">Notes</span> <Scroll className="ml-2" />
+                <span className="ml-3 flex w-20 justify-start">Notes</span>{" "}
+                <Scroll className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -199,7 +219,8 @@ export default function CampaignComponent(props: {
           <AccordionItem value="item-6">
             <AccordionTrigger className="justify-center lg:justify-start">
               <div className="flex">
-                <span className="flex justify-start ml-3 w-20">Campaign</span> <Settings className="ml-2" />
+                <span className="ml-3 flex w-20 justify-start">Campaign</span>{" "}
+                <Settings className="ml-2" />
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -260,6 +281,33 @@ export default function CampaignComponent(props: {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
+                {campaignRequestingInvitePlayers?.map((player) => (
+                  <div key={player.id} className="mt-2 border-t-2 p-2">
+                    <div>
+                      <span>{player.username} would like to join</span>
+                    </div>
+                    <div className="mt-1 flex flex-col justify-around md:flex-row">
+                      <Button
+                        className="h-6"
+                        disabled={handleRequestToJoinGame.isLoading}
+                        onClick={() =>
+                          handleRequestToJoinGameResponse(player.clerkId, "ACCEPTED")
+                        }
+                      >
+                        Accept
+                      </Button>
+                      <Button
+                        className="h-6"
+                        disabled={handleRequestToJoinGame.isLoading}
+                        onClick={() =>
+                          handleRequestToJoinGameResponse(player.clerkId, "DECLINED")
+                        }
+                      >
+                        Decline
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </AccordionContent>
           </AccordionItem>
