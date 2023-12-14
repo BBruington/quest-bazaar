@@ -347,19 +347,22 @@ export const appRouter = t.router({
       });
     }),
 
-  requestInviteToCampaign: t.procedure
-    .input(z.object({ userId: z.string(), campaignId: z.string() }))
-    .mutation(async ({ input }) => {
+    requestInviteToCampaign: t.procedure.input(
+      z.object({
+        playerId: z.string(),
+        campaignId: z.string(),
+      })
+    ).mutation(async ({ input }) => {
       try {
         const campaign = await prisma.campaign.findUnique({
           where: { id: input.campaignId },
-          include: { invitedPlayers: true, players: true }, // Include invitedPlayers relation
+          include: { requestingInvitePlayers: true, players: true }, // Include invitedPlayers relation
         });
         if (!campaign) {
           throw new Error("Campaign not found");
         }
         if (
-          campaign.players.find((player) => player.clerkId === input.userId)
+          campaign.players.find((player) => player.clerkId === input.playerId)
         ) {
           return "ALREADY_PLAYER";
         }
@@ -368,9 +371,9 @@ export const appRouter = t.router({
             id: input.campaignId,
           },
           data: {
-            invitedPlayers: {
+            requestingInvitePlayers: {
               connect: {
-                clerkId: input.userId,
+                clerkId: input.playerId,
               },
             },
           },

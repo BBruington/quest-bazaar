@@ -11,7 +11,7 @@ export default function CampaignPost(props: {
   const router = useRouter();
   const { postData, userId } = props;
 
-  const requestInviteToCampaign = api.inviteToCampaign.useMutation({
+  const requestInviteToCampaign = api.requestInviteToCampaign.useMutation({
     onSuccess: () => router.push("/"),
   });
 
