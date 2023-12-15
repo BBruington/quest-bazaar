@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import toast, {Toaster} from 'react-hot-toast'
+import toast, { Toaster } from "react-hot-toast";
 import { api } from "~/utils/trpc";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -37,16 +37,23 @@ export default function CreatePostComponent(props: {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    console.log(postProps)
-    setPostProps({ ...postProps, [name]: value });
+    if (
+      name === "players" ||
+      name === "startingLevel" ||
+      name === "finishingLevel"
+    ) {
+      setPostProps({ ...postProps, [name]: Number(value) });
+    } else {
+      setPostProps({ ...postProps, [name]: value });
+    }
   };
   const { mutate } = api.createCampaignPost.useMutation({
     onSuccess: () => {
-      toast.success("Post Created")
+      toast.success("Post Created");
     },
     onError: (e) => {
       console.error(e);
-      toast.error("Failed to Create")
+      toast.error("Failed to Create");
     },
   });
 
@@ -69,17 +76,17 @@ export default function CreatePostComponent(props: {
 
   return (
     <div className="flex h-[600px] max-h-[1200px] w-full flex-col bg-black lg:flex-row">
-      <Toaster position="top-center"/>
+      <Toaster position="top-center" />
       <div className="flex w-full flex-col">
         <div className="mx-2">
-          <Label className="text-white" htmlFor="name">
+          <Label className="text-white" htmlFor="title">
             Campaign Name:
           </Label>
           <Input
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
             type="text"
-            id="name"
-            name="name"
+            id="title"
+            name="title"
             value={postProps.title}
             onChange={handleChange}
           />
@@ -97,19 +104,19 @@ export default function CreatePostComponent(props: {
           />
         </div>
         <div className="mx-2 mb-1">
-          <Label className="text-white" htmlFor="description">
+          <Label className="text-white" htmlFor="body">
             Body:
           </Label>
           <Input
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            id="description"
-            name="description"
+            id="body"
+            name="body"
             value={postProps.body}
             onChange={handleChange}
           />
         </div>
         <div className="mx-2 mb-1">
-          <Label className="text-white" htmlFor="description">
+          <Label className="text-white" htmlFor="imageUrl">
             Image:
           </Label>
           <Input
@@ -139,6 +146,7 @@ export default function CreatePostComponent(props: {
                 type="number"
                 min="1"
                 max="20"
+                name="startingLevel"
                 id="startingLevel"
                 value={postProps.startingLevel}
                 onChange={handleChange}
@@ -151,6 +159,7 @@ export default function CreatePostComponent(props: {
                 type="number"
                 min="1"
                 max="20"
+                name="finishingLevel"
                 id="finishingLevel"
                 value={postProps.finishingLevel}
                 onChange={handleChange}
@@ -161,6 +170,7 @@ export default function CreatePostComponent(props: {
               <Input
                 className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
                 type="number"
+                name="players"
                 id="players"
                 value={postProps.players}
                 onChange={handleChange}
@@ -173,7 +183,8 @@ export default function CreatePostComponent(props: {
             Create Post
           </Button>
         </div>
-      T</div>
+        T
+      </div>
     </div>
   );
 }

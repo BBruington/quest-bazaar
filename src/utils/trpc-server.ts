@@ -555,22 +555,8 @@ export const appRouter = t.router({
     )
     .mutation(async ({ input }) => {
       try {
-        const post = await prisma.post.upsert({
-          where: {
-            id: "123",
-            // campaignId: input.campaignId
-          },
-          update: {
-            players: input.players,
-            startingLevel: input.startingLevel,
-            finishingLevel: input.finishingLevel,
-            title: input.title,
-            description: input.description,
-            author: input.author,
-            mainImage: input.mainImage,
-            body: input.body,
-          },
-          create: {
+        const post = await prisma.post.create({
+          data: {
             campaignId: input.campaignId,
             userId: input.userId,
             players: input.players,

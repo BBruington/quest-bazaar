@@ -62,10 +62,10 @@ model Post {
   startingLevel  Int?
   finishingLevel Int?
   title          String
-  description    String
+  description    String    @db.Text
   author         String
   mainImage      String
-  body           String
+  body           String    @db.Text
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   campaignId     String?
