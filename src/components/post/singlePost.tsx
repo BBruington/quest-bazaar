@@ -2,28 +2,36 @@
 import type { Post } from "~/app/types/Posts";
 import { api } from "~/utils/trpc";
 import { Button } from "~/components/ui/button";
-import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
 
 export default function CampaignPost(props: {
   postData: Post;
   userId: string;
 }) {
-  const router = useRouter();
   const { postData, userId } = props;
 
   const requestInviteToCampaign = api.requestInviteToCampaign.useMutation({
-    onSuccess: () => router.push("/"),
+    onSuccess: () => toast.success("Request sent successfully"),
   });
 
+  const [sentRequest, setSentRequest] = useState(false);
+
   const handleInviteToCampaign = () => {
-    requestInviteToCampaign.mutate({
-      playerId: userId,
-      campaignId: postData.id,
-    });
+    if (sentRequest === false) {
+      requestInviteToCampaign.mutate({
+        playerId: userId,
+        campaignId: postData.id,
+      });
+      setSentRequest(true)
+    } else {
+      toast.error("Request was already sent")
+    }
   };
 
   return (
     <div className="m-5 flex w-full flex-col justify-center bg-accent-foreground">
+      <Toaster position="top-center" />
       <img
         className="h-40 w-full object-cover"
         src={
@@ -39,7 +47,6 @@ export default function CampaignPost(props: {
         </h1>
 
         <div className="flex items-center space-x-2">
-
           <p className="text-sm font-extralight text-slate-300">
             By: <span className="text-green-300">{postData.author}</span> -
             Published at {new Date().toLocaleString()}
