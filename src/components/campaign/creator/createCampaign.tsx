@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { prisma } from "~/utils/context";
 import type { ChangeEvent } from "react";
 import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
@@ -18,10 +19,15 @@ import { Label } from "~/components/ui/label";
 export default function CreateCampaignComponent(props: {
   userId: string;
   username: string | undefined;
-  userImgUrl: string | null
+  userImgUrl: string | null;
 }) {
   const { userId, username, userImgUrl } = props;
   const router = useRouter();
+
+  const [campaignChecker, setCampaignChecker] = useState({
+    name: false,
+    description: false,
+  });
   const [imageFile, setImageFile] = useState<string | undefined>();
   const [campaignProps, setCampaignProps] = useState({
     name: "",
@@ -53,8 +59,8 @@ export default function CreateCampaignComponent(props: {
     name: string;
   };
   const removeFriend = (friendIndex: number) => {
-    campaignProps.friends.splice(friendIndex, 1)
-    router.refresh()
+    campaignProps.friends.splice(friendIndex, 1);
+    router.refresh();
   };
 
   const inviteFriendToCampaign = (invitedFriend: FriendList) => {
@@ -68,7 +74,7 @@ export default function CreateCampaignComponent(props: {
     } else {
       campaignProps.friends.push(invitedFriend);
     }
-    router.refresh()
+    router.refresh();
   };
 
   const findFriendsIds = () => {
@@ -86,8 +92,8 @@ export default function CreateCampaignComponent(props: {
     });
   };
   const { mutate } = api.createCampaign.useMutation({
-    onSuccess: () => {
-      void router.push(`/myCampaigns`);
+    onSuccess: (campaign) => {
+      void router.push(`/myCampaigns/${campaign.id}`);
     },
     onError: (e) => {
       console.error(e);
@@ -97,20 +103,39 @@ export default function CreateCampaignComponent(props: {
   if (friends[0]?.id === "") findFriendsIds();
 
   const handleCreateCampaign = () => {
-    if (campaignProps.name !== "" && campaignProps.description !== "") {
-      mutate({
-        id: userId,
-        imageUrl: imageFile ? imageFile : "",
-        dmProfileImg: userImgUrl ?  userImgUrl : undefined,
-        dmName: username,
-        name: campaignProps.name,
-        description: campaignProps.description,
-        friendsIds:
-          campaignProps.friends[0]?.id === ""
-            ? undefined
-            : campaignProps.friends,
-      });
+    if (campaignProps.name === "" || campaignProps.description === "") {
+      if (campaignProps.name === "" && campaignProps.description === "") {
+        setCampaignChecker({
+          name: true,
+          description: true,
+        });
+        return;
+      } else {
+        if (campaignProps.name === "") {
+          setCampaignChecker({
+            ...campaignChecker,
+            name: true,
+          });
+        }
+        if (campaignProps.description === "") {
+          setCampaignChecker({
+            ...campaignChecker,
+            description: true,
+          });
+        }
+        return;
+      }
     }
+    mutate({
+      id: userId,
+      imageUrl: imageFile ? imageFile : "",
+      dmProfileImg: userImgUrl ? userImgUrl : undefined,
+      dmName: username,
+      name: campaignProps.name,
+      description: campaignProps.description,
+      friendsIds:
+        campaignProps.friends[0]?.id === "" ? undefined : campaignProps.friends,
+    });
   };
 
   return (
@@ -128,7 +153,11 @@ export default function CreateCampaignComponent(props: {
             value={campaignProps.name}
             onChange={handleChange}
           />
-          d
+          {
+            campaignChecker.name && (
+              <span className="text-red-500">Please give the post a name</span>
+            )
+          }
         </div>
         <div className="mb-2 ml-2">
           <Label className="text-white" htmlFor="description">
@@ -141,6 +170,11 @@ export default function CreateCampaignComponent(props: {
             value={campaignProps.description}
             onChange={handleChange}
           />
+          {
+            campaignChecker.description && (
+              <span className="text-red-500">Please give the post a description</span>
+            )
+          }
         </div>
         <div className="mb-2 ml-2">
           <Label className="text-white" htmlFor="description">
@@ -223,7 +257,8 @@ export default function CreateCampaignComponent(props: {
         <div className="mt-2 flex flex-col items-center text-white">
           <span className="text-lg font-bold">Friends Invited:</span>
           <div className="space-x-4">
-            {campaignProps.friends[0]?.name !== "" && campaignProps.friends[0]?.name !== undefined &&
+            {campaignProps.friends[0]?.name !== "" &&
+              campaignProps.friends[0]?.name !== undefined &&
               campaignProps.friends.map((friend, index) => (
                 <DropdownMenu key={friend.id}>
                   <DropdownMenuTrigger className="inline-flex h-10 w-40 items-center justify-center rounded-md bg-primary text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">

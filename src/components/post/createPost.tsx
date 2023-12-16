@@ -13,6 +13,11 @@ export default function CreatePostComponent(props: {
   campaignId: string;
 }) {
   const { userId, username, campaignId } = props;
+
+  const [postChecker, setPostChecker] = useState({
+    title: false,
+    description: false,
+  });
   const [imageFile, setImageFile] = useState<string | undefined>();
   const [postProps, setPostProps] = useState({
     title: "",
@@ -58,20 +63,32 @@ export default function CreatePostComponent(props: {
   });
 
   const handleCreatePost = () => {
-    if (postProps.title !== "" && postProps.description !== "") {
-      mutate({
-        userId: userId,
-        campaignId,
-        players: postProps.players,
-        startingLevel: postProps.startingLevel,
-        finishingLevel: postProps.finishingLevel,
-        title: postProps.title,
-        description: postProps.description,
-        author: username!,
-        body: postProps.body,
-        mainImage: imageFile ? imageFile : "",
-      });
+    if (postProps.title === "" || postProps.description === "") {
+      if (postProps.title === "" && postProps.description === "") {
+        setPostChecker({ description:true, title: true });
+        return
+      } else {
+        if (postProps.title === "")
+          setPostChecker({ ...postChecker, title: true });
+        if (postProps.description === "") {
+          setPostChecker({ ...postChecker, description: true });
+        }
+        return;
+      }
+
     }
+    mutate({
+      userId: userId,
+      campaignId,
+      players: postProps.players,
+      startingLevel: postProps.startingLevel,
+      finishingLevel: postProps.finishingLevel,
+      title: postProps.title,
+      description: postProps.description,
+      author: username!,
+      body: postProps.body,
+      mainImage: imageFile ? imageFile : "",
+    });
   };
 
   return (
@@ -90,6 +107,11 @@ export default function CreatePostComponent(props: {
             value={postProps.title}
             onChange={handleChange}
           />
+          {
+            postChecker.title && (
+              <span className="text-red-500">Please give the post a name</span>
+            )
+          }
         </div>
         <div className="mx-2 mb-1">
           <Label className="text-white" htmlFor="description">
@@ -102,6 +124,11 @@ export default function CreatePostComponent(props: {
             value={postProps.description}
             onChange={handleChange}
           />
+          {
+            postChecker.description && (
+              <span className="text-red-500">Please give the post a description</span>
+            )
+          }
         </div>
         <div className="mx-2 mb-1">
           <Label className="text-white" htmlFor="body">
