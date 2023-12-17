@@ -3,9 +3,16 @@ import superjson from "superjson";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "~/utils/context";
 import { friendsForCampaignInvite } from "./types";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 import { z } from "zod";
 
 export const t = initTRPC.create();
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, "1 m"),
+});
 //clerkId
 // this is our RPC API
 export const appRouter = t.router({
