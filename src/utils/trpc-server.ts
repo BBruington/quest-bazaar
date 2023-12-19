@@ -11,7 +11,7 @@ export const t = initTRPC.create();
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, "1 m"),
+  limiter: Ratelimit.slidingWindow(8, "1 m"),
 });
 //clerkId
 // this is our RPC API
@@ -199,6 +199,11 @@ export const appRouter = t.router({
         campaignRes: z.string()
       })
     ).mutation(async ({input}) => {
+
+      const {success} = await ratelimit.limit(input.userId)
+
+      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+      
       if (input.campaignRes === "ACCEPTED") {
         try {
           const updatedCampaign = await prisma.campaign.update({
@@ -275,6 +280,11 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+
+      const {success} = await ratelimit.limit(input.campaignId)
+
+      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+
       const scheduledEvent = await prisma.campaignSchedules.create({
         data: {
           campaignId: input.campaignId,
@@ -311,6 +321,7 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+
       const sentMessage = await prisma.campaignChat.create({
         data: {
           campaignId: input.campaignId,
@@ -360,6 +371,11 @@ export const appRouter = t.router({
         campaignId: z.string(),
       })
     ).mutation(async ({ input }) => {
+
+      const {success} = await ratelimit.limit(input.playerId)
+
+      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+
       try {
         const campaign = await prisma.campaign.findUnique({
           where: { id: input.campaignId },
@@ -399,6 +415,11 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+
+      const {success} = await ratelimit.limit(input.playerId)
+
+      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+
       try {
         const campaign = await prisma.campaign.findUnique({
           where: { id: input.campaignId },
@@ -461,6 +482,11 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+
+      const {success} = await ratelimit.limit(input.userId)
+
+      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+
       const upsertCampaign = await prisma.campaignNote.upsert({
         where: {
           id: input.id,
