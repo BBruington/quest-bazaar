@@ -65,11 +65,7 @@ export default function Test() {
               <Label className="mb-2" htmlFor="Level">
                 Level
               </Label>
-              <input
-                className="header-input"
-                name="Level"
-                placeholder="1-20"
-              />
+              <input className="header-input" name="Level" placeholder="1-20" />
             </li>
           </ul>
         </section>
@@ -77,12 +73,12 @@ export default function Test() {
 
       <main className="flex justify-between">
         {/* stats, saves, skills, and proficiencies */}
-        <section className="flex w-1/3 flex-col items-start ml-1">
+        <section className="ml-1 flex w-1/3 flex-col items-start">
           {/* stats, saves, and skills */}
           <section className="attributes flex">
             {/* Base Stats */}
             <div className="scores flex w-[100px] flex-col rounded-md bg-slate-400 pb-2">
-              <ul className="m-3 space-y-1 rounded-xl bg-slate-400 flex flex-col justify-between h-[730px]">
+              <ul className="m-3 flex h-[730px] flex-col justify-between space-y-1 rounded-xl bg-slate-400">
                 <li className="ability-li">
                   <div className="score flex flex-col">
                     <Label
@@ -245,7 +241,10 @@ export default function Test() {
               <div className="saves list-section box my-2 flex flex-col-reverse rounded-xl border-2 border-black p-1">
                 <ul className="flex flex-col items-baseline justify-between ">
                   <li className="saves-li">
-                    <Label className="ml-2 text-[11px] font-bold" htmlFor="Strength-save">
+                    <Label
+                      className="ml-2 text-[11px] font-bold"
+                      htmlFor="Strength-save"
+                    >
                       Strength
                     </Label>
                     <input
@@ -257,7 +256,10 @@ export default function Test() {
                     <input name="Strength-save-prof" type="checkbox" />
                   </li>
                   <li className="saves-li">
-                    <Label className="ml-2 text-[11px] font-bold" htmlFor="Dexterity-save">
+                    <Label
+                      className="ml-2 text-[11px] font-bold"
+                      htmlFor="Dexterity-save"
+                    >
                       Dexterity
                     </Label>
                     <input
@@ -284,7 +286,10 @@ export default function Test() {
                     <input name="Constitution-save-prof" type="checkbox" />
                   </li>
                   <li className="saves-li">
-                    <Label className="ml-2 text-[11px] font-bold" htmlFor="Wisdom-save">
+                    <Label
+                      className="ml-2 text-[11px] font-bold"
+                      htmlFor="Wisdom-save"
+                    >
                       Wisdom
                     </Label>
                     <input
@@ -311,7 +316,10 @@ export default function Test() {
                     <input name="Intelligence-save-prof" type="checkbox" />
                   </li>
                   <li className="saves-li">
-                    <Label className="ml-2 text-[11px] font-bold" htmlFor="Charisma-save">
+                    <Label
+                      className="ml-2 text-[11px] font-bold"
+                      htmlFor="Charisma-save"
+                    >
                       Charisma
                     </Label>
                     <input
@@ -583,21 +591,34 @@ export default function Test() {
           </section>
 
           {/* passive perception */}
-          <div className="passive-perception box flex flex-row-reverse mt-2">
-            <div className="Label-container flex items-center self-center border-l-0 border-black border-2 h-[21px] ">
-              <Label className="text-black font-light p-1" htmlFor="passiveperception">
+          <div className="passive-perception box mt-2 flex flex-row-reverse">
+            <div className="Label-container flex h-[21px] items-center self-center border-2 border-l-0 border-black ">
+              <Label
+                className="p-1 font-light text-black"
+                htmlFor="passiveperception"
+              >
                 Passive Perception (Wisdom)
               </Label>
             </div>
-            <input name="passiveperception" placeholder="10" className="w-10 rounded-md text-center border-black border-2"/>
+            <input
+              name="passiveperception"
+              placeholder="10"
+              className="w-10 rounded-md border-2 border-black text-center"
+            />
           </div>
 
           {/* other prof and languages */}
-          <div className="otherprofs box textblock flex flex-col-reverse items-center mt-2">
-            <Label className="text-xs border-2 border-t-0 border-black rounded-sm w-[220px] text-center" htmlFor="otherprofs">
+          <div className="otherprofs box textblock mt-2 flex flex-col-reverse items-center">
+            <Label
+              className="w-[220px] rounded-sm border-2 border-t-0 border-black text-center text-xs"
+              htmlFor="otherprofs"
+            >
               Other Proficiencies and Languages
             </Label>
-            <textarea className="border-2 border-black rounded-sm w-[250px] h-[300px]" name="otherprofs"></textarea>
+            <textarea
+              className="h-[300px] w-[250px] rounded-sm border-2 border-black"
+              name="otherprofs"
+            ></textarea>
           </div>
         </section>
 
@@ -609,78 +630,134 @@ export default function Test() {
             <div className="flex justify-around">
               <div className="armorclassName">
                 <div className="flex flex-col-reverse">
-                  <Label className="text-xs bg-white w-[60px] text-center self-center border-black border-t-0 border-2 rounded-sm" htmlFor="ac">Armor Class</Label>
-                  <input className="w-[80px] h-[80px] border-black border-2 rounded-lg text-center text-sm" name="ac" placeholder="10 + Armor" type="text" />
+                  <Label
+                    className="w-[60px] self-center rounded-sm border-2 border-t-0 border-black bg-white text-center text-xs"
+                    htmlFor="ac"
+                  >
+                    Armor Class
+                  </Label>
+                  <input
+                    className="h-[80px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                    name="ac"
+                    placeholder="10"
+                    type="text"
+                  />
                 </div>
               </div>
               <div className="initiative">
                 <div className="flex flex-col-reverse">
-                  <Label className="h-[25px] text-xs bg-white w-[60px] text-center self-center border-black border-t-0 border-2 rounded-sm" htmlFor="initiative">Initiative</Label>
+                  <Label
+                    className="h-[25px] w-[60px] self-center rounded-sm border-2 border-t-0 border-black bg-white text-center text-xs"
+                    htmlFor="initiative"
+                  >
+                    Initiative
+                  </Label>
                   <input
-                  className="w-[80px] h-[80px] border-black border-2 rounded-lg text-center text-sm"
+                    className="h-[80px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                     name="initiative"
-                    placeholder="Dex + Misc"
+                    placeholder="Dex"
                     type="text"
                   />
                 </div>
               </div>
               <div className="speed">
                 <div className="flex flex-col-reverse">
-                  <Label className="h-[25px] text-xs bg-white w-[60px] text-center self-center border-black border-t-0 border-2 rounded-sm" htmlFor="speed">Speed</Label>
-                  <input className="w-[80px] h-[80px] border-black border-2 rounded-lg text-center text-sm" name="speed" placeholder="30" type="text" />
+                  <Label
+                    className="h-[25px] w-[60px] self-center rounded-sm border-2 border-t-0 border-black bg-white text-center text-xs"
+                    htmlFor="speed"
+                  >
+                    Speed
+                  </Label>
+                  <input
+                    className="h-[80px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                    name="speed"
+                    placeholder="30ft"
+                    type="text"
+                  />
                 </div>
               </div>
             </div>
 
             {/* hp */}
             <div className="hp flex flex-col">
-              <div className="regular">
-                <div className="max">
-                  <Label htmlFor="maxhp">Hit Point Maximum</Label>
-                  <input name="maxhp" placeholder="10" type="text" />
+              <div className="regular ">
+                <div className="max mx-2 mt-1 flex items-center justify-center border-2 border-b-0 border-black pb-2">
+                  <Label className="py-1 text-xs text-black/70" htmlFor="maxhp">
+                    Hit Point Maximum
+                  </Label>
+                  <input
+                    className="ml-2 h-[15px] border-b-2 border-black/30 text-center text-xs text-black/70"
+                    name="maxhp"
+                    placeholder="10"
+                    type="text"
+                  />
                 </div>
-                <div className="current">
-                  <Label htmlFor="currenthp">Current Hit Points</Label>
-                  <input name="currenthp" type="text" />
+                <div className="current mx-2 flex flex-col-reverse items-center border-2 border-t-0 border-black">
+                  <Label className="mb-1 mt-2 font-bold" htmlFor="currenthp">
+                    Current Hit Points
+                  </Label>
+                  <input
+                    placeholder="0"
+                    className="h-[60px] w-5/6 text-center text-2xl"
+                    name="currenthp"
+                    type="text"
+                  />
                 </div>
               </div>
-              <div className="temporary">
-                <Label htmlFor="temphp">Temporary Hit Points</Label>
-                <input name="temphp" type="text" />
+              <div className="temporary mx-2 mt-1 flex flex-col-reverse items-center justify-center border-2 border-black">
+                <Label className="mb-1 mt-2 font-bold" htmlFor="temphp">
+                  Temporary Hit Points
+                </Label>
+                <input
+                  placeholder="0"
+                  className="mt-1 h-[60px] w-5/6 text-center text-2xl"
+                  name="temphp"
+                  type="text"
+                />
               </div>
             </div>
 
             {/* hit dice / death saves */}
-            <div className="flex">
-              <div className="hitdice">
-                <div>
-                  <div className="total">
+            <div className="mb-2 mt-4 flex justify-around">
+              <div className="hitdice flex w-1/3 flex-col justify-center">
+                {/* hitdice / total */}
+                <div className="flex w-[130px] flex-col items-center justify-center rounded-lg border-2 border-black bg-white">
+                  <div className="total flex items-center">
                     <Label htmlFor="totalhd">Total</Label>
-                    <input name="totalhd" placeholder="2d10" type="text" />
+                    <input
+                      className="ml-2 w-[60px]"
+                      name="totalhd"
+                      placeholder="2d10"
+                      type="text"
+                    />
                   </div>
-                  <div className="remaining">
-                    <Label htmlFor="remaininghd">Hit Dice</Label>
-                    <input name="remaininghd" type="text" />
+                  <div className="remaining flex flex-col-reverse justify-center">
+                    <Label className="self-center" htmlFor="remaininghd">
+                      Hit Dice
+                    </Label>
+                    <input
+                      className="h-[45px] w-[100px] text-center"
+                      name="remaininghd"
+                      type="text"
+                    />
                   </div>
                 </div>
               </div>
-              <div className="deathsaves">
-                <div>
-                  <div className="Label">
-                    <Label>Death Saves</Label>
-                  </div>
-                  <div className="marks">
-                    <div className="deathsuccesses">
-                      <Label>Successes</Label>
-                      <div className="bubbles">
+              <div className="deathsaves flex w-1/3 flex-col justify-center">
+                <div className="flex h-[88px] w-[130px] flex-col-reverse items-center justify-between rounded-lg border-2 border-black bg-white">
+                  <Label className="justify-center">Death Saves</Label>
+                  <div className="marks p-2">
+                    <div className="deathsuccesses mb-1 flex">
+                      <Label className="text-xs">Successes</Label>
+                      <div className="bubbles ml-2 flex space-x-1">
                         <input name="deathsuccess1" type="checkbox" />
                         <input name="deathsuccess2" type="checkbox" />
                         <input name="deathsuccess3" type="checkbox" />
                       </div>
                     </div>
-                    <div className="deathfails">
-                      <Label>Failures</Label>
-                      <div className="bubbles">
+                    <div className="deathfails flex items-center justify-between">
+                      <Label className="text-xs">Failures</Label>
+                      <div className="bubbles ml-2 flex space-x-1">
                         <input name="deathfail1" type="checkbox" />
                         <input name="deathfail2" type="checkbox" />
                         <input name="deathfail3" type="checkbox" />
@@ -693,12 +770,12 @@ export default function Test() {
           </section>
 
           {/* attacks and spellcasting */}
-          <section className="attacksandspellcasting">
-            <div>
-              <Label>Attacks & Spellcasting</Label>
+          <section className="attacksandspellcasting mt-2">
+            <div className="flex h-[400px] flex-col-reverse items-center justify-between rounded-xl border-2 border-black">
+              <Label className="my-1">Attacks & Spellcasting</Label>
               <table>
                 <thead>
-                  <tr>
+                  <tr className="text-xs text-black/50">
                     <th>Name</th>
                     <th>Atk Bonus</th>
                     <th>Damage/Type</th>
@@ -707,73 +784,156 @@ export default function Test() {
                 <tbody>
                   <tr>
                     <td>
-                      <input name="atkname1" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkname1"
+                        type="text"
+                      />
                     </td>
                     <td>
-                      <input name="atkbonus1" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkbonus1"
+                        type="text"
+                      />
                     </td>
                     <td>
-                      <input name="atkdamage1" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkdamage1"
+                        type="text"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <input name="atkname2" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkname2"
+                        type="text"
+                      />
                     </td>
                     <td>
-                      <input name="atkbonus2" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkbonus2"
+                        type="text"
+                      />
                     </td>
                     <td>
-                      <input name="atkdamage2" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkdamage2"
+                        type="text"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <input name="atkname3" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkname3"
+                        type="text"
+                      />
                     </td>
                     <td>
-                      <input name="atkbonus3" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkbonus3"
+                        type="text"
+                      />
                     </td>
                     <td>
-                      <input name="atkdamage3" type="text" />
+                      <input
+                        className="w-24 bg-black/10"
+                        name="atkdamage3"
+                        type="text"
+                      />
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <textarea></textarea>
             </div>
           </section>
 
           {/* equipment */}
-          <section className="equipment">
-            <div className="flex">
+          <section className="equipment mt-2 flex flex-col items-center rounded-lg border-2 border-black">
+            <div className="flex p-2">
               <div className="money">
                 <ul>
-                  <li>
-                    <Label htmlFor="cp">cp</Label>
-                    <input name="cp" />
+                  <li className="flex items-center">
+                    <Label
+                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      htmlFor="cp"
+                    >
+                      cp
+                    </Label>
+                    <input
+                      placeholder="0"
+                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      name="cp"
+                    />
                   </li>
-                  <li>
-                    <Label htmlFor="sp">sp</Label>
-                    <input name="sp" />
+                  <li className="flex items-center">
+                    <Label
+                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      htmlFor="sp"
+                    >
+                      sp
+                    </Label>
+                    <input
+                      placeholder="0"
+                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      name="sp"
+                    />
                   </li>
-                  <li>
-                    <Label htmlFor="ep">ep</Label>
-                    <input name="ep" />
+                  <li className="flex items-center">
+                    <Label
+                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      htmlFor="ep"
+                    >
+                      ep
+                    </Label>
+                    <input
+                      placeholder="0"
+                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      name="ep"
+                    />
                   </li>
-                  <li>
-                    <Label htmlFor="gp">gp</Label>
-                    <input name="gp" />
+                  <li className="flex items-center">
+                    <Label
+                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      htmlFor="gp"
+                    >
+                      gp
+                    </Label>
+                    <input
+                      placeholder="0"
+                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      name="gp"
+                    />
                   </li>
-                  <li>
-                    <Label htmlFor="pp">pp</Label>
-                    <input name="pp" />
+                  <li className="flex items-center">
+                    <Label
+                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      htmlFor="pp"
+                    >
+                      pp
+                    </Label>
+                    <input
+                      placeholder="0"
+                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      name="pp"
+                    />
                   </li>
                 </ul>
               </div>
-              <textarea placeholder="Equipment list here"></textarea>
+              <textarea
+                className="ml-3"
+                placeholder="Equipment list here"
+              ></textarea>
             </div>
-            <Label>Equipment</Label>
+            <Label className="my-2">Equipment</Label>
           </section>
         </section>
 
