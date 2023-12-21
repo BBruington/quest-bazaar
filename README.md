@@ -15,19 +15,31 @@ This application was built using the following stack:
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 
-## Learn More
+## Connect with Friends
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-<img src="Campaign Post.png" />
+You can easily connect with others, message each other, and invite them to games to play with!
+
 <img src="Contacts.png" />
+
+
+## Make your own game
+
+You can start and host your own D&D game and conveniently invite anyone you're already friends with!
+
 <img src="Create Campaign.png" />
+
+
+## Expose your game to other people
+
+You can create a post to advertise your game to catch the eye of users to ask to join your game!
+
+<img src="Campaign Post.png" />
+
+
+## Set up a time to play
+
+Schedule dates for you and your friends to do events and remember to play!
+
 <img src="DnD Scheduler.png" />
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
