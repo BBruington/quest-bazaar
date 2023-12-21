@@ -1,15 +1,16 @@
-# Create T3 App
+# Quest Bazaar
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a Dungeons and Dragons social media app.
 
-## What's next? How do I make an app with this?
+## What are the features of this app?
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+Quest Bazaar allows you to connect with fellow lovers of D&D to quickly find / advertise a game and start playing. You're able to chat, 
+schedule games, and make characters once you've found a suitable game.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+This application was built using the following stack: 
 
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
+- [Clerk.js](https://clerk.com/)
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
@@ -17,6 +18,10 @@ If you are not familiar with the different technologies used in this project, pl
 ## Learn More
 
 To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+<img src="Campaign Post.png" />
+<img src="Contacts.png" />
+<img src="Create Campaign.png" />
+<img src="DnD Scheduler.png" />
 
 - [Documentation](https://create.t3.gg/)
 - [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
