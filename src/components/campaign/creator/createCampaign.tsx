@@ -140,7 +140,7 @@ export default function CreateCampaignComponent(props: {
 
   return (
     <div className="flex w-full flex-col lg:flex-row">
-      <div className="flex w-full flex-col lg:w-1/2">
+      <div className="flex w-full flex-col lg:w-1/2 p-8">
         <div className="ml-2">
           <Label className="text-white" htmlFor="name">
             Campaign Name:

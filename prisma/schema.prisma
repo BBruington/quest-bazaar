@@ -64,7 +64,7 @@ model Post {
   title          String
   description    String    @db.Text
   author         String
-  mainImage      String
+  mainImage      String?   
   body           String    @db.Text
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
