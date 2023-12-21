@@ -78,7 +78,7 @@ export default function Test() {
           <section className="attributes flex">
             {/* Base Stats */}
             <div className="scores flex w-[100px] flex-col rounded-md bg-slate-400 pb-2">
-              <ul className="m-3 flex h-[730px] flex-col justify-between space-y-1 rounded-xl bg-slate-400">
+              <ul className="m-3 flex h-[612px] flex-col justify-between space-y-1 rounded-xl bg-slate-400">
                 <li className="ability-li">
                   <div className="score flex flex-col">
                     <Label
@@ -616,7 +616,7 @@ export default function Test() {
               Other Proficiencies and Languages
             </Label>
             <textarea
-              className="h-[300px] w-[250px] rounded-sm border-2 border-black"
+              className="h-[150px] w-[250px] rounded-sm border-2 border-black"
               name="otherprofs"
             ></textarea>
           </div>
@@ -637,7 +637,7 @@ export default function Test() {
                     Armor Class
                   </Label>
                   <input
-                    className="h-[80px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                    className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                     name="ac"
                     placeholder="10"
                     type="text"
@@ -653,7 +653,7 @@ export default function Test() {
                     Initiative
                   </Label>
                   <input
-                    className="h-[80px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                    className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                     name="initiative"
                     placeholder="Dex"
                     type="text"
@@ -669,7 +669,7 @@ export default function Test() {
                     Speed
                   </Label>
                   <input
-                    className="h-[80px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                    className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                     name="speed"
                     placeholder="30ft"
                     type="text"
@@ -771,7 +771,7 @@ export default function Test() {
 
           {/* attacks and spellcasting */}
           <section className="attacksandspellcasting mt-2">
-            <div className="flex h-[400px] flex-col-reverse items-center justify-between rounded-xl border-2 border-black">
+            <div className="flex h-[200px] flex-col-reverse items-center justify-between rounded-xl border-2 border-black">
               <Label className="my-1">Attacks & Spellcasting</Label>
               <table>
                 <thead>
@@ -858,71 +858,71 @@ export default function Test() {
 
           {/* equipment */}
           <section className="equipment mt-2 flex flex-col items-center rounded-lg border-2 border-black">
-            <div className="flex p-2">
+            <div className="flex p-1">
               <div className="money">
-                <ul>
+                <ul className="space-y-[2px]">
                   <li className="flex items-center">
                     <Label
-                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      className="coins-label"
                       htmlFor="cp"
                     >
                       cp
                     </Label>
                     <input
                       placeholder="0"
-                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      className="coins-input"
                       name="cp"
                     />
                   </li>
                   <li className="flex items-center">
                     <Label
-                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      className="coins-label"
                       htmlFor="sp"
                     >
                       sp
                     </Label>
                     <input
                       placeholder="0"
-                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      className="coins-input"
                       name="sp"
                     />
                   </li>
                   <li className="flex items-center">
                     <Label
-                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      className="coins-label"
                       htmlFor="ep"
                     >
                       ep
                     </Label>
                     <input
                       placeholder="0"
-                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      className="coins-input"
                       name="ep"
                     />
                   </li>
                   <li className="flex items-center">
                     <Label
-                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      className="coins-label"
                       htmlFor="gp"
                     >
                       gp
                     </Label>
                     <input
                       placeholder="0"
-                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      className="coins-input"
                       name="gp"
                     />
                   </li>
                   <li className="flex items-center">
                     <Label
-                      className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+                      className="coins-label"
                       htmlFor="pp"
                     >
                       pp
                     </Label>
                     <input
                       placeholder="0"
-                      className="h-10 w-14 rounded-xl border-2 border-black text-center"
+                      className="coins-input"
                       name="pp"
                     />
                   </li>
@@ -933,34 +933,36 @@ export default function Test() {
                 placeholder="Equipment list here"
               ></textarea>
             </div>
-            <Label className="my-2">Equipment</Label>
+            <Label className="mb-1">Equipment</Label>
           </section>
         </section>
 
         {/* personalite, Ideals, Bonds, Flaws, features / traits */}
         <section className="w-1/3">
-          <section className="flavor">
-            <div className="personality flex flex-col">
-              <Label htmlFor="personality">Personality</Label>
-              <textarea name="personality"></textarea>
+
+          {/* not traits */}
+          <section className="flavor flex flex-col bg-slate-400 space-y-3 p-2 m-5 mt-0 rounded-lg">
+            <div className="personality flex flex-col-reverse items-center border-black border-2 rounded-md">
+              <Label className="personality-label" htmlFor="personality">Personality</Label>
+              <textarea className="personality-textarea" name="personality"></textarea>
             </div>
-            <div className="ideals flex flex-col">
-              <Label htmlFor="ideals">Ideals</Label>
-              <textarea name="ideals"></textarea>
+            <div className="ideals flex flex-col-reverse items-center border-black border-2 rounded-md">
+              <Label className="personality-label" htmlFor="ideals">Ideals</Label>
+              <textarea className="personality-textarea" name="ideals"></textarea>
             </div>
-            <div className="bonds flex flex-col">
-              <Label htmlFor="bonds">Bonds</Label>
-              <textarea name="bonds"></textarea>
+            <div className="bonds flex flex-col-reverse items-center border-black border-2 rounded-md">
+              <Label className="personality-label" htmlFor="bonds">Bonds</Label>
+              <textarea className="personality-textarea" name="bonds"></textarea>
             </div>
-            <div className="flaws flex flex-col">
-              <Label htmlFor="flaws">Flaws</Label>
-              <textarea name="flaws"></textarea>
+            <div className="flaws flex flex-col-reverse items-center border-black border-2 rounded-md">
+              <Label className="personality-label" htmlFor="flaws">Flaws</Label>
+              <textarea className="personality-textarea" name="flaws"></textarea>
             </div>
           </section>
-          <section className="features">
-            <div className="flex flex-col">
-              <Label htmlFor="features">Features & Traits</Label>
-              <textarea name="features"></textarea>
+          <section className="features flex flex-col items-center m-5 border-black border-2 rounded-md">
+            <div className="flex flex-col-reverse w-full">
+              <Label className="bg-slate-100 text-center rounded-sm w-full p-[2px]" htmlFor="features">Features & Traits</Label>
+              <textarea className="h-[302px] w-full p-2" name="features"></textarea>
             </div>
           </section>
         </section>

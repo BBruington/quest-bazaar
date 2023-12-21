@@ -68,13 +68,13 @@
     @apply flex w-1/3 flex-col-reverse
   }
   .skills-total-input {
-    @apply w-5 text-center border-b-2 border-black;
+    @apply w-5 text-center border-b-2 border-black text-xs;
   }
   .skills-li {
     @apply flex flex-row-reverse items-center justify-end space-x-1
   }
   .saves-total-input {
-    @apply w-8 border-b-2 border-black text-center
+    @apply w-8 border-b-2 border-black text-center text-sm
   }
   .saves-li {
     @apply flex flex-row-reverse items-center space-x-2
@@ -87,5 +87,17 @@
   }
   .ability-li {
     @apply flex flex-col items-center justify-center rounded-xl border-2 border-black bg-white
+  }
+  .personality-label {
+    @apply bg-slate-100 text-center rounded-sm w-full p-[2px]
+  }
+  .personality-textarea {
+    @apply h-[100px] w-full
+  }
+  .coins-label {
+    @apply rounded-lg border-2 border-r-0 border-black p-[3px]
+  }
+  .coins-input {
+    @apply h-10 w-14 rounded-xl border-2 border-black text-center mr-4
   }
 }
