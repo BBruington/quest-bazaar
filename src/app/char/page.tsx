@@ -1,33 +1,42 @@
 "use client";
+import type { CharacterForm } from "~/components/characterSheet/characterTypes";
+import { useForm, type SubmitHandler } from "react-hook-form"
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 
-const saveCharacterSheet = (e) => {
+const saveCharacterSheet: SubmitHandler<CharacterForm> = (data, e) => {
+  e?.preventDefault()
+  console.log(data)
 };
 
 export default function Test() {
+
+  const { register, handleSubmit } = useForm<CharacterForm>()
+
+
   return (
     <div className="flex justify-center">
       <form
-        onSubmit={(e) => saveCharacterSheet(e)}
+        onSubmit={() => 
+          handleSubmit(saveCharacterSheet)}
         className="charsheet flex w-[1000px] flex-col bg-white align-middle"
       >
         <Button type="submit">Save</Button>
         {/* header with char name, basic class info */}
         <header className="flex">
-          <section className="charname m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
-            <Label htmlFor="charname">Character Name</Label>
-            <input className="px-1" name="charname" />
+          <section className="charName m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
+            <Label htmlFor="charName">Character Name</Label>
+            <input {...register("charName")} className="px-1" name="charName" />
           </section>
           <section className="misc m-1 ml-0 w-2/3 rounded-md border-2 border-black px-1">
             <ul className="flex flex-wrap py-3">
               <li className="header-li">
-                <Label className="mb-2" htmlFor="classNamelevel">
+                <Label className="mb-2" htmlFor="className">
                   Class
                 </Label>
-                <input
+                <input {...register("className")}
                   className="header-input"
-                  name="classNamelevel"
+                  name="className"
                   placeholder="Paladin"
                 />
               </li>
@@ -35,7 +44,7 @@ export default function Test() {
                 <Label className="mb-2" htmlFor="background">
                   Background
                 </Label>
-                <input
+                <input {...register("background")}
                   className="header-input"
                   name="background"
                   placeholder="Acolyte"
@@ -795,7 +804,7 @@ export default function Test() {
             {/* attacks and spellcasting */}
             <section className="attacksandspellcasting mt-2">
               <div className="flex h-[200px] flex-col-reverse items-center justify-between rounded-xl border-2 border-black">
-                <Label className="my-1">Attacks & Spellcasting</Label>
+                <Label className="my-1 bg-slate-100 w-full text-center">Attacks & Spellcasting</Label>
                 <table>
                   <thead>
                     <tr className="text-xs text-black/50">
@@ -941,7 +950,7 @@ export default function Test() {
                   placeholder="Equipment list here"
                 ></textarea>
               </div>
-              <Label className="mb-1">Equipment</Label>
+              <Label className="mb-1 bg-slate-100 w-full text-center">Equipment</Label>
             </section>
           </section>
 
