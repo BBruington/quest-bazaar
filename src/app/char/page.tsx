@@ -4,9 +4,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 
-
 export default function Test() {
-  
   const saveCharacterSheet: SubmitHandler<CharacterForm> = (data, e) => {
     e?.preventDefault();
     console.log(data);
@@ -25,7 +23,12 @@ export default function Test() {
         <header className="flex">
           <section className="charName m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
             <Label htmlFor="charName">Character Name</Label>
-            <input {...register("charName")} className="px-1" id="charName" name="charName" />
+            <input
+              {...register("charName")}
+              className="px-1"
+              id="charName"
+              name="charName"
+            />
           </section>
           <section className="misc m-1 ml-0 w-2/3 rounded-md border-2 border-black px-1">
             <ul className="flex flex-wrap py-3">
@@ -264,7 +267,12 @@ export default function Test() {
                       Inspiration
                     </Label>
                   </div>
-                  <input className="mr-3" id="inspiration" name="inspiration" type="checkbox" />
+                  <input
+                    className="mr-3"
+                    id="inspiration"
+                    name="inspiration"
+                    type="checkbox"
+                  />
                 </div>
                 <div className="proficiencybonus box flex flex-row-reverse">
                   <div className="Label-container">
@@ -297,7 +305,11 @@ export default function Test() {
                         placeholder="+0"
                         type="text"
                       />
-                      <input id="Strength-save-prof" name="Strength-save-prof" type="checkbox" />
+                      <input
+                        id="Strength-save-prof"
+                        name="Strength-save-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -313,7 +325,11 @@ export default function Test() {
                         placeholder="+0"
                         type="text"
                       />
-                      <input id="Dexterity-save-prof" name="Dexterity-save-prof" type="checkbox" />
+                      <input
+                        id="Dexterity-save-prof"
+                        name="Dexterity-save-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -329,7 +345,11 @@ export default function Test() {
                         placeholder="+0"
                         type="text"
                       />
-                      <input id="Constitution-save-prof" name="Constitution-save-prof" type="checkbox" />
+                      <input
+                        id="Constitution-save-prof"
+                        name="Constitution-save-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -361,7 +381,11 @@ export default function Test() {
                         placeholder="+0"
                         type="text"
                       />
-                      <input id='Intelligence-save-prof' name="Intelligence-save-prof" type="checkbox" />
+                      <input
+                        id="Intelligence-save-prof"
+                        name="Intelligence-save-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -377,7 +401,11 @@ export default function Test() {
                         placeholder="+0"
                         type="text"
                       />
-                      <input id="Charisma-save-prof" name="Charisma-save-prof" type="checkbox" />
+                      <input
+                        id="Charisma-save-prof"
+                        name="Charisma-save-prof"
+                        type="checkbox"
+                      />
                     </li>
                   </ul>
                   <div className="Label flex justify-center font-bold">
@@ -399,8 +427,16 @@ export default function Test() {
                         placeholder="+0"
                         type="text"
                       />
-                      <input id="Acrobatics-expertise" name="Acrobatics-expertise" type="checkbox" />
-                      <input id="Acrobatics-prof" name="Acrobatics-prof" type="checkbox" />
+                      <input
+                        id="Acrobatics-expertise"
+                        name="Acrobatics-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Acrobatics-prof"
+                        name="Acrobatics-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label
@@ -416,8 +452,16 @@ export default function Test() {
                         placeholder="+0"
                         type="text"
                       />
-                      <input id="Animal Handling-expertise" name="Animal Handling-expertise" type="checkbox" />
-                      <input id="Animal Handling-prof" name="Animal Handling-prof" type="checkbox" />
+                      <input
+                        id="Animal Handling-expertise"
+                        name="Animal Handling-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Animal Handling-prof"
+                        name="Animal Handling-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Arcana">
@@ -425,12 +469,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Arcana"
                         name="Arcana"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Arcana-expertise" type="checkbox" />
-                      <input name="Arcana-prof" type="checkbox" />
+                      <input
+                        id="Arcana-expertise"
+                        name="Arcana-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Arcana-prof"
+                        name="Arcana-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Athletics">
@@ -438,12 +491,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Athletics"
                         name="Athletics"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Athletics-expertise" type="checkbox" />
-                      <input name="Athletics-prof" type="checkbox" />
+                      <input
+                        id="Athletics-expertise"
+                        name="Athletics-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Athletics-prof"
+                        name="Athletics-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Deception">
@@ -451,12 +513,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Deception"
                         name="Deception"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Deception-expertise" type="checkbox" />
-                      <input name="Deception-prof" type="checkbox" />
+                      <input
+                        id="Deception-expertise"
+                        name="Deception-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Deception-prof"
+                        name="Deception-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="History">
@@ -464,12 +535,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="History"
                         name="History"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="History-expertise" type="checkbox" />
-                      <input name="History-prof" type="checkbox" />
+                      <input
+                        id="History-expertise"
+                        name="History-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="History-prof"
+                        name="History-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Insight">
@@ -477,12 +557,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Insight"
                         name="Insight"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Insight-expertise" type="checkbox" />
-                      <input name="Insight-prof" type="checkbox" />
+                      <input
+                        id="Insight-expertise"
+                        name="Insight-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Insight-prof"
+                        name="Insight-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label
@@ -493,12 +582,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Intimidation"
                         name="Intimidation"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Intimidation-expertise" type="checkbox" />
-                      <input name="Intimidation-prof" type="checkbox" />
+                      <input
+                        id="Intimidation-expertise"
+                        name="Intimidation-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Intimidation-prof"
+                        name="Intimidation-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label
@@ -509,12 +607,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Investigation"
                         name="Investigation"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Investigation-expertise" type="checkbox" />
-                      <input name="Investigation-prof" type="checkbox" />
+                      <input
+                        id="Investigation-expertise"
+                        name="Investigation-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Investigation-prof"
+                        name="Investigation-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Medicine">
@@ -522,12 +629,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Medicine"
                         name="Medicine"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Medicine-expertise" type="checkbox" />
-                      <input name="Medicine-prof" type="checkbox" />
+                      <input
+                        id="Medicine-expertise"
+                        name="Medicine-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Medicine-prof"
+                        name="Medicine-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Nature">
@@ -535,12 +651,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Nature"
                         name="Nature"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Nature-expertise" type="checkbox" />
-                      <input name="Nature-prof" type="checkbox" />
+                      <input
+                        id="Nature-expertise"
+                        name="Nature-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Nature-prof"
+                        name="Nature-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Perception">
@@ -548,12 +673,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Perception"
                         name="Perception"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Perception-expertise" type="checkbox" />
-                      <input name="Perception-prof" type="checkbox" />
+                      <input
+                        id="Perception-expertise"
+                        name="Perception-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Perception-prof"
+                        name="Perception-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Performance">
@@ -574,12 +708,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Performance"
                         name="Persuation"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Persuation-expertise" type="checkbox" />
-                      <input name="Persuation-prof" type="checkbox" />
+                      <input
+                        id="Performance-expertise"
+                        name="Persuation-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Performance-prof"
+                        name="Persuation-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Religion">
@@ -587,12 +730,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Religion"
                         name="Religion"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Religion-expertise" type="checkbox" />
-                      <input name="Religion-prof" type="checkbox" />
+                      <input
+                        id="Religion-expertise"
+                        name="Religion-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Religion-prof"
+                        name="Religion-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label
@@ -603,12 +755,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Sleight of Hand"
                         name="Sleight of Hand"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Sleight of Hand-expertise" type="checkbox" />
-                      <input name="Sleight of Hand-prof" type="checkbox" />
+                      <input
+                        id="Sleight of Hand-expertise"
+                        name="Sleight of Hand-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Sleight of Hand-prof"
+                        name="Sleight of Hand-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Stealth">
@@ -616,12 +777,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Stealth"
                         name="Stealth"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Stealth-expertise" type="checkbox" />
-                      <input name="Stealth-prof" type="checkbox" />
+                      <input
+                        id="Stealth-expertise"
+                        name="Stealth-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Stealth-prof"
+                        name="Stealth-prof"
+                        type="checkbox"
+                      />
                     </li>
                     <li className="skills-li mb-2">
                       <Label className="ml-1 text-[10px]" htmlFor="Survival">
@@ -629,12 +799,21 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Survival"
                         name="Survival"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Survival-expertise" type="checkbox" />
-                      <input name="Survival-prof" type="checkbox" />
+                      <input
+                        id="Survival-expertise"
+                        name="Survival-expertise"
+                        type="checkbox"
+                      />
+                      <input
+                        id="Survival-prof"
+                        name="Survival-prof"
+                        type="checkbox"
+                      />
                     </li>
                   </ul>
                   <div>
@@ -658,6 +837,7 @@ export default function Test() {
                 </Label>
               </div>
               <input
+                id="passiveperception"
                 name="passiveperception"
                 placeholder="10"
                 className="w-10 rounded-md border-2 border-black text-center"
@@ -674,6 +854,7 @@ export default function Test() {
               </Label>
               <textarea
                 className="h-[150px] w-[250px] rounded-sm border-2 border-black"
+                id="otherprofs"
                 name="otherprofs"
               ></textarea>
             </div>
@@ -695,6 +876,7 @@ export default function Test() {
                     </Label>
                     <input
                       className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                      id="ac"
                       name="ac"
                       placeholder="10"
                       type="text"
@@ -711,6 +893,7 @@ export default function Test() {
                     </Label>
                     <input
                       className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                      id="initiative"
                       name="initiative"
                       placeholder="Dex"
                       type="text"
@@ -727,6 +910,7 @@ export default function Test() {
                     </Label>
                     <input
                       className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
+                      id="speed"
                       name="speed"
                       placeholder="30ft"
                       type="text"
@@ -747,6 +931,7 @@ export default function Test() {
                     </Label>
                     <input
                       className="ml-2 h-[15px] border-b-2 border-black/30 text-center text-xs text-black/70"
+                      id="maxhp"
                       name="maxhp"
                       placeholder="10"
                       type="text"
@@ -759,6 +944,7 @@ export default function Test() {
                     <input
                       placeholder="0"
                       className="h-[60px] w-5/6 text-center text-2xl"
+                      id="currenthp"
                       name="currenthp"
                       type="text"
                     />
@@ -771,6 +957,7 @@ export default function Test() {
                   <input
                     placeholder="0"
                     className="mt-1 h-[60px] w-5/6 text-center text-2xl"
+                    id="temphp"
                     name="temphp"
                     type="text"
                   />
@@ -786,6 +973,7 @@ export default function Test() {
                       <Label htmlFor="totalhd">Total</Label>
                       <input
                         className="ml-2 w-[60px]"
+                        id="totalhd"
                         name="totalhd"
                         placeholder="2d10"
                         type="text"
@@ -797,6 +985,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="h-[45px] w-[100px] text-center"
+                        id="remaininghd"
                         name="remaininghd"
                         type="text"
                       />
@@ -810,17 +999,41 @@ export default function Test() {
                       <div className="deathsuccesses mb-1 flex">
                         <Label className="text-xs">Successes</Label>
                         <div className="bubbles ml-2 flex space-x-1">
-                          <input name="deathsuccess1" type="checkbox" />
-                          <input name="deathsuccess2" type="checkbox" />
-                          <input name="deathsuccess3" type="checkbox" />
+                          <input
+                            id="deathsuccess1"
+                            name="deathsuccess1"
+                            type="checkbox"
+                          />
+                          <input
+                            id="deathsuccess2"
+                            name="deathsuccess2"
+                            type="checkbox"
+                          />
+                          <input
+                            id="deathsuccess3"
+                            name="deathsuccess3"
+                            type="checkbox"
+                          />
                         </div>
                       </div>
                       <div className="deathfails flex items-center justify-between">
                         <Label className="text-xs">Failures</Label>
                         <div className="bubbles ml-2 flex space-x-1">
-                          <input name="deathfail1" type="checkbox" />
-                          <input name="deathfail2" type="checkbox" />
-                          <input name="deathfail3" type="checkbox" />
+                          <input
+                            id="deathfail1"
+                            name="deathfail1"
+                            type="checkbox"
+                          />
+                          <input
+                            id="deathfail2"
+                            name="deathfail2"
+                            type="checkbox"
+                          />
+                          <input
+                            id="deathfail3"
+                            name="deathfail3"
+                            type="checkbox"
+                          />
                         </div>
                       </div>
                     </div>
@@ -848,6 +1061,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkname1"
                           name="atkname1"
                           type="text"
                         />
@@ -855,6 +1069,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkbonus1"
                           name="atkbonus1"
                           type="text"
                         />
@@ -862,6 +1077,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkdamage1"
                           name="atkdamage1"
                           type="text"
                         />
@@ -871,6 +1087,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkname2"
                           name="atkname2"
                           type="text"
                         />
@@ -878,6 +1095,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkbonus2"
                           name="atkbonus2"
                           type="text"
                         />
@@ -885,6 +1103,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkdamage2"
                           name="atkdamage2"
                           type="text"
                         />
@@ -894,6 +1113,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkname3"
                           name="atkname3"
                           type="text"
                         />
@@ -901,6 +1121,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkbonus3"
                           name="atkbonus3"
                           type="text"
                         />
@@ -908,6 +1129,7 @@ export default function Test() {
                       <td>
                         <input
                           className="w-24 bg-black/10"
+                          id="atkdamage3"
                           name="atkdamage3"
                           type="text"
                         />
@@ -930,6 +1152,7 @@ export default function Test() {
                       <input
                         placeholder="0"
                         className="coins-input"
+                        id="cp"
                         name="cp"
                       />
                     </li>
@@ -940,6 +1163,7 @@ export default function Test() {
                       <input
                         placeholder="0"
                         className="coins-input"
+                        id="sp"
                         name="sp"
                       />
                     </li>
@@ -950,6 +1174,7 @@ export default function Test() {
                       <input
                         placeholder="0"
                         className="coins-input"
+                        id="ep"
                         name="ep"
                       />
                     </li>
@@ -960,6 +1185,7 @@ export default function Test() {
                       <input
                         placeholder="0"
                         className="coins-input"
+                        id="gp"
                         name="gp"
                       />
                     </li>
@@ -970,6 +1196,7 @@ export default function Test() {
                       <input
                         placeholder="0"
                         className="coins-input"
+                        id="pp"
                         name="pp"
                       />
                     </li>
@@ -996,6 +1223,7 @@ export default function Test() {
                 </Label>
                 <textarea
                   className="personality-textarea"
+                  id="personality"
                   name="personality"
                 ></textarea>
               </div>
@@ -1005,6 +1233,7 @@ export default function Test() {
                 </Label>
                 <textarea
                   className="personality-textarea"
+                  id="ideals"
                   name="ideals"
                 ></textarea>
               </div>
@@ -1014,6 +1243,7 @@ export default function Test() {
                 </Label>
                 <textarea
                   className="personality-textarea"
+                  id="bonds"
                   name="bonds"
                 ></textarea>
               </div>
@@ -1023,6 +1253,7 @@ export default function Test() {
                 </Label>
                 <textarea
                   className="personality-textarea"
+                  id="flaws"
                   name="flaws"
                 ></textarea>
               </div>
@@ -1037,6 +1268,7 @@ export default function Test() {
                 </Label>
                 <textarea
                   className="h-[302px] w-full p-2"
+                  id="features"
                   name="features"
                 ></textarea>
               </div>
