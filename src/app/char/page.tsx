@@ -1,24 +1,23 @@
 "use client";
 import type { CharacterForm } from "~/components/characterSheet/characterTypes";
-import { useForm, type SubmitHandler } from "react-hook-form"
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 
-const saveCharacterSheet: SubmitHandler<CharacterForm> = (data, e) => {
-  e?.preventDefault()
-  console.log(data)
-};
 
 export default function Test() {
+  
+  const saveCharacterSheet: SubmitHandler<CharacterForm> = (data, e) => {
+    e?.preventDefault();
+    console.log(data);
+  };
 
-  const { register, handleSubmit } = useForm<CharacterForm>()
-
+  const { register, handleSubmit } = useForm<CharacterForm>();
 
   return (
     <div className="flex justify-center">
       <form
-        onSubmit={() => 
-          handleSubmit(saveCharacterSheet)}
+        onSubmit={() => handleSubmit(saveCharacterSheet)}
         className="charsheet flex w-[1000px] flex-col bg-white align-middle"
       >
         <Button type="submit">Save</Button>
@@ -26,7 +25,7 @@ export default function Test() {
         <header className="flex">
           <section className="charName m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
             <Label htmlFor="charName">Character Name</Label>
-            <input {...register("charName")} className="px-1" name="charName" />
+            <input {...register("charName")} className="px-1" id="charName" name="charName" />
           </section>
           <section className="misc m-1 ml-0 w-2/3 rounded-md border-2 border-black px-1">
             <ul className="flex flex-wrap py-3">
@@ -34,8 +33,10 @@ export default function Test() {
                 <Label className="mb-2" htmlFor="className">
                   Class
                 </Label>
-                <input {...register("className")}
+                <input
+                  {...register("className")}
                   className="header-input"
+                  id="className"
                   name="className"
                   placeholder="Paladin"
                 />
@@ -44,9 +45,11 @@ export default function Test() {
                 <Label className="mb-2" htmlFor="background">
                   Background
                 </Label>
-                <input {...register("background")}
+                <input
+                  {...register("background")}
                   className="header-input"
                   name="background"
+                  id="background"
                   placeholder="Acolyte"
                 />
               </li>
@@ -56,6 +59,7 @@ export default function Test() {
                 </Label>
                 <input
                   className="header-input"
+                  id="playername"
                   name="playername"
                   placeholder="Player McPlayerface"
                 ></input>
@@ -66,6 +70,7 @@ export default function Test() {
                 </Label>
                 <input
                   className="header-input"
+                  id="race"
                   name="race"
                   placeholder="Half-elf"
                 />
@@ -76,6 +81,7 @@ export default function Test() {
                 </Label>
                 <input
                   className="header-input"
+                  id="alignment"
                   name="alignment"
                   placeholder="Lawful Good"
                 />
@@ -86,6 +92,7 @@ export default function Test() {
                 </Label>
                 <input
                   className="header-input"
+                  id="Level"
                   name="Level"
                   placeholder="1-20"
                 />
@@ -112,6 +119,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="ability-score-input"
+                        id="Strengthscore"
                         name="Strengthscore"
                         placeholder="10"
                       />
@@ -119,6 +127,7 @@ export default function Test() {
                     <div className="modifier flex justify-center">
                       <input
                         className="ability-modifier-input"
+                        id="Strengthmod"
                         name="Strengthmod"
                         placeholder="+0"
                       />
@@ -134,6 +143,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="ability-score-input"
+                        id="Dexterityscore"
                         name="Dexterityscore"
                         placeholder="10"
                       />
@@ -141,6 +151,7 @@ export default function Test() {
                     <div className="modifier flex justify-center">
                       <input
                         className="ability-modifier-input"
+                        id="Dexteritymod"
                         name="Dexteritymod"
                         placeholder="+0"
                       />
@@ -156,6 +167,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="ability-score-input"
+                        id="Constitutionscore"
                         name="Constitutionscore"
                         placeholder="10"
                       />
@@ -163,6 +175,7 @@ export default function Test() {
                     <div className="modifier flex justify-center">
                       <input
                         className="ability-modifier-input"
+                        id="Constitutionmod"
                         name="Constitutionmod"
                         placeholder="+0"
                       />
@@ -178,6 +191,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="ability-score-input"
+                        id="Wisdomscore"
                         name="Wisdomscore"
                         placeholder="10"
                       />
@@ -185,6 +199,7 @@ export default function Test() {
                     <div className="modifier flex justify-center">
                       <input
                         className="ability-modifier-input"
+                        id="Wisdommod"
                         name="Wisdommod"
                         placeholder="+0"
                       />
@@ -200,6 +215,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="ability-score-input"
+                        id="Intelligencescore"
                         name="Intelligencescore"
                         placeholder="10"
                       />
@@ -207,6 +223,7 @@ export default function Test() {
                     <div className="modifier flex justify-center">
                       <input
                         className="ability-modifier-input"
+                        id="Intelligencemod"
                         name="Intelligencemod"
                         placeholder="+0"
                       />
@@ -222,6 +239,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="ability-score-input"
+                        id="Charismascore"
                         name="Charismascore"
                         placeholder="10"
                       />
@@ -229,6 +247,7 @@ export default function Test() {
                     <div className="modifier flex justify-center">
                       <input
                         className="ability-modifier-input"
+                        id="Charismamod"
                         name="Charismamod"
                         placeholder="+0"
                       />
@@ -245,7 +264,7 @@ export default function Test() {
                       Inspiration
                     </Label>
                   </div>
-                  <input className="mr-3" name="inspiration" type="checkbox" />
+                  <input className="mr-3" id="inspiration" name="inspiration" type="checkbox" />
                 </div>
                 <div className="proficiencybonus box flex flex-row-reverse">
                   <div className="Label-container">
@@ -255,6 +274,7 @@ export default function Test() {
                   </div>
                   <input
                     className="w-8"
+                    id="proficiencybonus"
                     name="proficiencybonus"
                     placeholder="+2"
                   />
@@ -272,11 +292,12 @@ export default function Test() {
                       </Label>
                       <input
                         className="saves-total-input"
+                        id="Strength-save"
                         name="Strength-save"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Strength-save-prof" type="checkbox" />
+                      <input id="Strength-save-prof" name="Strength-save-prof" type="checkbox" />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -287,11 +308,12 @@ export default function Test() {
                       </Label>
                       <input
                         className="saves-total-input"
+                        id="Dexterity-save"
                         name="Dexterity-save"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Dexterity-save-prof" type="checkbox" />
+                      <input id="Dexterity-save-prof" name="Dexterity-save-prof" type="checkbox" />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -302,11 +324,12 @@ export default function Test() {
                       </Label>
                       <input
                         className="saves-total-input"
+                        id="Constitution-save"
                         name="Constitution-save"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Constitution-save-prof" type="checkbox" />
+                      <input id="Constitution-save-prof" name="Constitution-save-prof" type="checkbox" />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -317,6 +340,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="saves-total-input"
+                        id="Wisdom-save"
                         name="Wisdom-save"
                         placeholder="+0"
                         type="text"
@@ -332,11 +356,12 @@ export default function Test() {
                       </Label>
                       <input
                         className="saves-total-input"
+                        id="Intelligence-save"
                         name="Intelligence-save"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Intelligence-save-prof" type="checkbox" />
+                      <input id='Intelligence-save-prof' name="Intelligence-save-prof" type="checkbox" />
                     </li>
                     <li className="saves-li">
                       <Label
@@ -347,11 +372,12 @@ export default function Test() {
                       </Label>
                       <input
                         className="saves-total-input"
+                        id="Charisma-save"
                         name="Charisma-save"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Charisma-save-prof" type="checkbox" />
+                      <input id="Charisma-save-prof" name="Charisma-save-prof" type="checkbox" />
                     </li>
                   </ul>
                   <div className="Label flex justify-center font-bold">
@@ -368,12 +394,13 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Acrobatics"
                         name="Acrobatics"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Acrobatics-expertise" type="checkbox" />
-                      <input name="Acrobatics-prof" type="checkbox" />
+                      <input id="Acrobatics-expertise" name="Acrobatics-expertise" type="checkbox" />
+                      <input id="Acrobatics-prof" name="Acrobatics-prof" type="checkbox" />
                     </li>
                     <li className="skills-li">
                       <Label
@@ -384,12 +411,13 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Animal Handling"
                         name="Animal Handling"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Animal Handling-expertise" type="checkbox" />
-                      <input name="Animal Handling-prof" type="checkbox" />
+                      <input id="Animal Handling-expertise" name="Animal Handling-expertise" type="checkbox" />
+                      <input id="Animal Handling-prof" name="Animal Handling-prof" type="checkbox" />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Arcana">
@@ -804,7 +832,9 @@ export default function Test() {
             {/* attacks and spellcasting */}
             <section className="attacksandspellcasting mt-2">
               <div className="flex h-[200px] flex-col-reverse items-center justify-between rounded-xl border-2 border-black">
-                <Label className="my-1 bg-slate-100 w-full text-center">Attacks & Spellcasting</Label>
+                <Label className="my-1 w-full bg-slate-100 text-center">
+                  Attacks & Spellcasting
+                </Label>
                 <table>
                   <thead>
                     <tr className="text-xs text-black/50">
@@ -950,7 +980,9 @@ export default function Test() {
                   placeholder="Equipment list here"
                 ></textarea>
               </div>
-              <Label className="mb-1 bg-slate-100 w-full text-center">Equipment</Label>
+              <Label className="mb-1 w-full bg-slate-100 text-center">
+                Equipment
+              </Label>
             </section>
           </section>
 
