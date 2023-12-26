@@ -64,7 +64,7 @@ model Post {
   title          String
   description    String    @db.Text
   author         String
-  mainImage      String?   
+  mainImage      String?
   body           String    @db.Text
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -147,38 +147,38 @@ model CampaignNote {
 }
 
 model Character {
-  id                String   @id @default(cuid())
-  name              String
-  race              String
-  class             String
-  level             Int
-  background        String
-  alignment         String
-  experiencePoints  Int
-  maxHitPoints      Int
-  currentHitPoints  Int
-  tempHitPoints     Int
-  armorClass        Int
-  initiative        Int
-  speed             Int
-  inspiration       Boolean
-  proficiencyBonus  Int
-  personalityTraits String
-  ideals            String
-  bonds             String
-  flaws             String
-  features          String
-  languages         String
-  abilityScores     Json
-  skills            Json
-  savingThrows      Json
-  abilities         Json
-  spells            Json
-  equipment         Json
-  userId            String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  user              User     @relation(fields: [userId], references: [id])
+  id         String   @id @default(cuid())
+  charName   String
+  // race              String
+  className  String
+  // level             Int
+  background String
+  // alignment         String
+  // experiencePoints  Int
+  // maxHitPoints      Int
+  // currentHitPoints  Int
+  // tempHitPoints     Int
+  // armorClass        Int
+  // initiative        Int
+  // speed             Int
+  // inspiration       Boolean
+  // proficiencyBonus  Int
+  // personalityTraits String
+  // ideals            String
+  // bonds             String
+  // flaws             String
+  // features          String
+  // languages         String
+  // abilityScores     Json
+  // skills            Json
+  // savingThrows      Json
+  // abilities         Json
+  // spells            Json
+  // equipment         Json
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model CampaignPlayers {

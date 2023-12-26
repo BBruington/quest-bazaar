@@ -3,9 +3,12 @@ import type { CharacterForm } from "~/components/characterSheet/characterTypes";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
+import { api } from "~/utils/trpc";
 
 export default function Test() {
+  const {mutate: createCharacter} = api.createCharacterSheet.useMutation()
   const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
+    createCharacter({userId: "someIdA", charName: data.charName, className: data.className, background: data.background})
     console.log(data);
   };
 
@@ -14,10 +17,13 @@ export default function Test() {
   return (
     <div className="flex justify-center">
       <form
-        onSubmit={() => handleSubmit(saveCharacterSheet)}
+        onSubmit={(data) => 
+          console.log(data)
+          // handleSubmit(saveCharacterSheet
+        }
         className="charsheet flex w-[1000px] flex-col bg-white align-middle"
       >
-        <Button type="submit">Save</Button>
+        <input type="submit"></input>
         {/* header with char name, basic class info */}
         <header className="flex">
           <section className="charName m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
