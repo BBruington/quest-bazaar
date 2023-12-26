@@ -5,8 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 
 export default function Test() {
-  const saveCharacterSheet: SubmitHandler<CharacterForm> = (data, e) => {
-    e?.preventDefault();
+  const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
     console.log(data);
   };
 
@@ -695,12 +694,13 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
+                        id="Performance"
                         name="Performance"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Performance-expertise" type="checkbox" />
-                      <input name="Performance-prof" type="checkbox" />
+                      <input id="Performance-expertise" name="Performance-expertise" type="checkbox" />
+                      <input id="Performance-prof" name="Performance-prof" type="checkbox" />
                     </li>
                     <li className="skills-li">
                       <Label className="ml-1 text-[10px]" htmlFor="Persuation">
@@ -708,18 +708,18 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
-                        id="Performance"
+                        id="Persuation"
                         name="Persuation"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Performance-expertise"
+                        id="Persuation-expertise"
                         name="Persuation-expertise"
                         type="checkbox"
                       />
                       <input
-                        id="Performance-prof"
+                        id="Persuation-prof"
                         name="Persuation-prof"
                         type="checkbox"
                       />
@@ -1204,6 +1204,8 @@ export default function Test() {
                 </div>
                 <textarea
                   className="ml-3"
+                  id="Equipmentlist"
+                  name="Equipmentlist"
                   placeholder="Equipment list here"
                 ></textarea>
               </div>
