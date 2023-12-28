@@ -64,6 +64,7 @@ export default function Test() {
                   Player Name
                 </Label>
                 <input
+                  {...register("playername")}
                   className="header-input"
                   id="playername"
                   name="playername"
@@ -75,6 +76,7 @@ export default function Test() {
                   Race
                 </Label>
                 <input
+                {...register("race")}
                   className="header-input"
                   id="race"
                   name="race"
@@ -86,6 +88,7 @@ export default function Test() {
                   Alignment
                 </Label>
                 <input
+                {...register("alignment")}
                   className="header-input"
                   id="alignment"
                   name="alignment"
@@ -97,9 +100,10 @@ export default function Test() {
                   Level
                 </Label>
                 <input
+                {...register("level")}
                   className="header-input"
-                  id="Level"
-                  name="Level"
+                  id="level"
+                  name="level"
                   placeholder="1-20"
                 />
               </li>
@@ -119,14 +123,15 @@ export default function Test() {
                     <div className="score flex flex-col">
                       <Label
                         className="text-center text-xs font-bold"
-                        htmlFor="Strengthscore"
+                        htmlFor="strengthscore"
                       >
                         Strength
                       </Label>
                       <input
+                      {...register("strengthscore")}
                         className="ability-score-input"
-                        id="Strengthscore"
-                        name="Strengthscore"
+                        id="strengthscore"
+                        name="strengthscore"
                         placeholder="10"
                       />
                     </div>
@@ -148,9 +153,10 @@ export default function Test() {
                         Dexterity
                       </Label>
                       <input
+                      {...register("dexterityscore")}
                         className="ability-score-input"
-                        id="Dexterityscore"
-                        name="Dexterityscore"
+                        id="dexterityscore"
+                        name="dexterityscore"
                         placeholder="10"
                       />
                     </div>
@@ -167,14 +173,15 @@ export default function Test() {
                     <div className="score flex flex-col">
                       <Label
                         className="text-center text-[9px] font-bold"
-                        htmlFor="Constitutionscore"
+                        htmlFor="constitutionscore"
                       >
                         Constitution
                       </Label>
                       <input
+                      {...register("constitutionscore")}
                         className="ability-score-input"
-                        id="Constitutionscore"
-                        name="Constitutionscore"
+                        id="constitutionscore"
+                        name="constitutionscore"
                         placeholder="10"
                       />
                     </div>
@@ -191,14 +198,15 @@ export default function Test() {
                     <div className="score flex flex-col">
                       <Label
                         className="text-center text-xs font-bold"
-                        htmlFor="Wisdomscore"
+                        htmlFor="wisdomscore"
                       >
                         Wisdom
                       </Label>
                       <input
+                      {...register("wisdomscore")}
                         className="ability-score-input"
-                        id="Wisdomscore"
-                        name="Wisdomscore"
+                        id="wisdomscore"
+                        name="wisdomscore"
                         placeholder="10"
                       />
                     </div>
@@ -215,14 +223,15 @@ export default function Test() {
                     <div className="score flex flex-col">
                       <Label
                         className="text-center text-[9px] font-bold"
-                        htmlFor="Intelligencescore"
+                        htmlFor="intelligencescore"
                       >
                         Intelligence
                       </Label>
                       <input
+                      {...register("intelligencescore")}
                         className="ability-score-input"
-                        id="Intelligencescore"
-                        name="Intelligencescore"
+                        id="intelligencescore"
+                        name="intelligencescore"
                         placeholder="10"
                       />
                     </div>
@@ -239,14 +248,15 @@ export default function Test() {
                     <div className="score flex flex-col">
                       <Label
                         className="text-center text-xs font-bold"
-                        htmlFor="Charismascore"
+                        htmlFor="charismascore"
                       >
                         Charisma
                       </Label>
                       <input
+                      {...register("charismascore")}
                         className="ability-score-input"
-                        id="Charismascore"
-                        name="Charismascore"
+                        id="charismascore"
+                        name="charismascore"
                         placeholder="10"
                       />
                     </div>
@@ -271,6 +281,7 @@ export default function Test() {
                     </Label>
                   </div>
                   <input
+                  {...register("inspiration")}
                     className="mr-3"
                     id="inspiration"
                     name="inspiration"
@@ -284,7 +295,8 @@ export default function Test() {
                     </Label>
                   </div>
                   <input
-                    className="w-8"
+                  {...register("proficiencybonus")}
+                    className="w-8 text-center"
                     id="proficiencybonus"
                     name="proficiencybonus"
                     placeholder="+2"
@@ -297,116 +309,127 @@ export default function Test() {
                     <li className="saves-li">
                       <Label
                         className="ml-2 text-[11px] font-bold"
-                        htmlFor="Strength-save"
+                        htmlFor="strengthsave"
                       >
                         Strength
                       </Label>
                       <input
+                      {...register("strengthsave")}
                         className="saves-total-input"
-                        id="Strength-save"
-                        name="Strength-save"
+                        id="strengthsave"
+                        name="strengthsave"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Strength-save-prof"
-                        name="Strength-save-prof"
+                      {...register("strengthsaveprof")}
+                        id="strengthsaveprof"
+                        name="strengthsaveprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="saves-li">
                       <Label
                         className="ml-2 text-[11px] font-bold"
-                        htmlFor="Dexterity-save"
+                        htmlFor="dexteritysave"
                       >
                         Dexterity
                       </Label>
                       <input
+                      {...register("dexteritysave")}
                         className="saves-total-input"
-                        id="Dexterity-save"
-                        name="Dexterity-save"
+                        id="dexteritysave"
+                        name="dexteritysave"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Dexterity-save-prof"
-                        name="Dexterity-save-prof"
+                      {...register("dexteritysaveprof")}
+                        id="dexteritysaveprof"
+                        name="dexteritysaveprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="saves-li">
                       <Label
                         className="ml-2 text-[11px] font-bold"
-                        htmlFor="Constitution-save"
+                        htmlFor="constitutionsave"
                       >
                         Constitution
                       </Label>
                       <input
+                      {...register("constitutionsave")}
                         className="saves-total-input"
-                        id="Constitution-save"
-                        name="Constitution-save"
+                        id="constitutionsave"
+                        name="constitutionsave"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Constitution-save-prof"
-                        name="Constitution-save-prof"
+                      {...register("constitutionsaveprof")}
+                        id="constitutionsaveprof"
+                        name="constitutionsaveprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="saves-li">
                       <Label
                         className="ml-2 text-[11px] font-bold"
-                        htmlFor="Wisdom-save"
+                        htmlFor="wisdomsave"
                       >
                         Wisdom
                       </Label>
                       <input
+                      {...register("wisdomsave")}
                         className="saves-total-input"
-                        id="Wisdom-save"
-                        name="Wisdom-save"
+                        id="wisdomsave"
+                        name="wisdomsave"
                         placeholder="+0"
                         type="text"
                       />
-                      <input name="Wisdom-save-prof" type="checkbox" />
+                      <input {...register("wisdomsaveprof")} id="wisdomsaveprof" name="wisdomsaveprof" type="checkbox" />
                     </li>
                     <li className="saves-li">
                       <Label
                         className="ml-2 text-[11px] font-bold"
-                        htmlFor="Intelligence-save"
+                        htmlFor="intelligencesave"
                       >
                         Intelligence
                       </Label>
                       <input
+                      {...register("intelligencesave")}
                         className="saves-total-input"
-                        id="Intelligence-save"
-                        name="Intelligence-save"
+                        id="intelligencesave"
+                        name="intelligencesave"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Intelligence-save-prof"
-                        name="Intelligence-save-prof"
+                        {...register("intelligencesaveprof")}
+                        id="intelligencesaveprof"
+                        name="intelligencesaveprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="saves-li">
                       <Label
                         className="ml-2 text-[11px] font-bold"
-                        htmlFor="Charisma-save"
+                        htmlFor="charismasave"
                       >
                         Charisma
                       </Label>
                       <input
+                      {...register("charismasave")}
                         className="saves-total-input"
-                        id="Charisma-save"
-                        name="Charisma-save"
+                        id="charismasave"
+                        name="charismasave"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Charisma-save-prof"
-                        name="Charisma-save-prof"
+                      {...register("charismasaveprof")}
+                        id="charismasaveprof"
+                        name="charismasaveprof"
                         type="checkbox"
                       />
                     </li>
@@ -420,275 +443,311 @@ export default function Test() {
                 <div className="skills list-section box flex flex-col-reverse rounded-xl border-2 border-black">
                   <ul>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Acrobatics">
+                      <Label className="ml-1 text-[10px]" htmlFor="acrobatics">
                         Acrobatics <span className="skill">(Dex)</span>
                       </Label>
                       <input
+                      {...register("acrobatics")}
                         className="skills-total-input"
-                        id="Acrobatics"
-                        name="Acrobatics"
+                        id="acrobatics"
+                        name="acrobatics"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Acrobatics-expertise"
-                        name="Acrobatics-expertise"
+                      {...register("acrobaticsexpertise")}
+                        id="acrobaticsexpertise"
+                        name="acrobaticsexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Acrobatics-prof"
-                        name="Acrobatics-prof"
+                      {...register("acrobaticsprof")}
+                        id="acrobaticsprof"
+                        name="acrobaticsprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
                       <Label
                         className="ml-1 text-[10px]"
-                        htmlFor="Animal Handling"
+                        htmlFor="animalhandling"
                       >
                         Animal Handling <span className="skill">(Wis)</span>
                       </Label>
                       <input
+                      {...register("animalhandling")}
                         className="skills-total-input"
-                        id="Animal Handling"
-                        name="Animal Handling"
+                        id="animalhandling"
+                        name="animalhandling"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Animal Handling-expertise"
-                        name="Animal Handling-expertise"
+                      {...register("animalhandlingexpertise")}
+                        id="animalhandlingexpertise"
+                        name="animalhandlingexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Animal Handling-prof"
-                        name="Animal Handling-prof"
+                      {...register("animalhandlingprof")}
+                        id="animalhandlingprof"
+                        name="animalhandlingprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Arcana">
+                      <Label className="ml-1 text-[10px]" htmlFor="arcana">
                         Arcana <span className="skill">(Int)</span>
                       </Label>
                       <input
+                      {...register("arcana")}
                         className="skills-total-input"
-                        id="Arcana"
-                        name="Arcana"
+                        id="arcana"
+                        name="arcana"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Arcana-expertise"
-                        name="Arcana-expertise"
+                      {...register("arcanaexpertise")}
+                        id="arcanaexpertise"
+                        name="arcanaexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Arcana-prof"
-                        name="Arcana-prof"
+                      {...register("arcanaprof")}
+                        id="arcanaprof"
+                        name="arcanaprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Athletics">
+                      <Label className="ml-1 text-[10px]" htmlFor="athletics">
                         Athletics <span className="skill">(Str)</span>
                       </Label>
                       <input
+                      {...register("athletics")}
                         className="skills-total-input"
-                        id="Athletics"
-                        name="Athletics"
+                        id="athletics"
+                        name="athletics"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Athletics-expertise"
-                        name="Athletics-expertise"
+                      {...register("athleticsexpertise")}
+                        id="athleticsexpertise"
+                        name="athleticsexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Athletics-prof"
-                        name="Athletics-prof"
+                      {...register("athleticsprof")}
+                        id="athleticsprof"
+                        name="athleticsprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Deception">
+                      <Label className="ml-1 text-[10px]" htmlFor="deception">
                         Deception <span className="skill">(Cha)</span>
                       </Label>
                       <input
+                      {...register("deception")}
                         className="skills-total-input"
-                        id="Deception"
-                        name="Deception"
+                        id="deception"
+                        name="deception"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Deception-expertise"
-                        name="Deception-expertise"
+                      {...register("deceptionexpertise")}
+                        id="deceptionexpertise"
+                        name="deceptionexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Deception-prof"
-                        name="Deception-prof"
+                      {...register("deceptionprof")}
+                        id="deceptionprof"
+                        name="deceptionprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="History">
+                      <Label className="ml-1 text-[10px]" htmlFor="history">
                         History <span className="skill">(Int)</span>
                       </Label>
                       <input
+                      {...register("history")}
                         className="skills-total-input"
-                        id="History"
-                        name="History"
+                        id="history"
+                        name="history"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="History-expertise"
-                        name="History-expertise"
+                      {...register("historyexpertise")}
+                        id="historyexpertise"
+                        name="historyexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="History-prof"
-                        name="History-prof"
+                      {...register("historyprof")}
+                        id="historyprof"
+                        name="historyprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Insight">
+                      <Label className="ml-1 text-[10px]" htmlFor="insight">
                         Insight <span className="skill">(Wis)</span>
                       </Label>
                       <input
+                      {...register("insight")}
                         className="skills-total-input"
-                        id="Insight"
-                        name="Insight"
+                        id="insight"
+                        name="insight"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Insight-expertise"
-                        name="Insight-expertise"
+                      {...register("insightexpertise")}
+                        id="insightexpertise"
+                        name="insightexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Insight-prof"
-                        name="Insight-prof"
+                      {...register("insightprof")}
+                        id="insightprof"
+                        name="insightprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
                       <Label
                         className="ml-1 text-[10px]"
-                        htmlFor="Intimidation"
+                        htmlFor="intimidation"
                       >
                         Intimidation <span className="skill">(Cha)</span>
                       </Label>
                       <input
+                      {...register("intimidation")}
                         className="skills-total-input"
-                        id="Intimidation"
-                        name="Intimidation"
+                        id="intimidation"
+                        name="intimidation"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Intimidation-expertise"
-                        name="Intimidation-expertise"
+                      {...register("intimidationexpertise")}
+                        id="intimidationexpertise"
+                        name="intimidationexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Intimidation-prof"
-                        name="Intimidation-prof"
+                      {...register("intimidationprof")}
+                        id="intimidationprof"
+                        name="intimidationprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
                       <Label
                         className="ml-1 text-[10px]"
-                        htmlFor="Investigation"
+                        htmlFor="investigation"
                       >
                         Investigation <span className="skill">(Int)</span>
                       </Label>
                       <input
+                      {...register("investigation")}
                         className="skills-total-input"
-                        id="Investigation"
-                        name="Investigation"
+                        id="investigation"
+                        name="investigation"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Investigation-expertise"
-                        name="Investigation-expertise"
+                      {...register("investigationexpertise")}
+                        id="investigationexpertise"
+                        name="investigationexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Investigation-prof"
-                        name="Investigation-prof"
+                      {...register("investigationprof")}
+                        id="investigationprof"
+                        name="investigationprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Medicine">
-                        Medicine <span className="skill">(Wis)</span>
+                      <Label className="ml-1 text-[10px]" htmlFor="medicine">
+                        Meadicine <span className="skill">(Wis)</span>
                       </Label>
                       <input
+                      {...register("medicine")}
                         className="skills-total-input"
-                        id="Medicine"
-                        name="Medicine"
+                        id="medicine"
+                        name="medicine"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Medicine-expertise"
-                        name="Medicine-expertise"
+                      {...register("medicineexpertise")}
+                        id="medicineexpertise"
+                        name="medicineexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Medicine-prof"
-                        name="Medicine-prof"
+                      {...register("medicineprof")}
+                        id="medicineprof"
+                        name="medicineprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Nature">
+                      <Label className="ml-1 text-[10px]" htmlFor="nature">
                         Nature <span className="skill">(Int)</span>
                       </Label>
                       <input
+                      {...register("nature")}
                         className="skills-total-input"
-                        id="Nature"
-                        name="Nature"
+                        id="nature"
+                        name="nature"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Nature-expertise"
-                        name="Nature-expertise"
+                      {...register("natureexpertise")}
+                        id="natureexpertise"
+                        name="natureexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Nature-prof"
-                        name="Nature-prof"
+                      {...register("natureprof")}
+                        id="natureprof"
+                        name="natureprof"
                         type="checkbox"
                       />
                     </li>
                     <li className="skills-li">
-                      <Label className="ml-1 text-[10px]" htmlFor="Perception">
+                      <Label className="ml-1 text-[10px]" htmlFor="perception">
                         Perception <span className="skill">(Wis)</span>
                       </Label>
                       <input
+                      {...register("perception")}
                         className="skills-total-input"
-                        id="Perception"
-                        name="Perception"
+                        id="perception"
+                        name="perception"
                         placeholder="+0"
                         type="text"
                       />
                       <input
-                        id="Perception-expertise"
-                        name="Perception-expertise"
+                      {...register("perceptionexpertise")}
+                        id="perceptionexpertise"
+                        name="perceptionexpertise"
                         type="checkbox"
                       />
                       <input
-                        id="Perception-prof"
-                        name="Perception-prof"
+                      {...register("perceptionprof")}
+                        id="perceptionprof"
+                        name="perceptionprof"
                         type="checkbox"
                       />
                     </li>
@@ -857,7 +916,7 @@ export default function Test() {
                 Other Proficiencies and Languages
               </Label>
               <textarea
-                className="h-[150px] w-[250px] rounded-sm border-2 border-black"
+                className="h-[150px] w-[250px] rounded-sm border-2 border-black px-1"
                 id="otherprofs"
                 name="otherprofs"
               ></textarea>
@@ -1064,7 +1123,7 @@ export default function Test() {
                     <tr>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkname1"
                           name="atkname1"
                           type="text"
@@ -1072,7 +1131,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkbonus1"
                           name="atkbonus1"
                           type="text"
@@ -1080,7 +1139,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkdamage1"
                           name="atkdamage1"
                           type="text"
@@ -1090,7 +1149,7 @@ export default function Test() {
                     <tr>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkname2"
                           name="atkname2"
                           type="text"
@@ -1098,7 +1157,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkbonus2"
                           name="atkbonus2"
                           type="text"
@@ -1106,7 +1165,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkdamage2"
                           name="atkdamage2"
                           type="text"
@@ -1116,7 +1175,7 @@ export default function Test() {
                     <tr>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkname3"
                           name="atkname3"
                           type="text"
@@ -1124,7 +1183,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkbonus3"
                           name="atkbonus3"
                           type="text"
@@ -1132,7 +1191,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          className="w-24 bg-black/10"
+                          className="attacks-input"
                           id="atkdamage3"
                           name="atkdamage3"
                           type="text"
@@ -1207,7 +1266,7 @@ export default function Test() {
                   </ul>
                 </div>
                 <textarea
-                  className="ml-3"
+                  className="ml-3 px-1"
                   id="Equipmentlist"
                   name="Equipmentlist"
                   placeholder="Equipment list here"

@@ -88,11 +88,15 @@
   .ability-li {
     @apply flex flex-col items-center justify-center rounded-xl border-2 border-black bg-white
   }
+
+  .attacks-input {
+    @apply text-xs text-center w-[108px] bg-black/10 py-[2px]
+  }
   .personality-label {
     @apply bg-slate-100 text-center rounded-sm w-full p-[2px]
   }
   .personality-textarea {
-    @apply h-[100px] w-full
+    @apply h-[100px] w-full px-1
   }
   .coins-label {
     @apply rounded-lg border-2 border-r-0 border-black p-[3px]
