@@ -32,7 +32,6 @@ export const appRouter = t.router({
         background: input.background
       }
     })
-    console.log(character, input)
   }),
   queryUser: t.procedure
     .input(

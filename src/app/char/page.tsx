@@ -8,6 +8,7 @@ import { api } from "~/utils/trpc";
 export default function Test() {
   const {mutate: createCharacter} = api.createCharacterSheet.useMutation()
   const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
+    
     createCharacter({userId: "someIdA", charName: data.charName, className: data.className, background: data.background})
     console.log(data);
   };
@@ -17,10 +18,7 @@ export default function Test() {
   return (
     <div className="flex justify-center">
       <form
-        onSubmit={(data) => 
-          console.log(data)
-          // handleSubmit(saveCharacterSheet
-        }
+        onSubmit={handleSubmit(saveCharacterSheet)}
         className="charsheet flex w-[1000px] flex-col bg-white align-middle"
       >
         <input type="submit"></input>
