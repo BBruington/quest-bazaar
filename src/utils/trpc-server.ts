@@ -16,23 +16,132 @@ const ratelimit = new Ratelimit({
 //clerkId
 // this is our RPC API
 export const appRouter = t.router({
-  createCharacterSheet: t.procedure.input(
-    z.object({
-      userId: z.string(),
-      charName: z.string(),
-      className: z.string(),
-      background: z.string()
-    })
-  ).mutation( async ({input}) => {
-    const character = await prisma.character.create({
-      data: {
-        userId: input.userId,
-        charName: input.charName,
-        className: input.charName,
-        background: input.background
-      }
-    })
-  }),
+  createCharacterSheet: t.procedure
+    .input(
+      z.object({
+        userId: z.string(),
+        charName: z.string().optional(),
+        className: z.string().optional(),
+        background: z.string().optional(),
+        strengthscore: z.number().optional(),
+        dexterityscore: z.number().optional(),
+        constitutionscore: z.number().optional(),
+        wisdomscore: z.number().optional(),
+        intelligencescore: z.number().optional(),
+        charismascore: z.number().optional(),
+        proficiencybonus: z.number().optional(),
+        strengthsave: z.number().optional(),
+        strengthsaveprof: z.boolean().optional(),
+        dexteritysave: z.number().optional(),
+        dexteritysaveprof: z.boolean().optional(),
+        acrobatics: z.number().optional(),
+        acrobaticsexpertise: z.boolean().optional(),
+        acrobaticsprof: z.boolean().optional(),
+        animalhandling: z.number().optional(),
+        animalhandlingexpertise: z.boolean().optional(),
+        animalhandlingprof: z.boolean().optional(),
+        passiveperception: z.number().optional(),
+        otherprofs: z.string().optional(),
+        ac: z.number().optional(),
+        initiative: z.number().optional(),
+        speed: z.number().optional(),
+        maxhp: z.number().optional(),
+        currenthp: z.number().optional(),
+        temphp: z.number().optional(),
+        totalhd: z.string().optional(),
+        remaininghd: z.number().optional(),
+        deathsuccess1: z.boolean().optional(),
+        deathsuccess2: z.boolean().optional(),
+        deathsuccess3: z.boolean().optional(),
+        deathfail1: z.boolean().optional(),
+        deathfail2: z.boolean().optional(),
+        deathfail3: z.boolean().optional(),
+
+        atkname1: z.string().optional(),
+        atkbonus1: z.number().optional(),
+        atkdamage1: z.string().optional(),
+        atkname2: z.string().optional(),
+        atkbonus2: z.number().optional(),
+        atkdamage2: z.string().optional(),
+        atkname3: z.string().optional(),
+        atkbonus3: z.number().optional(),
+        atkdamage3: z.string().optional(),
+        cp: z.number().optional(),
+        sp: z.number().optional(),
+        ep: z.number().optional(),
+        gp: z.number().optional(),
+        pp: z.number().optional(),
+        equipmentlist: z.string().optional(),
+        personality: z.string().optional(),
+        ideals: z.string().optional(),
+        bonds: z.string().optional(),
+        flaws: z.string().optional(),
+        features: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const character = await prisma.character.create({
+        data: {
+          userId: input.userId,
+          charName: input.charName,
+          className: input.className,
+          background: input.background,
+          strengthscore: input.strengthscore,
+          dexterityscore: input.dexterityscore,
+          constitutionscore: input.constitutionscore,
+          wisdomscore: input.wisdomscore,
+          intelligencescore: input.intelligencescore,
+          charismascore: input.charismascore,
+          proficiencybonus: input.proficiencybonus,
+          strengthsave: input.strengthsave,
+          strengthsaveprof: input.strengthsaveprof,
+          dexteritysave: input.dexteritysave,
+          dexteritysaveprof: input.dexteritysaveprof,
+          acrobatics: input.acrobatics,
+          acrobaticsexpertise: input.acrobaticsexpertise,
+          acrobaticsprof: input.acrobaticsprof,
+          animalhandling: input.animalhandling,
+          animalhandlingexpertise: input.animalhandlingexpertise,
+          animalhandlingprof: input.animalhandlingprof,
+          passiveperception: input.passiveperception,
+          otherprofs: input.otherprofs,
+          ac: input.ac,
+          initiative: input.initiative,
+          speed: input.speed,
+          maxhp: input.maxhp,
+          currenthp: input.currenthp,
+          temphp: input.temphp,
+          totalhd: input.totalhd,
+          remaininghd: input.remaininghd,
+          deathsuccess1: input.deathsuccess1,
+          deathsuccess2: input.deathsuccess2,
+          deathsuccess3: input.deathsuccess3,
+          deathfail1: input.deathfail1,
+          deathfail2: input.deathfail2,
+          deathfail3: input.deathfail3,
+          atkname1: input.atkname1,
+          atkbonus1: input.atkbonus1,
+          atkdamage1: input.atkdamage1,
+          atkname2: input.atkname2,
+          atkbonus2: input.atkbonus2,
+          atkdamage2: input.atkdamage2,
+          atkname3: input.atkname3,
+          atkbonus3: input.atkbonus3,
+          atkdamage3: input.atkdamage3,
+          cp: input.cp,
+          sp: input.sp,
+          ep: input.ep,
+          gp: input.gp,
+          pp: input.pp,
+          equipmentlist: input.equipmentlist,
+          personality: input.personality,
+          ideals: input.ideals,
+          bonds: input.bonds,
+          flaws: input.flaws,
+          features: input.features,
+        },
+      });
+    }),
   queryUser: t.procedure
     .input(
       z.object({
@@ -209,18 +318,19 @@ export const appRouter = t.router({
       return campaignData;
     }),
 
-    handleRequestToJoinGame: t.procedure.input(
+  handleRequestToJoinGame: t.procedure
+    .input(
       z.object({
         campaignId: z.string(),
         userId: z.string(),
-        campaignRes: z.string()
+        campaignRes: z.string(),
       })
-    ).mutation(async ({input}) => {
+    )
+    .mutation(async ({ input }) => {
+      const { success } = await ratelimit.limit(input.userId);
 
-      const {success} = await ratelimit.limit(input.userId)
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
-      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
-      
       if (input.campaignRes === "ACCEPTED") {
         try {
           const updatedCampaign = await prisma.campaign.update({
@@ -297,10 +407,9 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+      const { success } = await ratelimit.limit(input.campaignId);
 
-      const {success} = await ratelimit.limit(input.campaignId)
-
-      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
       const scheduledEvent = await prisma.campaignSchedules.create({
         data: {
@@ -338,7 +447,6 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
-
       const sentMessage = await prisma.campaignChat.create({
         data: {
           campaignId: input.campaignId,
@@ -382,16 +490,17 @@ export const appRouter = t.router({
       });
     }),
 
-    requestInviteToCampaign: t.procedure.input(
+  requestInviteToCampaign: t.procedure
+    .input(
       z.object({
         playerId: z.string(),
         campaignId: z.string(),
       })
-    ).mutation(async ({ input }) => {
+    )
+    .mutation(async ({ input }) => {
+      const { success } = await ratelimit.limit(input.playerId);
 
-      const {success} = await ratelimit.limit(input.playerId)
-
-      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
       try {
         const campaign = await prisma.campaign.findUnique({
@@ -432,10 +541,9 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+      const { success } = await ratelimit.limit(input.playerId);
 
-      const {success} = await ratelimit.limit(input.playerId)
-
-      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
       try {
         const campaign = await prisma.campaign.findUnique({
@@ -499,10 +607,9 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
+      const { success } = await ratelimit.limit(input.userId);
 
-      const {success} = await ratelimit.limit(input.userId)
-
-      if(!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS"})
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
       const upsertCampaign = await prisma.campaignNote.upsert({
         where: {

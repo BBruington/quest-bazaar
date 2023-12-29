@@ -147,34 +147,63 @@ model CampaignNote {
 }
 
 model Character {
-  id         String   @id @default(cuid())
-  charName   String
-  // race              String
-  className  String
-  // level             Int
-  background String
-  // alignment         String
-  // experiencePoints  Int
-  // maxHitPoints      Int
-  // currentHitPoints  Int
-  // tempHitPoints     Int
-  // armorClass        Int
-  // initiative        Int
-  // speed             Int
-  // inspiration       Boolean
-  // proficiencyBonus  Int
-  // personalityTraits String
-  // ideals            String
-  // bonds             String
-  // flaws             String
-  // features          String
-  // languages         String
-  // abilityScores     Json
-  // skills            Json
-  // savingThrows      Json
-  // abilities         Json
-  // spells            Json
-  // equipment         Json
+  id                String   @id @default(cuid())
+  charName          String?
+  className         String?
+  background        String?
+  strengthscore     Int?
+  dexterityscore    Int?
+  constitutionscore Int?
+  wisdomscore       Int?
+  intelligencescore Int?
+  charismascore     Int?
+  proficiencybonus  Int?
+  strengthsave      Int?
+  strengthsaveprof  Boolean?
+  dexteritysave     Int?
+  dexteritysaveprof Boolean?
+  acrobatics        Int?
+  acrobaticsexpertise Boolean?
+  acrobaticsprof    Boolean?
+  animalhandling    Int?
+  animalhandlingexpertise Boolean?
+  animalhandlingprof Boolean?
+  passiveperception Int?
+  otherprofs        String?
+  ac               Int?
+  initiative       Int?
+  speed            Int?
+  maxhp            Int?
+  currenthp        Int?
+  temphp           Int?
+  totalhd          String?
+  remaininghd      Int?
+  deathsuccess1    Boolean?
+  deathsuccess2    Boolean?
+  deathsuccess3    Boolean?
+  deathfail1       Boolean?
+  deathfail2       Boolean?
+  deathfail3       Boolean?
+  atkname1         String?
+  atkbonus1        Int?
+  atkdamage1       String?
+  atkname2         String?
+  atkbonus2        Int?
+  atkdamage2       String?
+  atkname3         String?
+  atkbonus3        Int?
+  atkdamage3       String?
+  cp               Int?
+  sp               Int?
+  ep               Int?
+  gp               Int?
+  pp               Int?
+  equipmentlist    String?
+  personality      String?
+  ideals           String?
+  bonds            String?
+  flaws            String?
+  features         String?
   userId     String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
