@@ -20,9 +20,13 @@ export const appRouter = t.router({
     .input(
       z.object({
         userId: z.string(),
-        charName: z.string().optional(),
-        className: z.string().optional(),
+        charname: z.string().optional(),
+        classname: z.string().optional(),
         background: z.string().optional(),
+        playername: z.string().optional(),
+        race: z.string().optional(),
+        alignment: z.string().optional(),
+        level: z.number().optional(),
         strengthscore: z.number().optional(),
         dexterityscore: z.number().optional(),
         constitutionscore: z.number().optional(),
@@ -83,9 +87,13 @@ export const appRouter = t.router({
       const character = await prisma.character.create({
         data: {
           userId: input.userId,
-          charName: input.charName,
-          className: input.className,
+          charname: input.charname,
+          classname: input.classname,
           background: input.background,
+          playername: input.playername,
+          race: input.race,
+          alignment: input.alignment,
+          level: input.level,
           strengthscore: input.strengthscore,
           dexterityscore: input.dexterityscore,
           constitutionscore: input.constitutionscore,

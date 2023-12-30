@@ -1,48 +1,43 @@
 "use client";
 import type { CharacterForm } from "~/components/characterSheet/characterTypes";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useUser } from "@clerk/nextjs";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { api } from "~/utils/trpc";
 
 export default function Test() {
+  const { user } = useUser();
+  if (!user) return null;
+
   const { mutate: createCharacter } = api.createCharacterSheet.useMutation();
   const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
     createCharacter({
-      userId: "someIdA",
-      charName: data.charName,
-      className: data.className,
+      userId: user.id,
+      charname: data.charname,
+      classname: data.classname,
       background: data.background,
-      // ... other properties
-    
-      // Saving scores
+      playername: data.playername,
+      race: data.race,
+      alignment: data.alignment,
+      level: data.level,
       strengthscore: data.strengthscore,
       dexterityscore: data.dexterityscore,
       constitutionscore: data.constitutionscore,
       wisdomscore: data.wisdomscore,
       intelligencescore: data.intelligencescore,
       charismascore: data.charismascore,
-    
-      // Saving proficiency bonus
       proficiencybonus: data.proficiencybonus,
-    
-      // Saving saving throw information
       strengthsave: data.strengthsave,
       strengthsaveprof: data.strengthsaveprof,
       dexteritysave: data.dexteritysave,
       dexteritysaveprof: data.dexteritysaveprof,
-      // ... repeat for other saving throws
-    
-      // Saving skill information
       acrobatics: data.acrobatics,
       acrobaticsexpertise: data.acrobaticsexpertise,
       acrobaticsprof: data.acrobaticsprof,
       animalhandling: data.animalhandling,
       animalhandlingexpertise: data.animalhandlingexpertise,
       animalhandlingprof: data.animalhandlingprof,
-      // ... repeat for other skills
-    
-      // Saving other character details
       passiveperception: data.passiveperception,
       otherprofs: data.otherprofs,
       ac: data.ac,
@@ -53,17 +48,12 @@ export default function Test() {
       temphp: data.temphp,
       totalhd: data.totalhd,
       remaininghd: data.remaininghd,
-      // ... repeat for other details
-    
-      // Saving death saves
       deathsuccess1: data.deathsuccess1,
       deathsuccess2: data.deathsuccess2,
       deathsuccess3: data.deathsuccess3,
       deathfail1: data.deathfail1,
       deathfail2: data.deathfail2,
       deathfail3: data.deathfail3,
-    
-      // Saving attack details
       atkname1: data.atkname1,
       atkbonus1: data.atkbonus1,
       atkdamage1: data.atkdamage1,
@@ -73,15 +63,11 @@ export default function Test() {
       atkname3: data.atkname3,
       atkbonus3: data.atkbonus3,
       atkdamage3: data.atkdamage3,
-    
-      // Saving currency
       cp: data.cp,
       sp: data.sp,
       ep: data.ep,
       gp: data.gp,
       pp: data.pp,
-    
-      // Saving character background and traits
       equipmentlist: data.equipmentlist,
       personality: data.personality,
       ideals: data.ideals,
@@ -91,73 +77,72 @@ export default function Test() {
     });
   };
 
-  const { register, handleSubmit } = useForm<CharacterForm>({defaultValues:
-  {
-  charName: "",
-  className: "",
-  background: "",
-  playername: "",
-  race: "",
-  alignment: "",
-  level: 1,
-  strengthscore: 10,
-  dexterityscore: 10,
-  constitutionscore: 10,
-  wisdomscore: 10,
-  intelligencescore: 10,
-  charismascore: 10,
-  proficiencybonus: 2,
-  strengthsave: 0,
-  strengthsaveprof: false,
-  dexteritysave: 0,
-  dexteritysaveprof: false,
-  acrobatics: 0,
-  acrobaticsexpertise: false,
-  acrobaticsprof: false,
-  animalhandling: 0,
-  animalhandlingexpertise: false,
-  animalhandlingprof: false,
-  passiveperception: 0,
-  otherprofs: "",
-  ac: 10,
-  initiative: 0,
-  speed: 30,
-  maxhp: 0,
-  currenthp: 0,
-  temphp: 0,
-  totalhd: "",
-  remaininghd: 0,
-  // ... repeat for other details
+  const { register, handleSubmit } = useForm<CharacterForm>({
+    defaultValues: {
+      charname: "",
+      classname: "",
+      background: "",
+      playername: "",
+      race: "",
+      alignment: "",
+      level: 1,
+      strengthscore: 10,
+      dexterityscore: 10,
+      constitutionscore: 10,
+      wisdomscore: 10,
+      intelligencescore: 10,
+      charismascore: 10,
+      proficiencybonus: 2,
+      strengthsave: 0,
+      strengthsaveprof: false,
+      dexteritysave: 0,
+      dexteritysaveprof: false,
+      acrobatics: 0,
+      acrobaticsexpertise: false,
+      acrobaticsprof: false,
+      animalhandling: 0,
+      animalhandlingexpertise: false,
+      animalhandlingprof: false,
+      passiveperception: 0,
+      otherprofs: "",
+      ac: 10,
+      initiative: 0,
+      speed: 30,
+      maxhp: 0,
+      currenthp: 0,
+      temphp: 0,
+      totalhd: "",
+      remaininghd: 0,
+      deathsuccess1: false,
+      deathsuccess2: false,
+      deathsuccess3: false,
+      deathfail1: false,
+      deathfail2: false,
+      deathfail3: false,
+      atkname1: "",
+      atkbonus1: 0,
+      atkdamage1: "",
+      atkname2: "",
+      atkbonus2: 0,
+      atkdamage2: "",
+      atkname3: "",
+      atkbonus3: 0,
+      atkdamage3: "",
 
-  deathsuccess1: false,
-  deathsuccess2: false,
-  deathsuccess3: false,
-  deathfail1: false,
-  deathfail2: false,
-  deathfail3: false,
+      cp: 0,
+      sp: 0,
+      ep: 0,
+      gp: 0,
+      pp: 0,
 
-  atkname1: "",
-  atkbonus1: 0,
-  atkdamage1: "",
-  atkname2: "",
-  atkbonus2: 0,
-  atkdamage2: "",
-  atkname3: "",
-  atkbonus3: 0,
-  atkdamage3: "",
-
-  cp: 0,
-  sp: 0,
-  ep: 0,
-  gp: 0,
-  pp: 0,
-
-  equipmentlist: "",
-  personality: "",
-  ideals: "",
-  bonds: "",
-  flaws: "",
-  features: "",}});
+      equipmentlist: "",
+      personality: "",
+      ideals: "",
+      bonds: "",
+      flaws: "",
+      features: "",
+    },
+  });
 
   return (
     <div className="flex justify-center">
@@ -168,26 +153,26 @@ export default function Test() {
         <Button type="submit">Save</Button>
         {/* header with char name, basic class info */}
         <header className="flex">
-          <section className="charName m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
-            <Label htmlFor="charName">Character Name</Label>
+          <section className="charname m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
+            <Label htmlFor="charname">Character Name</Label>
             <input
-              {...register("charName")}
+              {...register("charname")}
               className="px-1"
-              id="charName"
-              name="charName"
+              id="charname"
+              name="charname"
             />
           </section>
           <section className="misc m-1 ml-0 w-2/3 rounded-md border-2 border-black px-1">
             <ul className="flex flex-wrap py-3">
               <li className="header-li">
-                <Label className="mb-2" htmlFor="className">
+                <Label className="mb-2" htmlFor="classname">
                   Class
                 </Label>
                 <input
-                  {...register("className")}
+                  {...register("classname")}
                   className="header-input"
-                  id="className"
-                  name="className"
+                  id="classname"
+                  name="classname"
                   placeholder="Paladin"
                 />
               </li>
@@ -212,7 +197,7 @@ export default function Test() {
                   className="header-input"
                   id="playername"
                   name="playername"
-                  placeholder="Player McPlayerface"
+                  placeholder="Player Name"
                 ></input>
               </li>
               <li className="header-li">
@@ -245,7 +230,7 @@ export default function Test() {
                 </Label>
                 <input
                   type="number"
-                  {...register("level", {valueAsNumber: true})}
+                  {...register("level", { valueAsNumber: true })}
                   defaultValue={1}
                   className="header-input"
                   id="level"
@@ -274,8 +259,8 @@ export default function Test() {
                         Strength
                       </Label>
                       <input
-                      type="number"
-                        {...register("strengthscore", {valueAsNumber: true})}
+                        type="number"
+                        {...register("strengthscore", { valueAsNumber: true })}
                         defaultValue={10}
                         className="ability-score-input"
                         id="strengthscore"
@@ -301,8 +286,8 @@ export default function Test() {
                         Dexterity
                       </Label>
                       <input
-                      type="number"
-                        {...register("dexterityscore", {valueAsNumber: true})}
+                        type="number"
+                        {...register("dexterityscore", { valueAsNumber: true })}
                         defaultValue={10}
                         className="ability-score-input"
                         id="dexterityscore"
@@ -328,8 +313,10 @@ export default function Test() {
                         Constitution
                       </Label>
                       <input
-                      type="number"
-                        {...register("constitutionscore", {valueAsNumber: true})}
+                        type="number"
+                        {...register("constitutionscore", {
+                          valueAsNumber: true,
+                        })}
                         defaultValue={10}
                         className="ability-score-input"
                         id="constitutionscore"
@@ -355,8 +342,8 @@ export default function Test() {
                         Wisdom
                       </Label>
                       <input
-                      type="number"
-                        {...register("wisdomscore", {valueAsNumber: true})}
+                        type="number"
+                        {...register("wisdomscore", { valueAsNumber: true })}
                         defaultValue={10}
                         className="ability-score-input"
                         id="wisdomscore"
@@ -382,8 +369,10 @@ export default function Test() {
                         Intelligence
                       </Label>
                       <input
-                      type="number"
-                        {...register("intelligencescore", {valueAsNumber: true})}
+                        type="number"
+                        {...register("intelligencescore", {
+                          valueAsNumber: true,
+                        })}
                         defaultValue={10}
                         className="ability-score-input"
                         id="intelligencescore"
@@ -409,8 +398,8 @@ export default function Test() {
                         Charisma
                       </Label>
                       <input
-                      type="number"
-                        {...register("charismascore", {valueAsNumber: true})}
+                        type="number"
+                        {...register("charismascore", { valueAsNumber: true })}
                         defaultValue={10}
                         className="ability-score-input"
                         id="charismascore"
@@ -453,8 +442,8 @@ export default function Test() {
                     </Label>
                   </div>
                   <input
-                  type="number"
-                    {...register("proficiencybonus", {valueAsNumber: true})}
+                    type="number"
+                    {...register("proficiencybonus", { valueAsNumber: true })}
                     defaultValue={2}
                     className="w-8 text-center"
                     id="proficiencybonus"
@@ -474,8 +463,8 @@ export default function Test() {
                         Strength
                       </Label>
                       <input
-                      type="number"
-                        {...register("strengthsave", {valueAsNumber: true})}
+                        type="number"
+                        {...register("strengthsave", { valueAsNumber: true })}
                         defaultValue={0}
                         className="saves-total-input"
                         id="strengthsave"
@@ -497,7 +486,7 @@ export default function Test() {
                         Dexterity
                       </Label>
                       <input
-                        {...register("dexteritysave", {valueAsNumber: true})}
+                        {...register("dexteritysave", { valueAsNumber: true })}
                         defaultValue={0}
                         className="saves-total-input"
                         id="dexteritysave"
@@ -520,7 +509,9 @@ export default function Test() {
                         Constitution
                       </Label>
                       <input
-                        {...register("constitutionsave", {valueAsNumber: true})}
+                        {...register("constitutionsave", {
+                          valueAsNumber: true,
+                        })}
                         defaultValue={0}
                         className="saves-total-input"
                         id="constitutionsave"
@@ -543,7 +534,7 @@ export default function Test() {
                         Wisdom
                       </Label>
                       <input
-                        {...register("wisdomsave", {valueAsNumber: true})}
+                        {...register("wisdomsave", { valueAsNumber: true })}
                         defaultValue={0}
                         className="saves-total-input"
                         id="wisdomsave"
@@ -566,7 +557,9 @@ export default function Test() {
                         Intelligence
                       </Label>
                       <input
-                        {...register("intelligencesave", {valueAsNumber: true})}
+                        {...register("intelligencesave", {
+                          valueAsNumber: true,
+                        })}
                         defaultValue={0}
                         className="saves-total-input"
                         id="intelligencesave"
@@ -589,7 +582,7 @@ export default function Test() {
                         Charisma
                       </Label>
                       <input
-                        {...register("charismasave", {valueAsNumber: true})}
+                        {...register("charismasave", { valueAsNumber: true })}
                         defaultValue={0}
                         className="saves-total-input"
                         id="charismasave"
@@ -618,8 +611,8 @@ export default function Test() {
                         Acrobatics <span className="skill">(Dex)</span>
                       </Label>
                       <input
-                      type="number"
-                        {...register("acrobatics", {valueAsNumber: true})}
+                        type="number"
+                        {...register("acrobatics", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="acrobatics"
@@ -647,7 +640,7 @@ export default function Test() {
                         Animal Handling <span className="skill">(Wis)</span>
                       </Label>
                       <input
-                        {...register("animalhandling", {valueAsNumber: true})}
+                        {...register("animalhandling", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="animalhandling"
@@ -673,7 +666,7 @@ export default function Test() {
                         Arcana <span className="skill">(Int)</span>
                       </Label>
                       <input
-                        {...register("arcana", {valueAsNumber: true})}
+                        {...register("arcana", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="arcana"
@@ -699,7 +692,7 @@ export default function Test() {
                         Athletics <span className="skill">(Str)</span>
                       </Label>
                       <input
-                        {...register("athletics", {valueAsNumber: true})}
+                        {...register("athletics", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="athletics"
@@ -725,7 +718,7 @@ export default function Test() {
                         Deception <span className="skill">(Cha)</span>
                       </Label>
                       <input
-                        {...register("deception", {valueAsNumber: true})}
+                        {...register("deception", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="deception"
@@ -751,7 +744,7 @@ export default function Test() {
                         History <span className="skill">(Int)</span>
                       </Label>
                       <input
-                        {...register("history", {valueAsNumber: true})}
+                        {...register("history", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="history"
@@ -777,7 +770,7 @@ export default function Test() {
                         Insight <span className="skill">(Wis)</span>
                       </Label>
                       <input
-                        {...register("insight", {valueAsNumber: true})}
+                        {...register("insight", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="insight"
@@ -806,7 +799,7 @@ export default function Test() {
                         Intimidation <span className="skill">(Cha)</span>
                       </Label>
                       <input
-                        {...register("intimidation", {valueAsNumber: true})}
+                        {...register("intimidation", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="intimidation"
@@ -835,7 +828,7 @@ export default function Test() {
                         Investigation <span className="skill">(Int)</span>
                       </Label>
                       <input
-                        {...register("investigation", {valueAsNumber: true})}
+                        {...register("investigation", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="investigation"
@@ -861,7 +854,7 @@ export default function Test() {
                         Meadicine <span className="skill">(Wis)</span>
                       </Label>
                       <input
-                        {...register("medicine", {valueAsNumber: true})}
+                        {...register("medicine", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="medicine"
@@ -887,7 +880,7 @@ export default function Test() {
                         Nature <span className="skill">(Int)</span>
                       </Label>
                       <input
-                        {...register("nature", {valueAsNumber: true})}
+                        {...register("nature", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="nature"
@@ -913,7 +906,7 @@ export default function Test() {
                         Perception <span className="skill">(Wis)</span>
                       </Label>
                       <input
-                        {...register("perception", {valueAsNumber: true})}
+                        {...register("perception", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="perception"
@@ -939,7 +932,7 @@ export default function Test() {
                         Performance <span className="skill">(Cha)</span>
                       </Label>
                       <input
-                        {...register("performance", {valueAsNumber: true})}
+                        {...register("performance", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="performance"
@@ -965,7 +958,7 @@ export default function Test() {
                         Persuation <span className="skill">(Cha)</span>
                       </Label>
                       <input
-                        {...register("persuation", {valueAsNumber: true})}
+                        {...register("persuation", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="persuation"
@@ -992,7 +985,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
-                        {...register("religion", {valueAsNumber: true})}
+                        {...register("religion", { valueAsNumber: true })}
                         defaultValue={0}
                         id="religion"
                         name="religion"
@@ -1020,7 +1013,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
-                        {...register("sleightofhand", {valueAsNumber: true})}
+                        {...register("sleightofhand", { valueAsNumber: true })}
                         defaultValue={0}
                         id="sleightofhand"
                         name="sleightofhand"
@@ -1045,7 +1038,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
-                        {...register("stealth", {valueAsNumber: true})}
+                        {...register("stealth", { valueAsNumber: true })}
                         defaultValue={0}
                         id="stealth"
                         name="stealth"
@@ -1070,7 +1063,7 @@ export default function Test() {
                       </Label>
                       <input
                         className="skills-total-input"
-                        {...register("survival", {valueAsNumber: true})}
+                        {...register("survival", { valueAsNumber: true })}
                         defaultValue={0}
                         id="survival"
                         name="survival"
@@ -1111,8 +1104,8 @@ export default function Test() {
                 </Label>
               </div>
               <input
-              type="number"
-                {...register("passiveperception", {valueAsNumber: true})}
+                type="number"
+                {...register("passiveperception", { valueAsNumber: true })}
                 defaultValue={10}
                 id="passiveperception"
                 name="passiveperception"
@@ -1153,7 +1146,7 @@ export default function Test() {
                       Armor Class
                     </Label>
                     <input
-                      {...register("ac", {valueAsNumber: true})}
+                      {...register("ac", { valueAsNumber: true })}
                       defaultValue={10}
                       className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                       id="ac"
@@ -1172,7 +1165,7 @@ export default function Test() {
                       Initiative
                     </Label>
                     <input
-                      {...register("initiative", {valueAsNumber: true})}
+                      {...register("initiative", { valueAsNumber: true })}
                       defaultValue={0}
                       className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                       id="initiative"
@@ -1191,7 +1184,7 @@ export default function Test() {
                       Speed
                     </Label>
                     <input
-                      {...register("speed", {valueAsNumber: true})}
+                      {...register("speed", { valueAsNumber: true })}
                       defaultValue={30}
                       className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                       id="speed"
@@ -1214,7 +1207,7 @@ export default function Test() {
                       Hit Point Maximum
                     </Label>
                     <input
-                      {...register("maxhp", {valueAsNumber: true})}
+                      {...register("maxhp", { valueAsNumber: true })}
                       defaultValue={0}
                       className="ml-2 h-[15px] border-b-2 border-black/30 text-center text-xs text-black/70"
                       id="maxhp"
@@ -1228,7 +1221,7 @@ export default function Test() {
                       Current Hit Points
                     </Label>
                     <input
-                      {...register("currenthp", {valueAsNumber: true})}
+                      {...register("currenthp", { valueAsNumber: true })}
                       defaultValue={0}
                       placeholder="0"
                       className="h-[60px] w-5/6 text-center text-2xl"
@@ -1243,7 +1236,7 @@ export default function Test() {
                     Temporary Hit Points
                   </Label>
                   <input
-                    {...register("temphp", {valueAsNumber: true})}
+                    {...register("temphp", { valueAsNumber: true })}
                     defaultValue={0}
                     placeholder="0"
                     className="mt-1 h-[60px] w-5/6 text-center text-2xl"
@@ -1275,7 +1268,7 @@ export default function Test() {
                         Hit Dice
                       </Label>
                       <input
-                        {...register("remaininghd", {valueAsNumber: true})}
+                        {...register("remaininghd", { valueAsNumber: true })}
                         defaultValue={0}
                         className="h-[45px] w-[100px] text-center"
                         id="remaininghd"
@@ -1368,7 +1361,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          {...register("atkbonus1", {valueAsNumber: true})}
+                          {...register("atkbonus1", { valueAsNumber: true })}
                           defaultValue={0}
                           className="attacks-input"
                           id="atkbonus1"
@@ -1398,7 +1391,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          {...register("atkbonus2", {valueAsNumber: true})}
+                          {...register("atkbonus2", { valueAsNumber: true })}
                           defaultValue={0}
                           className="attacks-input"
                           id="atkbonus2"
@@ -1428,7 +1421,7 @@ export default function Test() {
                       </td>
                       <td>
                         <input
-                          {...register("atkbonus3", {valueAsNumber: true})}
+                          {...register("atkbonus3", { valueAsNumber: true })}
                           defaultValue={0}
                           className="attacks-input"
                           id="atkbonus3"
@@ -1461,8 +1454,8 @@ export default function Test() {
                         cp
                       </Label>
                       <input
-                      type="number"
-                        {...register("cp", {valueAsNumber: true})}
+                        type="number"
+                        {...register("cp", { valueAsNumber: true })}
                         defaultValue={0}
                         placeholder="0"
                         className="coins-input"
@@ -1475,8 +1468,8 @@ export default function Test() {
                         sp
                       </Label>
                       <input
-                      type="number"
-                        {...register("sp", {valueAsNumber: true})}
+                        type="number"
+                        {...register("sp", { valueAsNumber: true })}
                         defaultValue={0}
                         placeholder="0"
                         className="coins-input"
@@ -1489,8 +1482,8 @@ export default function Test() {
                         ep
                       </Label>
                       <input
-                      type="number"
-                        {...register("ep", {valueAsNumber: true})}
+                        type="number"
+                        {...register("ep", { valueAsNumber: true })}
                         defaultValue={0}
                         placeholder="0"
                         className="coins-input"
@@ -1503,8 +1496,8 @@ export default function Test() {
                         gp
                       </Label>
                       <input
-                      type="number"
-                        {...register("gp", {valueAsNumber: true})}
+                        type="number"
+                        {...register("gp", { valueAsNumber: true })}
                         defaultValue={0}
                         placeholder="0"
                         className="coins-input"
@@ -1517,8 +1510,8 @@ export default function Test() {
                         pp
                       </Label>
                       <input
-                      type="number"
-                        {...register("pp", {valueAsNumber: true})}
+                        type="number"
+                        {...register("pp", { valueAsNumber: true })}
                         defaultValue={0}
                         placeholder="0"
                         className="coins-input"

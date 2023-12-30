@@ -148,9 +148,13 @@ model CampaignNote {
 
 model Character {
   id                String   @id @default(cuid())
-  charName          String?
-  className         String?
+  charname          String?
+  classname         String?
   background        String?
+  playername        String?
+  race              String?
+  alignment         String?
+  level             Int?
   strengthscore     Int?
   dexterityscore    Int?
   constitutionscore Int?

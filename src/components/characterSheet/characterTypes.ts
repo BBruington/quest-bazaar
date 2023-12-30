@@ -1,6 +1,6 @@
 export interface CharacterForm {
-  charName: string;
-  className: string;
+  charname: string;
+  classname: string;
   background: string;
   playername: string;
   race: string;
