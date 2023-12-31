@@ -1,6 +1,6 @@
 "use client";
 import type { SelectedFriendType } from "~/app/types/Message";
-import { Mail, User, Plus } from "lucide-react";
+import { Mail, User, Plus, PersonStandingIcon } from "lucide-react";
 import DisplayMessages from "./displayMessages";
 import SelectedFriend from "./selectedFriend";
 import toast, { Toaster } from "react-hot-toast";
@@ -59,6 +59,10 @@ export default function MyMessages(props: { userId: string }) {
     onSuccess: async () => {
       await utils.queryUserInvitedCampaigns.invalidate();
     },
+  });
+
+  const { data: charactersheets } = api.queryCharactersByUserId.useQuery({
+    userId,
   });
 
   const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
@@ -319,6 +323,40 @@ export default function MyMessages(props: { userId: string }) {
                         </Button>
                       </div>
                     </React.Fragment>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="flex justify-center hover:text-slate-200 sm:justify-start">
+                <div className="flex sm:w-2/3 sm:justify-between">
+                  <span>Characters</span>{" "}
+                  <PersonStandingIcon className="invisible sm:visible sm:ml-2" />
+                </div>
+              </AccordionTrigger>
+
+              <AccordionContent>
+              <div className="flex flex-col">
+                  {!charactersheets || charactersheets.length === 0 ? (
+                    <span className="text-slate-400">Empty</span>
+                  ) : (
+                    <></>
+                  )}
+                  {charactersheets?.map((sheet) => (
+                    <div
+                      key={sheet.id}
+                      role="button"
+                      className="w-full py-1 hover:bg-slate-800"
+                      
+                    >
+                      <div className="flex justify-center items-center space-x-3">
+                        {(
+                          <>
+                            <span className="">{sheet.charname}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </AccordionContent>

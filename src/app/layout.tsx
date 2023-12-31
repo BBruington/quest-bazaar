@@ -20,7 +20,7 @@ export default function RootLayout({
     <ClerkProvider>
       <TrpcProvider>
         <html lang="en">
-          <head></head>
+          
           <body className="bg-foreground">
             <Navigation></Navigation>
             {children}
