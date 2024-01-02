@@ -958,7 +958,7 @@ export default function Test() {
                         Persuation <span className="skill">(Cha)</span>
                       </Label>
                       <input
-                        {...register("persuation", { valueAsNumber: true })}
+                        {...register("persuasion", { valueAsNumber: true })}
                         defaultValue={0}
                         className="skills-total-input"
                         id="persuation"
@@ -967,13 +967,13 @@ export default function Test() {
                         type="number"
                       />
                       <input
-                        {...register("persuationexpertise")}
+                        {...register("persuasionexpertise")}
                         id="persuationexpertise"
                         name="persuationexpertise"
                         type="checkbox"
                       />
                       <input
-                        {...register("persuationprof")}
+                        {...register("persuasionprof")}
                         id="persuationprof"
                         name="persuationprof"
                         type="checkbox"

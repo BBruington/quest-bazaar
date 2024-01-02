@@ -1,4 +1,5 @@
-import { prisma } from "~/utils/context"
+import { prisma } from "~/utils/context";
+import CharacterData from "~/components/characterSheet/character";
 
 export default async function CharacterSheet({ params }: { params: { id: string } }) {
   const character = await prisma.character.findUnique({
@@ -8,6 +9,6 @@ export default async function CharacterSheet({ params }: { params: { id: string 
   })
   if(!character) return <span>failed to load</span>
   return (
-    <div className="text-white">here is a character {character.charname}</div>
+    <CharacterData character={character} />
   )
 }
