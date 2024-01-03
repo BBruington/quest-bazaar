@@ -30,9 +30,10 @@ export const appRouter = t.router({
       });
       return characters;
     }),
-  createCharacterSheet: t.procedure
+  updateCharacterSheet: t.procedure
     .input(
       z.object({
+        id: z.string(),
         userId: z.string(),
         charname: z.string().optional().or(z.null()),
         classname: z.string().optional().or(z.null()),
@@ -154,7 +155,10 @@ export const appRouter = t.router({
       })
     )
     .mutation(async ({ input }) => {
-      const character = await prisma.character.create({
+      const character = await prisma.character.update({
+        where: {
+          id: input.id
+        },
         data: {
           userId: input.userId,
           charname: input.charname,

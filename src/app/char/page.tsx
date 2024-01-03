@@ -9,10 +9,11 @@ import { api } from "~/utils/trpc";
 export default function Test() {
   const { user } = useUser();
 
-  const { mutate: createCharacter } = api.createCharacterSheet.useMutation();
+  const { mutate: updateCharacter } = api.updateCharacterSheet.useMutation();
   if (!user) return null;
-  const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
-    createCharacter({
+  const updateCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
+    updateCharacter({
+      id: "clqu4eh1a00010ms11l0eevtx",
       userId: user.id,
       charname: data.charname,
       classname: data.classname,
@@ -147,7 +148,7 @@ export default function Test() {
   return (
     <div className="flex justify-center">
       <form
-        onSubmit={handleSubmit(saveCharacterSheet)}
+        onSubmit={handleSubmit(updateCharacterSheet)}
         className="charsheet flex w-[1000px] flex-col bg-white align-middle"
       >
         <Button type="submit">Save</Button>

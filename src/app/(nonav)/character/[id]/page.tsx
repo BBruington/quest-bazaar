@@ -9,6 +9,6 @@ export default async function CharacterSheet({ params }: { params: { id: string 
   })
   if(!character) return <span>failed to load</span>
   return (
-    <CharacterData character={character} />
+    <CharacterData character={character} characterId={params.id} />
   )
 }

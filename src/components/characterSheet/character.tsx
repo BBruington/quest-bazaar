@@ -6,17 +6,21 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { api } from "~/utils/trpc";
 
-export default function CharacterData(props: { character: CharacterForm }) {
+export default function CharacterData(props: {
+  character: CharacterForm;
+  characterId: string;
+}) {
   const { user } = useUser();
-  const { character } = props;
+  const { character, characterId } = props;
   console.log(character);
 
   if (!user) return null;
 
-  const { mutate: createCharacter } = api.createCharacterSheet.useMutation();
+  const { mutate: updateCharacter } = api.updateCharacterSheet.useMutation();
 
   const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
-    createCharacter({
+    updateCharacter({
+      id: characterId,
       userId: user.id,
       charname: data.charname,
       classname: data.classname,
@@ -138,127 +142,203 @@ export default function CharacterData(props: { character: CharacterForm }) {
     });
   };
 
-  const { register, handleSubmit } = useForm<CharacterForm>();
-  //   {
-  //   //     charname: "",
-  //     classname: "",
-  //     background: "",
-  //     playername: "",
-  //     race: "",
-  //     alignment: "",
-  //     level: 1,
-  //     strengthscore: 10,
-  //     dexterityscore: 10,
-  //     constitutionscore: 10,
-  //     wisdomscore: 10,
-  //     intelligencescore: 10,
-  //     charismascore: 10,
-  //     inspiration: false,
-  //     proficiencybonus: 2,
-  //     strengthsave: 0,
-  //     strengthsaveprof: false,
-  //     dexteritysave: 0,
-  //     dexteritysaveprof: false,
-  //     constitutionsave: 0,
-  //     constitutionsaveprof: false,
-  //     wisdomsave: 0,
-  //     wisdomsaveprof: false,
-  //     intelligencesave: 0,
-  //     intelligencesaveprof: false,
-  //     charismasave: 0,
-  //     charismasaveprof: false,
-  //     acrobatics: 0,
-  //     acrobaticsexpertise: false,
-  //     acrobaticsprof: false,
-  //     animalhandling: 0,
-  //     animalhandlingexpertise: false,
-  //     animalhandlingprof: false,
-  //     arcana: 0,
-  //     arcanaexpertise: false,
-  //     arcanaprof: false,
-  //     athletics: 0,
-  //     athleticsexpertise: false,
-  //     athleticsprof: false,
-  //     deception: 0,
-  //     deceptionexpertise: false,
-  //     deceptionprof: false,
-  //     history: 0,
-  //     historyexpertise: false,
-  //     historyprof: false,
-  //     insight: 0,
-  //     insightexpertise: false,
-  //     insightprof: false,
-  //     intimidation: 0,
-  //     intimidationexpertise: false,
-  //     intimidationprof: false,
-  //     investigation: 0,
-  //     investigationexpertise: false,
-  //     investigationprof: false,
-  //     medicine: 0,
-  //     medicineexpertise: false,
-  //     medicineprof: false,
-  //     nature: 0,
-  //     natureexpertise: false,
-  //     natureprof: false,
-  //     perception: 0,
-  //     perceptionexpertise: false,
-  //     perceptionprof: false,
-  //     performance: 0,
-  //     performanceexpertise: false,
-  //     performanceprof: false,
-  //     persuasion: 0,
-  //     persuasionexpertise: false,
-  //     persuasionprof: false,
-  //     religion: 0,
-  //     religionexpertise: false,
-  //     religionprof: false,
-  //     sleightofhand: 0,
-  //     sleightofhandexpertise: false,
-  //     sleightofhandprof: false,
-  //     stealth: 0,
-  //     stealthexpertise: false,
-  //     stealthprof: false,
-  //     survival: 0,
-  //     survivalexpertise: false,
-  //     survivalprof: false,
-  //     passiveperception: 0,
-  //     otherprofs: "",
-  //     ac: 10,
-  //     initiative: 0,
-  //     speed: 30,
-  //     maxhp: 0,
-  //     currenthp: 0,
-  //     temphp: 0,
-  //     totalhd: "",
-  //     remaininghd: 0,
-  //     deathsuccess1: false,
-  //     deathsuccess2: false,
-  //     deathsuccess3: false,
-  //     deathfail1: false,
-  //     deathfail2: false,
-  //     deathfail3: false,
-  //     atkname1: "",
-  //     atkbonus1: 0,
-  //     atkdamage1: "",
-  //     atkname2: "",
-  //     atkbonus2: 0,
-  //     atkdamage2: "",
-  //     atkname3: "",
-  //     atkbonus3: 0,
-  //     atkdamage3: "",
-  //     cp: 0,
-  //     sp: 0,
-  //     ep: 0,
-  //     gp: 0,
-  //     pp: 0,
-  //     equipmentlist: "",
-  //     personality: "",
-  //     ideals: "",
-  //     bonds: "",
-  //     flaws: "",
-  //     features: "",
-  //   },
-  // }
+  const { register, handleSubmit } = useForm<CharacterForm>({
+    defaultValues: {
+      charname: character.charname ? character.charname : "",
+      classname: character.classname ? character.classname : "",
+      background: character.background ? character.background : "",
+      playername: character.playername ? character.playername : "",
+      race: character.race ? character.race : "",
+      alignment: character.alignment ? character.alignment : "",
+      level: character.level ? character.level : 1,
+      strengthscore: character.strengthscore ? character.strengthscore : 10,
+      dexterityscore: character.dexterityscore ? character.dexterityscore : 10,
+      constitutionscore: character.constitutionscore
+        ? character.constitutionscore
+        : 10,
+      wisdomscore: character.wisdomscore ? character.wisdomscore : 10,
+      intelligencescore: character.intelligencescore
+        ? character.intelligencescore
+        : 10,
+      charismascore: character.charismascore ? character.charismascore : 10,
+      inspiration: character.inspiration ? character.inspiration : false,
+      proficiencybonus: character.proficiencybonus
+        ? character.proficiencybonus
+        : 2,
+      strengthsave: character.strengthsave ? character.strengthsave : 0,
+      strengthsaveprof: character.strengthsaveprof
+        ? character.strengthsaveprof
+        : false,
+      dexteritysave: character.dexteritysave ? character.dexteritysave : 0,
+      dexteritysaveprof: character.dexteritysaveprof
+        ? character.dexteritysaveprof
+        : false,
+      constitutionsave: character.constitutionsave
+        ? character.constitutionsave
+        : 0,
+      constitutionsaveprof: character.constitutionsaveprof
+        ? character.constitutionsaveprof
+        : false,
+      wisdomsave: character.wisdomsave ? character.wisdomsave : 0,
+      wisdomsaveprof: character.wisdomsaveprof
+        ? character.wisdomsaveprof
+        : false,
+      intelligencesave: character.intelligencesave
+        ? character.intelligencesave
+        : 0,
+      intelligencesaveprof: character.intelligencesaveprof
+        ? character.intelligencesaveprof
+        : false,
+      charismasave: character.charismasave ? character.charismasave : 0,
+      charismasaveprof: character.charismasaveprof
+        ? character.charismasaveprof
+        : false,
+      acrobatics: character.acrobatics ? character.acrobatics : 0,
+      acrobaticsexpertise: character.acrobaticsexpertise
+        ? character.acrobaticsexpertise
+        : false,
+      acrobaticsprof: character.acrobaticsprof
+        ? character.acrobaticsprof
+        : false,
+      animalhandling: character.animalhandling ? character.animalhandling : 0,
+      animalhandlingexpertise: character.animalhandlingexpertise
+        ? character.animalhandlingexpertise
+        : false,
+      animalhandlingprof: character.animalhandlingprof
+        ? character.animalhandlingprof
+        : false,
+      arcana: character.arcana ? character.arcana : 0,
+      arcanaexpertise: character.arcanaexpertise
+        ? character.arcanaexpertise
+        : false,
+      arcanaprof: character.arcanaprof ? character.arcanaprof : false,
+      athletics: character.athletics ? character.athletics : 0,
+      athleticsexpertise: character.athleticsexpertise
+        ? character.athleticsexpertise
+        : false,
+      athleticsprof: character.athleticsprof ? character.athleticsprof : false,
+      deception: character.deception ? character.deception : 0,
+      deceptionexpertise: character.deceptionexpertise
+        ? character.deceptionexpertise
+        : false,
+      deceptionprof: character.deceptionprof ? character.deceptionprof : false,
+      history: character.history ? character.history : 0,
+      historyexpertise: character.historyexpertise
+        ? character.historyexpertise
+        : false,
+      historyprof: character.historyprof ? character.historyprof : false,
+      insight: character.insight ? character.insight : 0,
+      insightexpertise: character.insightexpertise
+        ? character.insightexpertise
+        : false,
+      insightprof: character.insightprof ? character.insightprof : false,
+      intimidation: character.intimidation ? character.intimidation : 0,
+      intimidationexpertise: character.intimidationexpertise
+        ? character.intimidationexpertise
+        : false,
+      intimidationprof: character.intimidationprof
+        ? character.intimidationprof
+        : false,
+      investigation: character.investigation ? character.investigation : 0,
+      investigationexpertise: character.investigationexpertise
+        ? character.investigationexpertise
+        : false,
+      investigationprof: character.investigationprof
+        ? character.investigationprof
+        : false,
+      medicine: character.medicine ? character.medicine : 0,
+      medicineexpertise: character.medicineexpertise
+        ? character.medicineexpertise
+        : false,
+      medicineprof: character.medicineprof ? character.medicineprof : false,
+      nature: character.nature ? character.nature : 0,
+      natureexpertise: character.natureexpertise
+        ? character.natureexpertise
+        : false,
+      natureprof: character.natureprof ? character.natureprof : false,
+      perception: character.perception ? character.perception : 0,
+      perceptionexpertise: character.perceptionexpertise
+        ? character.perceptionexpertise
+        : false,
+      perceptionprof: character.perceptionprof
+        ? character.perceptionprof
+        : false,
+      performance: character.performance ? character.performance : 0,
+      performanceexpertise: character.performanceexpertise
+        ? character.performanceexpertise
+        : false,
+      performanceprof: character.performanceprof
+        ? character.performanceprof
+        : false,
+      persuasion: character.persuasion ? character.persuasion : 0,
+      persuasionexpertise: character.persuasionexpertise
+        ? character.persuasionexpertise
+        : false,
+      persuasionprof: character.persuasionprof
+        ? character.persuasionprof
+        : false,
+      religion: character.religion ? character.religion : 0,
+      religionexpertise: character.religionexpertise
+        ? character.religionexpertise
+        : false,
+      religionprof: character.religionprof ? character.religionprof : false,
+      sleightofhand: character.sleightofhand ? character.sleightofhand : 0,
+      sleightofhandexpertise: character.sleightofhandexpertise
+        ? character.sleightofhandexpertise
+        : false,
+      sleightofhandprof: character.sleightofhandprof
+        ? character.sleightofhandprof
+        : false,
+      stealth: character.stealth ? character.stealth : 0,
+      stealthexpertise: character.stealthexpertise
+        ? character.stealthexpertise
+        : false,
+      stealthprof: character.stealthprof ? character.stealthprof : false,
+      survival: character.survival ? character.survival : 0,
+      survivalexpertise: character.survivalexpertise
+        ? character.survivalexpertise
+        : false,
+      survivalprof: character.survivalprof ? character.survivalprof : false,
+      passiveperception: character.passiveperception
+        ? character.passiveperception
+        : 0,
+      otherprofs: character.otherprofs ? character.otherprofs : "",
+      ac: character.ac ? character.ac : 10,
+      initiative: character.initiative ? character.initiative : 0,
+      speed: character.speed ? character.speed : 30,
+      maxhp: character.maxhp ? character.maxhp : 0,
+      currenthp: character.currenthp ? character.currenthp : 0,
+      temphp: character.temphp ? character.temphp : 0,
+      totalhd: character.totalhd ? character.totalhd : "",
+      remaininghd: character.remaininghd ? character.remaininghd : 0,
+      deathsuccess1: character.deathsuccess1 ? character.deathsuccess1 : false,
+      deathsuccess2: character.deathsuccess2 ? character.deathsuccess2 : false,
+      deathsuccess3: character.deathsuccess3 ? character.deathsuccess3 : false,
+      deathfail1: character.deathfail1 ? character.deathfail1 : false,
+      deathfail2: character.deathfail2 ? character.deathfail2 : false,
+      deathfail3: character.deathfail3 ? character.deathfail3 : false,
+      atkname1: character.atkname1 ? character.atkname1 : "",
+      atkbonus1: character.atkbonus1 ? character.atkbonus1 : 0,
+      atkdamage1: character.atkdamage1 ? character.atkdamage1 : "",
+      atkname2: character.atkname2 ? character.atkname2 : "",
+      atkbonus2: character.atkbonus2 ? character.atkbonus2 : 0,
+      atkdamage2: character.atkdamage2 ? character.atkdamage2 : "",
+      atkname3: character.atkname3 ? character.atkname3 : "",
+      atkbonus3: character.atkbonus3 ? character.atkbonus3 : 0,
+      atkdamage3: character.atkdamage3 ? character.atkdamage3 : "",
+      cp: character.cp ? character.cp : 0,
+      sp: character.sp ? character.sp : 0,
+      ep: character.ep ? character.ep : 0,
+      gp: character.gp ? character.gp : 0,
+      pp: character.pp ? character.pp : 0,
+      equipmentlist: character.equipmentlist ? character.equipmentlist : "",
+      personality: character.personality ? character.personality : "",
+      ideals: character.ideals ? character.ideals : "",
+      bonds: character.bonds ? character.bonds : "",
+      flaws: character.flaws ? character.flaws : "",
+      features: character.features ? character.features : "",
+    },
+  });
 
   return (
     <div className="flex justify-center">
@@ -266,14 +346,14 @@ export default function CharacterData(props: { character: CharacterForm }) {
         onSubmit={handleSubmit(saveCharacterSheet)}
         className="charsheet flex w-[1000px] flex-col bg-white align-middle"
       >
-        <Button type="submit">Save</Button>
         {/* header with char name, basic class info */}
         <header className="flex">
           <section className="charname m-auto ml-1 flex w-1/3 flex-col-reverse rounded-md border-2 border-r-0 border-black bg-slate-400 p-2">
             <Label htmlFor="charname">Character Name</Label>
             <input
-              value={character.charname ? character.charname : ""}
-              {...register("charname")}
+              {...register("charname", {
+                onBlur: handleSubmit(saveCharacterSheet),
+              })}
               className="px-1"
               id="charname"
               name="charname"
@@ -281,13 +361,15 @@ export default function CharacterData(props: { character: CharacterForm }) {
           </section>
           <section className="misc m-1 ml-0 w-2/3 rounded-md border-2 border-black px-1">
             <ul className="flex flex-wrap py-3">
+              {/* ... other list items ... */}
               <li className="header-li">
                 <Label className="mb-2" htmlFor="classname">
                   Class
                 </Label>
                 <input
-                  value={character.classname ? character.classname : ""}
-                  {...register("classname")}
+                  {...register("classname", {
+                    onBlur: handleSubmit(saveCharacterSheet),
+                  })}
                   className="header-input"
                   id="classname"
                   name="classname"
@@ -299,8 +381,9 @@ export default function CharacterData(props: { character: CharacterForm }) {
                   Background
                 </Label>
                 <input
-                  value={character.background ? character.background : ""}
-                  {...register("background")}
+                  {...register("background", {
+                    onBlur: handleSubmit(saveCharacterSheet),
+                  })}
                   className="header-input"
                   name="background"
                   id="background"
@@ -312,21 +395,23 @@ export default function CharacterData(props: { character: CharacterForm }) {
                   Player Name
                 </Label>
                 <input
-                  value={character.playername ? character.playername : ""}
-                  {...register("playername")}
+                  {...register("playername", {
+                    onBlur: handleSubmit(saveCharacterSheet),
+                  })}
                   className="header-input"
                   id="playername"
                   name="playername"
                   placeholder="Player Name"
-                ></input>
+                />
               </li>
               <li className="header-li">
                 <Label className="mb-2" htmlFor="race">
                   Race
                 </Label>
                 <input
-                  value={character.race ? character.race : ""}
-                  {...register("race")}
+                  {...register("race", {
+                    onBlur: handleSubmit(saveCharacterSheet),
+                  })}
                   className="header-input"
                   id="race"
                   name="race"
@@ -338,8 +423,9 @@ export default function CharacterData(props: { character: CharacterForm }) {
                   Alignment
                 </Label>
                 <input
-                  value={character.alignment ? character.alignment : ""}
-                  {...register("alignment")}
+                  {...register("alignment", {
+                    onBlur: handleSubmit(saveCharacterSheet),
+                  })}
                   className="header-input"
                   id="alignment"
                   name="alignment"
@@ -351,9 +437,11 @@ export default function CharacterData(props: { character: CharacterForm }) {
                   Level
                 </Label>
                 <input
-                  value={character.level ? character.level : 1}
                   type="number"
-                  {...register("level", { valueAsNumber: true })}
+                  {...register("level", {
+                    valueAsNumber: true,
+                    onBlur: handleSubmit(saveCharacterSheet),
+                  })}
                   className="header-input"
                   id="level"
                   name="level"
@@ -381,11 +469,11 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Strength
                       </Label>
                       <input
-                        value={
-                          character.strengthscore ? character.strengthscore : 10
-                        }
                         type="number"
-                        {...register("strengthscore", { valueAsNumber: true })}
+                        {...register("strengthscore", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="ability-score-input"
                         id="strengthscore"
                         name="strengthscore"
@@ -394,6 +482,11 @@ export default function CharacterData(props: { character: CharacterForm }) {
                     </div>
                     <div className="modifier flex justify-center">
                       <input
+                        value={`+${
+                          character.strengthscore
+                            ? Math.floor((character.strengthscore - 10) / 2)
+                            : 0
+                        }`}
                         className="ability-modifier-input"
                         id="Strengthmod"
                         name="Strengthmod"
@@ -405,18 +498,16 @@ export default function CharacterData(props: { character: CharacterForm }) {
                     <div className="score flex flex-col">
                       <Label
                         className="text-center text-xs font-bold"
-                        htmlFor="Dexterityscore"
+                        htmlFor="dexterityscore"
                       >
                         Dexterity
                       </Label>
                       <input
-                        value={
-                          character.dexterityscore
-                            ? character.dexterityscore
-                            : 10
-                        }
                         type="number"
-                        {...register("dexterityscore", { valueAsNumber: true })}
+                        {...register("dexterityscore", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="ability-score-input"
                         id="dexterityscore"
                         name="dexterityscore"
@@ -425,6 +516,11 @@ export default function CharacterData(props: { character: CharacterForm }) {
                     </div>
                     <div className="modifier flex justify-center">
                       <input
+                        value={`+${
+                          character.dexterityscore
+                            ? Math.floor((character.dexterityscore - 10) / 2)
+                            : 0
+                        }`}
                         className="ability-modifier-input"
                         id="Dexteritymod"
                         name="Dexteritymod"
@@ -441,14 +537,10 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Constitution
                       </Label>
                       <input
-                        value={
-                          character.constitutionscore
-                            ? character.constitutionscore
-                            : 10
-                        }
                         type="number"
                         {...register("constitutionscore", {
                           valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
                         })}
                         className="ability-score-input"
                         id="constitutionscore"
@@ -458,6 +550,11 @@ export default function CharacterData(props: { character: CharacterForm }) {
                     </div>
                     <div className="modifier flex justify-center">
                       <input
+                        value={`+${
+                          character.constitutionscore
+                            ? Math.floor((character.constitutionscore - 10) / 2)
+                            : 0
+                        }`}
                         className="ability-modifier-input"
                         id="Constitutionmod"
                         name="Constitutionmod"
@@ -474,11 +571,11 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Wisdom
                       </Label>
                       <input
-                        value={
-                          character.wisdomscore ? character.wisdomscore : 10
-                        }
                         type="number"
-                        {...register("wisdomscore", { valueAsNumber: true })}
+                        {...register("wisdomscore", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="ability-score-input"
                         id="wisdomscore"
                         name="wisdomscore"
@@ -487,9 +584,14 @@ export default function CharacterData(props: { character: CharacterForm }) {
                     </div>
                     <div className="modifier flex justify-center">
                       <input
+                        value={`+${
+                          character.wisdomscore
+                            ? Math.floor((character.wisdomscore - 10) / 2)
+                            : 0
+                        }`}
                         className="ability-modifier-input"
-                        id="Wisdommod"
-                        name="Wisdommod"
+                        id="wisdommod"
+                        name="wisdommod"
                         placeholder="+0"
                       />
                     </div>
@@ -503,14 +605,10 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Intelligence
                       </Label>
                       <input
-                        value={
-                          character.intelligencescore
-                            ? character.intelligencescore
-                            : 10
-                        }
                         type="number"
                         {...register("intelligencescore", {
                           valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
                         })}
                         className="ability-score-input"
                         id="intelligencescore"
@@ -520,9 +618,14 @@ export default function CharacterData(props: { character: CharacterForm }) {
                     </div>
                     <div className="modifier flex justify-center">
                       <input
+                        value={`+${
+                          character.intelligencescore
+                            ? Math.floor((character.intelligencescore - 10) / 2)
+                            : 0
+                        }`}
                         className="ability-modifier-input"
-                        id="Intelligencemod"
-                        name="Intelligencemod"
+                        id="intelligencemod"
+                        name="intelligencemod"
                         placeholder="+0"
                       />
                     </div>
@@ -536,11 +639,11 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Charisma
                       </Label>
                       <input
-                        value={
-                          character.charismascore ? character.charismascore : 10
-                        }
                         type="number"
-                        {...register("charismascore", { valueAsNumber: true })}
+                        {...register("charismascore", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="ability-score-input"
                         id="charismascore"
                         name="charismascore"
@@ -549,9 +652,14 @@ export default function CharacterData(props: { character: CharacterForm }) {
                     </div>
                     <div className="modifier flex justify-center">
                       <input
+                        value={`+${
+                          character.charismascore
+                            ? Math.floor((character.charismascore - 10) / 2)
+                            : 0
+                        }`}
                         className="ability-modifier-input"
-                        id="Charismamod"
-                        name="Charismamod"
+                        id="charismamod"
+                        name="charismamod"
                         placeholder="+0"
                       />
                     </div>
@@ -596,7 +704,7 @@ export default function CharacterData(props: { character: CharacterForm }) {
 
                 {/* saves */}
                 <div className="saves list-section box my-2 flex flex-col-reverse rounded-xl border-2 border-black p-1">
-                  <ul className="flex flex-col items-baseline justify-between ">
+                  <ul className="flex flex-col items-baseline justify-between">
                     <li className="saves-li">
                       <Label
                         className="ml-2 text-[11px] font-bold"
@@ -606,7 +714,10 @@ export default function CharacterData(props: { character: CharacterForm }) {
                       </Label>
                       <input
                         type="number"
-                        {...register("strengthsave", { valueAsNumber: true })}
+                        {...register("strengthsave", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="saves-total-input"
                         id="strengthsave"
                         name="strengthsave"
@@ -627,7 +738,10 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Dexterity
                       </Label>
                       <input
-                        {...register("dexteritysave", { valueAsNumber: true })}
+                        {...register("dexteritysave", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="saves-total-input"
                         id="dexteritysave"
                         name="dexteritysave"
@@ -651,6 +765,7 @@ export default function CharacterData(props: { character: CharacterForm }) {
                       <input
                         {...register("constitutionsave", {
                           valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
                         })}
                         className="saves-total-input"
                         id="constitutionsave"
@@ -673,7 +788,10 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Wisdom
                       </Label>
                       <input
-                        {...register("wisdomsave", { valueAsNumber: true })}
+                        {...register("wisdomsave", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="saves-total-input"
                         id="wisdomsave"
                         name="wisdomsave"
@@ -697,6 +815,7 @@ export default function CharacterData(props: { character: CharacterForm }) {
                       <input
                         {...register("intelligencesave", {
                           valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
                         })}
                         className="saves-total-input"
                         id="intelligencesave"
@@ -719,7 +838,10 @@ export default function CharacterData(props: { character: CharacterForm }) {
                         Charisma
                       </Label>
                       <input
-                        {...register("charismasave", { valueAsNumber: true })}
+                        {...register("charismasave", {
+                          valueAsNumber: true,
+                          onBlur: handleSubmit(saveCharacterSheet),
+                        })}
                         className="saves-total-input"
                         id="charismasave"
                         name="charismasave"
