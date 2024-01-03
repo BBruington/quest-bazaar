@@ -12,7 +12,7 @@ export default function CharacterSave(props: {
   const { register, handleSubmit } = useFormContext();
 
   return (
-    <li className="saves-li">
+    <li className="flex flex-row-reverse items-center space-x-2">
       <Label className="ml-2 text-[11px] font-bold" htmlFor={save}>
         {label}
       </Label>
@@ -22,7 +22,7 @@ export default function CharacterSave(props: {
           valueAsNumber: true,
           onBlur: handleSubmit(saveCharacter),
         })}
-        className="saves-total-input"
+        className="w-8 border-b-2 border-black text-center text-sm"
         id={save}
         name={save}
         placeholder="+0"

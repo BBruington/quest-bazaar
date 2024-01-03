@@ -3,6 +3,8 @@ import type { CharacterForm } from "~/components/characterSheet/characterTypes";
 import CharacterAttribute from "./elements/attribute";
 import CharacterSave from "./elements/save";
 import CharacterSkill from "./elements/skill";
+import CharacterCoin from "./elements/coin";
+import CharacterHeader from "./elements/header";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
 import { Label } from "~/components/ui/label";
@@ -342,6 +344,39 @@ export default function CharacterData(props: {
   });
   const { register, handleSubmit } = methods;
 
+  const characterHeader = [
+    {
+      title: "classname",
+      label: "Class",
+      placeholder: "Paladin"
+    },
+    {
+      title: "background",
+      label: "Background",
+      placeholder: "Acolyte"
+    },
+    {
+      title: "playername",
+      label: "Playername",
+      placeholder: "Player Name"
+    },
+    {
+      title: "race",
+      label: "Race",
+      placeholder: "Elf"
+    },
+    {
+      title: "alignment",
+      label: "Alignment",
+      placeholder: "Neutral"
+    },
+    {
+      title: "level",
+      label: "Level",
+      placeholder: "1"
+    },
+  ]
+
   const characterSaves = [
     {
       save: "strengthsave",
@@ -414,33 +449,142 @@ export default function CharacterData(props: {
     },
   ];
 
-  // skill: string;
-  // prof: string;
-  // expertise: string;
-  // label: string;
-  // attribute: string;
-  // saveCharacter: SubmitHandler<CharacterForm>;
-
   const characterSkills = [
-      { skill: "acrobatics", prof: "acrobaticsprof", expertise: "acrobaticsexpertise", label: "Acrobatics", attribute: "Dex" },
-      { skill: "animalhandling", prof: "animalhandlingprof", expertise: "animalhandlingexpertise", label: "Animal Handling", attribute: "Wis" },
-      { skill: "arcana", prof: "arcanaprof", expertise: "arcanaexpertise", label: "Arcana", attribute: "Int" },
-      { skill: "athletics", prof: "athleticsprof", expertise: "athleticsexpertise", label: "Athletics", attribute: "Str" },
-      { skill: "deception", prof: "deceptionprof", expertise: "deceptionexpertise", label: "Deception", attribute: "Cha" },
-      { skill: "history", prof: "historyprof", expertise: "historyexpertise", label: "History", attribute: "Int" },
-      { skill: "insight", prof: "insightprof", expertise: "insightexpertise", label: "Insight", attribute: "Wis" },
-      { skill: "intimidation", prof: "intimidationprof", expertise: "intimidationexpertise", label: "Intimidation", attribute: "Cha" },
-      { skill: "investigation", prof: "investigationprof", expertise: "investigationexpertise", label: "Investigation", attribute: "Int" },
-      { skill: "medicine", prof: "medicineprof", expertise: "medicineexpertise", label: "Medicine", attribute: "Wis" },
-      { skill: "nature", prof: "natureprof", expertise: "natureexpertise", label: "Nature", attribute: "Int" },
-      { skill: "perception", prof: "perceptionprof", expertise: "perceptionexpertise", label: "Perception", attribute: "Wis" },
-      { skill: "performance", prof: "performanceprof", expertise: "performanceexpertise", label: "Performance", attribute: "Cha" },
-      { skill: "persuasion", prof: "persuasionprof", expertise: "persuasionexpertise", label: "Persuasion", attribute: "Cha" },
-      { skill: "religion", prof: "religionprof", expertise: "religionexpertise", label: "Religion", attribute: "Int" },
-      { skill: "sleightofhand", prof: "sleightofhandprof", expertise: "sleightofhandexpertise", label: "Sleight of Hand", attribute: "Dex" },
-      { skill: "stealth", prof: "stealthprof", expertise: "stealthexpertise", label: "Stealth", attribute: "Dex" },
-      { skill: "survival", prof: "survivalprof", expertise: "survivalexpertise", label: "Survival", attribute: "Wis" },
-    ]
+    {
+      skill: "acrobatics",
+      prof: "acrobaticsprof",
+      expertise: "acrobaticsexpertise",
+      label: "Acrobatics",
+      attribute: "Dex",
+    },
+    {
+      skill: "animalhandling",
+      prof: "animalhandlingprof",
+      expertise: "animalhandlingexpertise",
+      label: "Animal Handling",
+      attribute: "Wis",
+    },
+    {
+      skill: "arcana",
+      prof: "arcanaprof",
+      expertise: "arcanaexpertise",
+      label: "Arcana",
+      attribute: "Int",
+    },
+    {
+      skill: "athletics",
+      prof: "athleticsprof",
+      expertise: "athleticsexpertise",
+      label: "Athletics",
+      attribute: "Str",
+    },
+    {
+      skill: "deception",
+      prof: "deceptionprof",
+      expertise: "deceptionexpertise",
+      label: "Deception",
+      attribute: "Cha",
+    },
+    {
+      skill: "history",
+      prof: "historyprof",
+      expertise: "historyexpertise",
+      label: "History",
+      attribute: "Int",
+    },
+    {
+      skill: "insight",
+      prof: "insightprof",
+      expertise: "insightexpertise",
+      label: "Insight",
+      attribute: "Wis",
+    },
+    {
+      skill: "intimidation",
+      prof: "intimidationprof",
+      expertise: "intimidationexpertise",
+      label: "Intimidation",
+      attribute: "Cha",
+    },
+    {
+      skill: "investigation",
+      prof: "investigationprof",
+      expertise: "investigationexpertise",
+      label: "Investigation",
+      attribute: "Int",
+    },
+    {
+      skill: "medicine",
+      prof: "medicineprof",
+      expertise: "medicineexpertise",
+      label: "Medicine",
+      attribute: "Wis",
+    },
+    {
+      skill: "nature",
+      prof: "natureprof",
+      expertise: "natureexpertise",
+      label: "Nature",
+      attribute: "Int",
+    },
+    {
+      skill: "perception",
+      prof: "perceptionprof",
+      expertise: "perceptionexpertise",
+      label: "Perception",
+      attribute: "Wis",
+    },
+    {
+      skill: "performance",
+      prof: "performanceprof",
+      expertise: "performanceexpertise",
+      label: "Performance",
+      attribute: "Cha",
+    },
+    {
+      skill: "persuasion",
+      prof: "persuasionprof",
+      expertise: "persuasionexpertise",
+      label: "Persuasion",
+      attribute: "Cha",
+    },
+    {
+      skill: "religion",
+      prof: "religionprof",
+      expertise: "religionexpertise",
+      label: "Religion",
+      attribute: "Int",
+    },
+    {
+      skill: "sleightofhand",
+      prof: "sleightofhandprof",
+      expertise: "sleightofhandexpertise",
+      label: "Sleight of Hand",
+      attribute: "Dex",
+    },
+    {
+      skill: "stealth",
+      prof: "stealthprof",
+      expertise: "stealthexpertise",
+      label: "Stealth",
+      attribute: "Dex",
+    },
+    {
+      skill: "survival",
+      prof: "survivalprof",
+      expertise: "survivalexpertise",
+      label: "Survival",
+      attribute: "Wis",
+    },
+  ];
+
+  const characterCoins = [
+    { coins: "cp" },
+    { coins: "sp" },
+    { coins: "ep" },
+    { coins: "gp" },
+    { coins: "pp" },
+  ];
 
   return (
     <div className="flex justify-center">
@@ -464,93 +608,15 @@ export default function CharacterData(props: {
             </section>
             <section className="misc m-1 ml-0 w-2/3 rounded-md border-2 border-black px-1">
               <ul className="flex flex-wrap py-3">
-                {/* ... other list items ... */}
-                <li className="header-li">
-                  <Label className="mb-2" htmlFor="classname">
-                    Class
-                  </Label>
-                  <input
-                    {...register("classname", {
-                      onBlur: handleSubmit(saveCharacterSheet),
-                    })}
-                    className="header-input"
-                    id="classname"
-                    name="classname"
-                    placeholder="Paladin"
+                {/* header */}
+                {characterHeader.map(topic => (
+                  <CharacterHeader 
+                    title={topic.title}
+                    label={topic.label}
+                    placeholder={topic.placeholder}
+                    saveCharacter={saveCharacterSheet}
                   />
-                </li>
-                <li className="header-li">
-                  <Label className="mb-2" htmlFor="background">
-                    Background
-                  </Label>
-                  <input
-                    {...register("background", {
-                      onBlur: handleSubmit(saveCharacterSheet),
-                    })}
-                    className="header-input"
-                    name="background"
-                    id="background"
-                    placeholder="Acolyte"
-                  />
-                </li>
-                <li className="header-li">
-                  <Label className="mb-2" htmlFor="playername">
-                    Player Name
-                  </Label>
-                  <input
-                    {...register("playername", {
-                      onBlur: handleSubmit(saveCharacterSheet),
-                    })}
-                    className="header-input"
-                    id="playername"
-                    name="playername"
-                    placeholder="Player Name"
-                  />
-                </li>
-                <li className="header-li">
-                  <Label className="mb-2" htmlFor="race">
-                    Race
-                  </Label>
-                  <input
-                    {...register("race", {
-                      onBlur: handleSubmit(saveCharacterSheet),
-                    })}
-                    className="header-input"
-                    id="race"
-                    name="race"
-                    placeholder="Half-elf"
-                  />
-                </li>
-                <li className="header-li">
-                  <Label className="mb-2" htmlFor="alignment">
-                    Alignment
-                  </Label>
-                  <input
-                    {...register("alignment", {
-                      onBlur: handleSubmit(saveCharacterSheet),
-                    })}
-                    className="header-input"
-                    id="alignment"
-                    name="alignment"
-                    placeholder="Lawful Good"
-                  />
-                </li>
-                <li className="header-li">
-                  <Label className="mb-2" htmlFor="Level">
-                    Level
-                  </Label>
-                  <input
-                    type="number"
-                    {...register("level", {
-                      valueAsNumber: true,
-                      onBlur: handleSubmit(saveCharacterSheet),
-                    })}
-                    className="header-input"
-                    id="level"
-                    name="level"
-                    placeholder="1-20"
-                  />
-                </li>
+                ))}
               </ul>
             </section>
           </header>
@@ -632,7 +698,7 @@ export default function CharacterData(props: {
                   <div className="skills list-section box flex flex-col-reverse rounded-xl border-2 border-black">
                     <ul>
                       {characterSkills.map((skill) => (
-                        <CharacterSkill 
+                        <CharacterSkill
                           key={skill.skill}
                           skill={skill.skill}
                           prof={skill.prof}
@@ -1001,71 +1067,12 @@ export default function CharacterData(props: {
                 <div className="flex p-1">
                   <div className="money">
                     <ul className="space-y-[2px]">
-                      <li className="flex items-center">
-                        <Label className="coins-label" htmlFor="cp">
-                          cp
-                        </Label>
-                        <input
-                          type="number"
-                          {...register("cp", { valueAsNumber: true })}
-                          placeholder="0"
-                          className="coins-input"
-                          id="cp"
-                          name="cp"
+                      {characterCoins.map((coin) => (
+                        <CharacterCoin
+                          coins={coin.coins}
+                          saveCharacter={saveCharacterSheet}
                         />
-                      </li>
-                      <li className="flex items-center">
-                        <Label className="coins-label" htmlFor="sp">
-                          sp
-                        </Label>
-                        <input
-                          type="number"
-                          {...register("sp", { valueAsNumber: true })}
-                          placeholder="0"
-                          className="coins-input"
-                          id="sp"
-                          name="sp"
-                        />
-                      </li>
-                      <li className="flex items-center">
-                        <Label className="coins-label" htmlFor="ep">
-                          ep
-                        </Label>
-                        <input
-                          type="number"
-                          {...register("ep", { valueAsNumber: true })}
-                          placeholder="0"
-                          className="coins-input"
-                          id="ep"
-                          name="ep"
-                        />
-                      </li>
-                      <li className="flex items-center">
-                        <Label className="coins-label" htmlFor="gp">
-                          gp
-                        </Label>
-                        <input
-                          type="number"
-                          {...register("gp", { valueAsNumber: true })}
-                          placeholder="0"
-                          className="coins-input"
-                          id="gp"
-                          name="gp"
-                        />
-                      </li>
-                      <li className="flex items-center">
-                        <Label className="coins-label" htmlFor="pp">
-                          pp
-                        </Label>
-                        <input
-                          type="number"
-                          {...register("pp", { valueAsNumber: true })}
-                          placeholder="0"
-                          className="coins-input"
-                          id="pp"
-                          name="pp"
-                        />
-                      </li>
+                      ))}
                     </ul>
                   </div>
                   <textarea

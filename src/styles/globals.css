@@ -70,31 +70,6 @@
   .header-input {
     @apply border-0 border-b-2 border-slate-300
   }
-  .header-li {
-    @apply flex w-1/3 flex-col-reverse
-  }
-  .skills-total-input {
-    @apply w-5 text-center border-b-2 border-black text-xs;
-  }
-  .skills-li {
-    @apply flex flex-row-reverse items-center justify-end space-x-1
-  }
-  .saves-total-input {
-    @apply w-8 border-b-2 border-black text-center text-sm
-  }
-  .saves-li {
-    @apply flex flex-row-reverse items-center space-x-2
-  }
-  .ability-score-input {
-    @apply h-10 w-14 text-center text-2xl
-  }
-  .ability-modifier-input {
-    @apply m-[-1px] w-10 rounded-xl border-2 border-black text-center
-  }
-  .ability-li {
-    @apply flex flex-col items-center justify-center rounded-xl border-2 border-black bg-white
-  }
-
   .attacks-input {
     @apply text-xs text-center w-[108px] bg-black/10 py-[2px]
   }
@@ -103,11 +78,5 @@
   }
   .personality-textarea {
     @apply h-[100px] w-full px-1
-  }
-  .coins-label {
-    @apply rounded-lg border-2 border-r-0 border-black p-[3px]
-  }
-  .coins-input {
-    @apply h-10 w-14 rounded-xl border-2 border-black text-center mr-4
   }
 }

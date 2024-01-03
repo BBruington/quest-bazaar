@@ -8,7 +8,7 @@ const CharacterAttribute = (props: { name: string, modName: string, label: strin
   const { register, handleSubmit } = useFormContext(); 
 
   return (
-    <li className="ability-li">
+    <li className="flex flex-col items-center justify-center rounded-xl border-2 border-black bg-white">
       <div className="score flex flex-col">
         <Label
           className={`text-center ${label === "Constitution" || "Intelligence" ? 'text-[9px]' : 'text-xs'} font-bold`}
@@ -22,7 +22,7 @@ const CharacterAttribute = (props: { name: string, modName: string, label: strin
             valueAsNumber: true,
             onBlur: handleSubmit(saveCharacter),
           })}
-          className="ability-score-input"
+          className="h-10 w-14 text-center text-2xl"
           id={name}
           name={name}
           placeholder="10"
@@ -35,7 +35,7 @@ const CharacterAttribute = (props: { name: string, modName: string, label: strin
               ? Math.floor((score - 10) / 2)
               : 0
           }`}
-          className="ability-modifier-input"
+          className="m-[-1px] w-10 rounded-xl border-2 border-black text-center"
           id={modName}
           name={modName}
           placeholder="+0"
