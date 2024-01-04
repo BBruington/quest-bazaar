@@ -65,18 +65,3 @@
   }
 
 }
-
-@layer components {
-  .header-input {
-    @apply border-0 border-b-2 border-slate-300
-  }
-  .attacks-input {
-    @apply text-xs text-center w-[108px] bg-black/10 py-[2px]
-  }
-  .personality-label {
-    @apply bg-slate-100 text-center rounded-sm w-full p-[2px]
-  }
-  .personality-textarea {
-    @apply h-[100px] w-full px-1
-  }
-}

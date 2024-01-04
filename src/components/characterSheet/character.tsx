@@ -5,6 +5,7 @@ import CharacterSave from "./elements/save";
 import CharacterSkill from "./elements/skill";
 import CharacterCoin from "./elements/coin";
 import CharacterHeader from "./elements/header";
+import CharacterTrait from "./elements/traits";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
 import { Label } from "~/components/ui/label";
@@ -586,6 +587,13 @@ export default function CharacterData(props: {
     { coins: "pp" },
   ];
 
+  const characterTraits = [
+    { name: "personality"},
+    { name: "ideals"},
+    { name: "bonds"},
+    { name: "flaws"},
+  ]
+
   return (
     <div className="flex justify-center">
       <FormProvider {...methods}>
@@ -974,7 +982,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkname1")}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkname1"
                             name="atkname1"
                             type="text"
@@ -983,7 +991,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkbonus1", { valueAsNumber: true })}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkbonus1"
                             name="atkbonus1"
                             type="number"
@@ -992,7 +1000,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkdamage1")}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkdamage1"
                             name="atkdamage1"
                             type="text"
@@ -1003,7 +1011,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkname2")}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkname2"
                             name="atkname2"
                             type="text"
@@ -1012,7 +1020,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkbonus2", { valueAsNumber: true })}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkbonus2"
                             name="atkbonus2"
                             type="number"
@@ -1021,7 +1029,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkdamage2")}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkdamage2"
                             name="atkdamage2"
                             type="text"
@@ -1032,7 +1040,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkname3")}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkname3"
                             name="atkname3"
                             type="text"
@@ -1041,7 +1049,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkbonus3", { valueAsNumber: true })}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkbonus3"
                             name="atkbonus3"
                             type="number"
@@ -1050,7 +1058,7 @@ export default function CharacterData(props: {
                         <td>
                           <input
                             {...register("atkdamage3")}
-                            className="attacks-input"
+                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
                             id="atkdamage3"
                             name="atkdamage3"
                             type="text"
@@ -1091,52 +1099,14 @@ export default function CharacterData(props: {
 
             {/* personalite, Ideals, Bonds, Flaws, features / traits */}
             <section className="w-1/3">
-              {/* not traits */}
+              {/* traits */}
               <section className="flavor m-5 mt-0 flex flex-col space-y-3 rounded-lg bg-slate-400 p-2">
-                <div className="personality flex flex-col-reverse items-center rounded-md border-2 border-black">
-                  <Label className="personality-label" htmlFor="personality">
-                    Personality
-                  </Label>
-                  <textarea
-                    {...register("personality")}
-                    className="personality-textarea"
-                    id="personality"
-                    name="personality"
-                  ></textarea>
-                </div>
-                <div className="ideals flex flex-col-reverse items-center rounded-md border-2 border-black">
-                  <Label className="personality-label" htmlFor="ideals">
-                    Ideals
-                  </Label>
-                  <textarea
-                    {...register("ideals")}
-                    className="personality-textarea"
-                    id="ideals"
-                    name="ideals"
-                  ></textarea>
-                </div>
-                <div className="bonds flex flex-col-reverse items-center rounded-md border-2 border-black">
-                  <Label className="personality-label" htmlFor="bonds">
-                    Bonds
-                  </Label>
-                  <textarea
-                    {...register("bonds")}
-                    className="personality-textarea"
-                    id="bonds"
-                    name="bonds"
-                  ></textarea>
-                </div>
-                <div className="flaws flex flex-col-reverse items-center rounded-md border-2 border-black">
-                  <Label className="personality-label" htmlFor="flaws">
-                    Flaws
-                  </Label>
-                  <textarea
-                    {...register("flaws")}
-                    className="personality-textarea"
-                    id="flaws"
-                    name="flaws"
-                  ></textarea>
-                </div>
+                {characterTraits.map(trait => (
+                  <CharacterTrait 
+                    name={trait.name}
+                    saveCharacter={saveCharacterSheet}
+                  />
+                ))}
               </section>
               <section className="features m-5 flex flex-col items-center rounded-md border-2 border-black">
                 <div className="flex w-full flex-col-reverse">
