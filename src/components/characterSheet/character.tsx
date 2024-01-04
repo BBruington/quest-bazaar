@@ -349,34 +349,34 @@ export default function CharacterData(props: {
     {
       title: "classname",
       label: "Class",
-      placeholder: "Paladin"
+      placeholder: "Paladin",
     },
     {
       title: "background",
       label: "Background",
-      placeholder: "Acolyte"
+      placeholder: "Acolyte",
     },
     {
       title: "playername",
       label: "Playername",
-      placeholder: "Player Name"
+      placeholder: "Player Name",
     },
     {
       title: "race",
       label: "Race",
-      placeholder: "Elf"
+      placeholder: "Elf",
     },
     {
       title: "alignment",
       label: "Alignment",
-      placeholder: "Neutral"
+      placeholder: "Neutral",
     },
     {
       title: "level",
       label: "Level",
-      placeholder: "1"
+      placeholder: "1",
     },
-  ]
+  ];
 
   const characterSaves = [
     {
@@ -588,11 +588,11 @@ export default function CharacterData(props: {
   ];
 
   const characterTraits = [
-    { name: "personality"},
-    { name: "ideals"},
-    { name: "bonds"},
-    { name: "flaws"},
-  ]
+    { name: "personality" },
+    { name: "ideals" },
+    { name: "bonds" },
+    { name: "flaws" },
+  ];
 
   return (
     <div className="flex justify-center">
@@ -617,8 +617,8 @@ export default function CharacterData(props: {
             <section className="misc m-1 ml-0 w-2/3 rounded-md border-2 border-black px-1">
               <ul className="flex flex-wrap py-3">
                 {/* header */}
-                {characterHeader.map(topic => (
-                  <CharacterHeader 
+                {characterHeader.map((topic) => (
+                  <CharacterHeader
                     title={topic.title}
                     label={topic.label}
                     placeholder={topic.placeholder}
@@ -676,7 +676,10 @@ export default function CharacterData(props: {
                     </div>
                     <input
                       type="number"
-                      {...register("proficiencybonus", { valueAsNumber: true })}
+                      {...register("proficiencybonus", {
+                        onBlur: handleSubmit(saveCharacterSheet),
+                        valueAsNumber: true,
+                      })}
                       className="w-8 text-center"
                       id="proficiencybonus"
                       name="proficiencybonus"
@@ -739,7 +742,10 @@ export default function CharacterData(props: {
                 </div>
                 <input
                   type="number"
-                  {...register("passiveperception", { valueAsNumber: true })}
+                  {...register("passiveperception", {
+                    onBlur: handleSubmit(saveCharacterSheet),
+                    valueAsNumber: true,
+                  })}
                   id="passiveperception"
                   name="passiveperception"
                   placeholder="10"
@@ -756,7 +762,9 @@ export default function CharacterData(props: {
                   Other Proficiencies and Languages
                 </Label>
                 <textarea
-                  {...register("otherprofs")}
+                  {...register("otherprofs", {
+                    onBlur: handleSubmit(saveCharacterSheet),
+                  })}
                   className="h-[150px] w-[250px] rounded-sm border-2 border-black px-1"
                   id="otherprofs"
                   name="otherprofs"
@@ -779,7 +787,10 @@ export default function CharacterData(props: {
                         Armor Class
                       </Label>
                       <input
-                        {...register("ac", { valueAsNumber: true })}
+                        {...register("ac", {
+                          onBlur: handleSubmit(saveCharacterSheet),
+                          valueAsNumber: true,
+                        })}
                         className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                         id="ac"
                         name="ac"
@@ -797,7 +808,10 @@ export default function CharacterData(props: {
                         Initiative
                       </Label>
                       <input
-                        {...register("initiative", { valueAsNumber: true })}
+                        {...register("initiative", {
+                          onBlur: handleSubmit(saveCharacterSheet),
+                          valueAsNumber: true,
+                        })}
                         className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                         id="initiative"
                         name="initiative"
@@ -815,7 +829,10 @@ export default function CharacterData(props: {
                         Speed
                       </Label>
                       <input
-                        {...register("speed", { valueAsNumber: true })}
+                        {...register("speed", {
+                          onBlur: handleSubmit(saveCharacterSheet),
+                          valueAsNumber: true,
+                        })}
                         className="h-[60px] w-[80px] rounded-lg border-2 border-black text-center text-xl"
                         id="speed"
                         name="speed"
@@ -837,7 +854,10 @@ export default function CharacterData(props: {
                         Hit Point Maximum
                       </Label>
                       <input
-                        {...register("maxhp", { valueAsNumber: true })}
+                        {...register("maxhp", {
+                          onBlur: handleSubmit(saveCharacterSheet),
+                          valueAsNumber: true,
+                        })}
                         className="ml-2 h-[15px] border-b-2 border-black/30 text-center text-xs text-black/70"
                         id="maxhp"
                         name="maxhp"
@@ -853,7 +873,10 @@ export default function CharacterData(props: {
                         Current Hit Points
                       </Label>
                       <input
-                        {...register("currenthp", { valueAsNumber: true })}
+                        {...register("currenthp", {
+                          onBlur: handleSubmit(saveCharacterSheet),
+                          valueAsNumber: true,
+                        })}
                         placeholder="0"
                         className="h-[60px] w-5/6 text-center text-2xl"
                         id="currenthp"
@@ -867,7 +890,10 @@ export default function CharacterData(props: {
                       Temporary Hit Points
                     </Label>
                     <input
-                      {...register("temphp", { valueAsNumber: true })}
+                      {...register("temphp", {
+                        onBlur: handleSubmit(saveCharacterSheet),
+                        valueAsNumber: true,
+                      })}
                       placeholder="0"
                       className="mt-1 h-[60px] w-5/6 text-center text-2xl"
                       id="temphp"
@@ -885,7 +911,9 @@ export default function CharacterData(props: {
                       <div className="total flex items-center">
                         <Label htmlFor="totalhd">Total</Label>
                         <input
-                          {...register("totalhd")}
+                          {...register("totalhd", {
+                            onBlur: handleSubmit(saveCharacterSheet),
+                          })}
                           className="ml-2 w-[60px]"
                           id="totalhd"
                           name="totalhd"
@@ -898,7 +926,10 @@ export default function CharacterData(props: {
                           Hit Dice
                         </Label>
                         <input
-                          {...register("remaininghd", { valueAsNumber: true })}
+                          {...register("remaininghd", {
+                            onBlur: handleSubmit(saveCharacterSheet),
+                            valueAsNumber: true,
+                          })}
                           className="h-[45px] w-[100px] text-center"
                           id="remaininghd"
                           name="remaininghd"
@@ -981,8 +1012,10 @@ export default function CharacterData(props: {
                       <tr>
                         <td>
                           <input
-                            {...register("atkname1")}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkname1", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkname1"
                             name="atkname1"
                             type="text"
@@ -990,8 +1023,11 @@ export default function CharacterData(props: {
                         </td>
                         <td>
                           <input
-                            {...register("atkbonus1", { valueAsNumber: true })}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkbonus1", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                              valueAsNumber: true,
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkbonus1"
                             name="atkbonus1"
                             type="number"
@@ -999,8 +1035,10 @@ export default function CharacterData(props: {
                         </td>
                         <td>
                           <input
-                            {...register("atkdamage1")}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkdamage1", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkdamage1"
                             name="atkdamage1"
                             type="text"
@@ -1010,8 +1048,10 @@ export default function CharacterData(props: {
                       <tr>
                         <td>
                           <input
-                            {...register("atkname2")}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkname2", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkname2"
                             name="atkname2"
                             type="text"
@@ -1019,8 +1059,11 @@ export default function CharacterData(props: {
                         </td>
                         <td>
                           <input
-                            {...register("atkbonus2", { valueAsNumber: true })}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkbonus2", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                              valueAsNumber: true,
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkbonus2"
                             name="atkbonus2"
                             type="number"
@@ -1028,8 +1071,10 @@ export default function CharacterData(props: {
                         </td>
                         <td>
                           <input
-                            {...register("atkdamage2")}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkdamage2", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkdamage2"
                             name="atkdamage2"
                             type="text"
@@ -1039,8 +1084,10 @@ export default function CharacterData(props: {
                       <tr>
                         <td>
                           <input
-                            {...register("atkname3")}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkname3", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkname3"
                             name="atkname3"
                             type="text"
@@ -1048,8 +1095,11 @@ export default function CharacterData(props: {
                         </td>
                         <td>
                           <input
-                            {...register("atkbonus3", { valueAsNumber: true })}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkbonus3", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                              valueAsNumber: true,
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkbonus3"
                             name="atkbonus3"
                             type="number"
@@ -1057,8 +1107,10 @@ export default function CharacterData(props: {
                         </td>
                         <td>
                           <input
-                            {...register("atkdamage3")}
-                            className="text-xs text-center w-[108px] bg-black/10 py-[2px]"
+                            {...register("atkdamage3", {
+                              onBlur: handleSubmit(saveCharacterSheet),
+                            })}
+                            className="w-[108px] bg-black/10 py-[2px] text-center text-xs"
                             id="atkdamage3"
                             name="atkdamage3"
                             type="text"
@@ -1084,7 +1136,9 @@ export default function CharacterData(props: {
                     </ul>
                   </div>
                   <textarea
-                    {...register("equipmentlist")}
+                    {...register("equipmentlist", {
+                      onBlur: handleSubmit(saveCharacterSheet),
+                    })}
                     className="ml-3 px-1"
                     id="equipmentlist"
                     name="equipmentlist"
@@ -1101,8 +1155,8 @@ export default function CharacterData(props: {
             <section className="w-1/3">
               {/* traits */}
               <section className="flavor m-5 mt-0 flex flex-col space-y-3 rounded-lg bg-slate-400 p-2">
-                {characterTraits.map(trait => (
-                  <CharacterTrait 
+                {characterTraits.map((trait) => (
+                  <CharacterTrait
                     name={trait.name}
                     saveCharacter={saveCharacterSheet}
                   />
@@ -1117,7 +1171,9 @@ export default function CharacterData(props: {
                     Features & Traits
                   </Label>
                   <textarea
-                    {...register("features")}
+                    {...register("features", {
+                      onBlur: handleSubmit(saveCharacterSheet),
+                    })}
                     className="h-[302px] w-full p-2"
                     id="features"
                     name="features"

@@ -15,7 +15,9 @@ export default function CharacterTrait(props: {
         {name.toUpperCase()}
       </Label>
       <textarea
-        {...register(name)}
+        {...register(name, {
+          onBlur: handleSubmit(saveCharacter),
+        })}
         className="h-[100px] w-full px-1"
         id={name}
         name={name}
