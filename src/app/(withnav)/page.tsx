@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Navigation from "~/components/navigation";
 
 import DisplayPosts from "~/components/post/displayPosts";
 

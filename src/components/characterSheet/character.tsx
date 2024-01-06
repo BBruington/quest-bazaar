@@ -6,6 +6,7 @@ import CharacterSkill from "./elements/skill";
 import CharacterCoin from "./elements/coin";
 import CharacterHeader from "./elements/header";
 import CharacterTrait from "./elements/traits";
+import { useState } from "react";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
 import { Label } from "~/components/ui/label";
@@ -17,11 +18,19 @@ export default function CharacterData(props: {
 }) {
   const { user } = useUser();
   const { character, characterId } = props;
-  console.log(character);
 
   if (!user) return null;
 
   const { mutate: updateCharacter } = api.updateCharacterSheet.useMutation();
+  const [checkMarks, setCheckmarks] = useState({
+    inspiration: character.inspiration ? character.inspiration : false,
+    deathfail1: character.deathfail1 ? character.deathfail1 : false,
+    deathfail2: character.deathfail2 ? character.deathfail2 : false,
+    deathfail3: character.deathfail3 ? character.deathfail3 : false,
+    deathsuccess1: character.deathsuccess1 ? character.deathsuccess1 : false,
+    deathsuccess2: character.deathsuccess2 ? character.deathsuccess2 : false,
+    deathsuccess3: character.deathsuccess3 ? character.deathsuccess3 : false,
+  });
 
   const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
     updateCharacter({
@@ -658,10 +667,16 @@ export default function CharacterData(props: {
                       </Label>
                     </div>
                     <input
-                      checked={
-                        character.inspiration ? character.inspiration : false
-                      }
+                      checked={checkMarks.inspiration}
                       {...register("inspiration")}
+                      onClick={() => {
+                        setCheckmarks({
+                          ...checkMarks,
+                          inspiration: !checkMarks.inspiration,
+                        });
+                        character.inspiration = !character.inspiration;
+                        setTimeout(handleSubmit(saveCharacterSheet), 100);
+                      }}
                       className="mr-3"
                       id="inspiration"
                       name="inspiration"
@@ -696,6 +711,7 @@ export default function CharacterData(props: {
                           save={save.save}
                           prof={save.prof}
                           label={save.label}
+                          character={character}
                           saveCharacter={saveCharacterSheet}
                         />
                       ))}
@@ -716,6 +732,7 @@ export default function CharacterData(props: {
                           expertise={skill.expertise}
                           label={skill.label}
                           attribute={skill.attribute}
+                          character={character}
                           saveCharacter={saveCharacterSheet}
                         />
                       ))}
@@ -950,18 +967,57 @@ export default function CharacterData(props: {
                               id="deathsuccess1"
                               name="deathsuccess1"
                               type="checkbox"
+                              checked={checkMarks.deathsuccess1}
+                              onClick={() => {
+                                setCheckmarks({
+                                  ...checkMarks,
+                                  deathsuccess1: !checkMarks.deathsuccess1,
+                                });
+                                character.deathsuccess1 =
+                                  !character.deathsuccess1;
+                                setTimeout(
+                                  handleSubmit(saveCharacterSheet),
+                                  100
+                                );
+                              }}
                             />
                             <input
                               {...register("deathsuccess2")}
                               id="deathsuccess2"
                               name="deathsuccess2"
                               type="checkbox"
+                              checked={checkMarks.deathsuccess2}
+                              onClick={() => {
+                                setCheckmarks({
+                                  ...checkMarks,
+                                  deathsuccess2: !checkMarks.deathsuccess2,
+                                });
+                                character.deathsuccess2 =
+                                  !character.deathsuccess2;
+                                setTimeout(
+                                  handleSubmit(saveCharacterSheet),
+                                  100
+                                );
+                              }}
                             />
                             <input
                               {...register("deathsuccess3")}
                               id="deathsuccess3"
                               name="deathsuccess3"
                               type="checkbox"
+                              checked={checkMarks.deathsuccess3}
+                              onClick={() => {
+                                setCheckmarks({
+                                  ...checkMarks,
+                                  deathsuccess3: !checkMarks.deathsuccess3,
+                                });
+                                character.deathsuccess3 =
+                                  !character.deathsuccess3;
+                                setTimeout(
+                                  handleSubmit(saveCharacterSheet),
+                                  100
+                                );
+                              }}
                             />
                           </div>
                         </div>
@@ -973,18 +1029,54 @@ export default function CharacterData(props: {
                               id="deathfail1"
                               name="deathfail1"
                               type="checkbox"
+                              checked={checkMarks.deathfail1}
+                              onClick={() => {
+                                setCheckmarks({
+                                  ...checkMarks,
+                                  deathfail1: !checkMarks.deathfail1,
+                                });
+                                character.deathfail1 = !character.deathfail1;
+                                setTimeout(
+                                  handleSubmit(saveCharacterSheet),
+                                  100
+                                );
+                              }}
                             />
                             <input
                               {...register("deathfail2")}
                               id="deathfail2"
                               name="deathfail2"
                               type="checkbox"
+                              checked={checkMarks.deathfail2}
+                              onClick={() => {
+                                setCheckmarks({
+                                  ...checkMarks,
+                                  deathfail2: !checkMarks.deathfail2,
+                                });
+                                character.deathfail2 = !character.deathfail2;
+                                setTimeout(
+                                  handleSubmit(saveCharacterSheet),
+                                  100
+                                );
+                              }}
                             />
                             <input
                               {...register("deathfail3")}
                               id="deathfail3"
                               name="deathfail3"
                               type="checkbox"
+                              checked={checkMarks.deathfail3}
+                              onClick={() => {
+                                setCheckmarks({
+                                  ...checkMarks,
+                                  deathfail3: !checkMarks.deathfail3,
+                                });
+                                character.deathfail3 = !character.deathfail3;
+                                setTimeout(
+                                  handleSubmit(saveCharacterSheet),
+                                  100
+                                );
+                              }}
                             />
                           </div>
                         </div>
