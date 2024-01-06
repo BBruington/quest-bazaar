@@ -1,5 +1,6 @@
 "use client";
 import type { SelectedFriendType } from "~/app/types/Message";
+import Link from "next/link";
 import { Mail, User, Plus, PersonStandingIcon } from "lucide-react";
 import DisplayMessages from "./displayMessages";
 import SelectedFriend from "./selectedFriend";
@@ -121,6 +122,8 @@ export default function MyMessages(props: { userId: string }) {
       response: requestResponse,
     });
   };
+
+  console.log(charactersheets)
 
   return (
     <>
@@ -336,27 +339,23 @@ export default function MyMessages(props: { userId: string }) {
               </AccordionTrigger>
 
               <AccordionContent>
-              <div className="flex flex-col">
+                <div className="flex flex-col">
                   {!charactersheets || charactersheets.length === 0 ? (
                     <span className="text-slate-400">Empty</span>
                   ) : (
                     <></>
                   )}
                   {charactersheets?.map((sheet) => (
-                    <div
-                      key={sheet.id}
-                      role="button"
+                    <Link
                       className="w-full py-1 hover:bg-slate-800"
-                      
+                      key={sheet.id}
+                      target="_blank"
+                      href={`/character/${sheet.id}`}
                     >
-                      <div className="flex justify-center items-center space-x-3">
-                        {(
-                          <>
-                            <span className="">{sheet.charname}</span>
-                          </>
-                        )}
+                      <div className="flex items-center justify-center space-x-3">
+                        <span className="">{sheet.charname}</span>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </AccordionContent>
