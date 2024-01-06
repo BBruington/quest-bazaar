@@ -69,7 +69,7 @@ export default function MyMessages(props: { userId: string }) {
     onSuccess: async (character) => {
       if (character) {
         await utils.queryCharactersByUserId.invalidate().then(() => {
-          window.open(`localhost:3000/character/${character.id}`, "_blank");
+          window.open(`${process.env.NEXT_PUBLIC_BASE_URL}/character/${character.id}`, "_blank");
         });
       }
     },
