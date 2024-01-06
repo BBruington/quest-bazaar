@@ -65,6 +65,15 @@ export default function MyMessages(props: { userId: string }) {
   const { data: charactersheets } = api.queryCharactersByUserId.useQuery({
     userId,
   });
+  const { mutate: createNewCharacter } = api.createNewCharacter.useMutation({
+    onSuccess: async (character) => {
+      if (character) {
+        await utils.queryCharactersByUserId.invalidate().then(() => {
+          window.open(`localhost:3000/character/${character.id}`, "_blank");
+        });
+      }
+    },
+  });
 
   const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
     id: userId,
@@ -122,8 +131,6 @@ export default function MyMessages(props: { userId: string }) {
       response: requestResponse,
     });
   };
-
-  console.log(charactersheets)
 
   return (
     <>
@@ -340,11 +347,13 @@ export default function MyMessages(props: { userId: string }) {
 
               <AccordionContent>
                 <div className="flex flex-col">
-                  {!charactersheets || charactersheets.length === 0 ? (
-                    <span className="text-slate-400">Empty</span>
-                  ) : (
-                    <></>
-                  )}
+                  <div className="flex w-full items-center justify-center space-x-3 py-1 hover:cursor-pointer hover:bg-slate-800">
+                    <span
+                      onClick={() => createNewCharacter({ userId: userId })}
+                    >
+                      Create New Character
+                    </span>
+                  </div>
                   {charactersheets?.map((sheet) => (
                     <Link
                       className="w-full py-1 hover:bg-slate-800"

@@ -157,7 +157,7 @@ export default function CharacterData(props: {
   };
   const methods = useForm<CharacterForm>({
     defaultValues: {
-      charname: character.charname ? character.charname : "",
+      charname: character.charname ? character.charname : "New Character",
       classname: character.classname ? character.classname : "",
       background: character.background ? character.background : "",
       playername: character.playername ? character.playername : "",

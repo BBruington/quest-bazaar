@@ -16,6 +16,19 @@ const ratelimit = new Ratelimit({
 //clerkId
 // this is our RPC API
 export const appRouter = t.router({
+
+  createNewCharacter: t.procedure.input(z.object({
+    userId: z.string()
+  })).mutation(async ({input}) => {
+    const newCharacter = prisma.character.create({
+      data: {
+        userId: input.userId,
+        charname: "New Character"
+      }
+    })
+
+    return newCharacter;
+  }),
   queryCharactersByUserId: t.procedure
     .input(
       z.object({
