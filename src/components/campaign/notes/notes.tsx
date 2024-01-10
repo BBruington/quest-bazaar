@@ -16,7 +16,7 @@ const NotesPage = (props: {
   const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);
   const { data: privateNotesData } = api.queryCampaignPrivateNotes.useQuery({
     campaignId: campaignData.id,
-    userId: userId,
+    userId,
   });
   if (campaignNotes === undefined || privateNotesData === undefined)
     return <div>failed to load campaign notes</div>;

@@ -19,6 +19,7 @@ const NoteViewer = (props: {
   useEffect(() => {
     setCampaigNote(note);
   }, [note]);
+
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
       if(privateNotes === false) {
@@ -28,6 +29,7 @@ const NoteViewer = (props: {
       }
     },
   });
+
   const handleSaveNote = () => {
     if (
       campaignNote?.title !== undefined &&
@@ -43,6 +45,7 @@ const NoteViewer = (props: {
       });
     }
   };
+
   const editField = (key: string, value: string) => {
     if (campaignNote !== undefined) {
       setCampaigNote({
@@ -79,6 +82,7 @@ const NoteViewer = (props: {
                 value={campaignNote.title}
                 onChange={(e) => editField("title", e.target.value)}
                 placeholder="Title"
+                onBlur={() => handleSaveNote()}
               ></Textarea>
               <Textarea
                 className="mt-5 flex h-5/6 w-full bg-accent-foreground p-5"
@@ -86,6 +90,7 @@ const NoteViewer = (props: {
                 value={campaignNote.content}
                 onChange={(e) => editField("content", e.target.value)}
                 placeholder="Write your note here"
+                onBlur={() => handleSaveNote()}
               ></Textarea>
             </div>
           ) : (

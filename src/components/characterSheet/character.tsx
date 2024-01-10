@@ -1,16 +1,18 @@
 "use client";
 import type { CharacterForm } from "~/components/characterSheet/characterTypes";
+import { useState } from "react";
+import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
+import { useUser } from "@clerk/nextjs";
+import { Label } from "~/components/ui/label";
+import { api } from "~/utils/trpc";
+
+// components
 import CharacterAttribute from "./elements/attribute";
 import CharacterSave from "./elements/save";
 import CharacterSkill from "./elements/skill";
 import CharacterCoin from "./elements/coin";
 import CharacterHeader from "./elements/header";
 import CharacterTrait from "./elements/traits";
-import { useState } from "react";
-import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
-import { useUser } from "@clerk/nextjs";
-import { Label } from "~/components/ui/label";
-import { api } from "~/utils/trpc";
 
 export default function CharacterData(props: {
   character: CharacterForm;

@@ -1,4 +1,4 @@
-import type { Campaign} from '../types'
+import type { Campaign } from "../types";
 import uuid from "react-uuid";
 import React from "react";
 import { api } from "~/utils/trpc";
@@ -11,13 +11,21 @@ const NoteList = (props: {
   note: CampaignNote | undefined;
   privateNotes: boolean;
   privateNotesData: CampaignNote[];
-  userId: string
+  userId: string;
 }) => {
-  const { notes, onNoteClick, campaignData, note, privateNotes, privateNotesData, userId } = props;
+  const {
+    notes,
+    onNoteClick,
+    campaignData,
+    note,
+    privateNotes,
+    privateNotesData,
+    userId,
+  } = props;
   const utils = api.useContext();
   const upsertNote = api.upsertCampaignNote.useMutation({
     onSuccess: async () => {
-      if(privateNotes === false) {
+      if (privateNotes === false) {
         await utils.queryCampaignNotes.invalidate();
       } else {
         await utils.queryCampaignPrivateNotes.invalidate();
@@ -26,7 +34,7 @@ const NoteList = (props: {
   });
   const deleteNote = api.deleteCampaignNote.useMutation({
     onSuccess: async () => {
-      if(privateNotes === false) {
+      if (privateNotes === false) {
         await utils.queryCampaignNotes.invalidate();
       } else {
         await utils.queryCampaignPrivateNotes.invalidate();
@@ -39,7 +47,7 @@ const NoteList = (props: {
         <h2 className="mt-5 w-full border-b-2 border-slate-600 pb-3 text-center text-xl text-white">
           Notes
         </h2>
-        <div className="my-2 flex flex-col xl:flex-row items-center justify-center gap-5">
+        <div className="my-2 flex flex-col items-center justify-center gap-5 xl:flex-row">
           <Button
             className="w-20"
             onClick={() =>
@@ -68,9 +76,10 @@ const NoteList = (props: {
         </div>
       </div>
       <ul className="mt-1 w-full space-y-3 text-center">
-        {privateNotes ? privateNotesData.map((note) => (
-            <React.Fragment key={note.id}>
+        {privateNotes
+          ? privateNotesData.map((note) => (
               <div
+                key={note.id}
                 className="hover:cursor-pointer hover:bg-slate-800"
                 onClick={() => onNoteClick(note.id)}
               >
@@ -85,11 +94,10 @@ const NoteList = (props: {
                   })}
                 </li>
               </div>
-            </React.Fragment>
-          )) :
-          notes.map((note) => (
-            <React.Fragment key={note.id}>
+            ))
+          : notes.map((note) => (
               <div
+                key={note.id}
                 className="hover:cursor-pointer hover:bg-slate-800"
                 onClick={() => onNoteClick(note.id)}
               >
@@ -104,9 +112,7 @@ const NoteList = (props: {
                   })}
                 </li>
               </div>
-            </React.Fragment>
-          ))
-        }
+            ))}
       </ul>
     </div>
   );
