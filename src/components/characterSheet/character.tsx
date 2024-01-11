@@ -1,7 +1,7 @@
 "use client";
 import type { CharacterForm } from "~/components/characterSheet/characterTypes";
-import { useState } from "react";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Label } from "~/components/ui/label";
 import { api } from "~/utils/trpc";
@@ -356,6 +356,7 @@ export default function CharacterData(props: {
   });
   const { register, handleSubmit } = methods;
 
+  //arrays of objects to make passing props to the components easy
   const characterHeader = [
     {
       title: "classname",

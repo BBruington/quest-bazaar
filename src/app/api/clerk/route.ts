@@ -8,21 +8,25 @@ const webhookSecret: string = process.env.WEBHOOK_SECRET!;
 export async function POST(req: Request) {
   const payload = (await req.json()) as object;
   const payloadString = JSON.stringify(payload);
+
   const headerPayload = headers();
   const svixId = headerPayload.get("svix-id");
   const svixIdTimeStamp = headerPayload.get("svix-timestamp");
   const svixSignature = headerPayload.get("svix-signature");
+
   if (!svixId || !svixIdTimeStamp || !svixSignature) {
-    return new Response("Error occured", {
+    return new Response("Error occured -- no svix headers", {
       status: 400,
     });
   }
+
   // Create an object of the headers
   const svixHeaders = {
     "svix-id": svixId,
     "svix-timestamp": svixIdTimeStamp,
     "svix-signature": svixSignature,
   };
+
   // Create a new Webhook instance with your webhook secret
   const wh = new Webhook(webhookSecret);
 
@@ -36,8 +40,10 @@ export async function POST(req: Request) {
     });
   }
   const { id } = evt.data;
-  // Handle the webhook
   const eventType = evt.type;
+  
+  // Handle the webhook
+
   if (eventType === "user.created" || eventType === "user.updated") {
     await prisma.user.upsert({
       where: { clerkId: id },
