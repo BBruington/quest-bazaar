@@ -1,20 +1,28 @@
-"use client";
-import { api } from "~/utils/trpc";
-import { useUser } from "@clerk/nextjs";
-import CampaignPost from "~/components/post/singlePost";
+import { prisma } from "~/utils/context";
+import { auth } from "@clerk/nextjs";
+import { Suspense } from "react";
+
+//components
 import Spinner from "~/components/spinner/spinner";
+import CampaignPost from "~/components/post/singlePost";
 
-export default function Post({ params }: { params: { id: string } }) {
-  const { data: post, isLoading: postLoading } = api.querySinglePost.useQuery({
-    postId: params.id,
+export default async function Post({ params }: { params: { id: string } }) {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: params.id,
+    },
+    include: {
+      comments: true,
+      likes: true,
+    },
   });
-  const { user } = useUser();
-
-  if (postLoading) return <Spinner />;
+  const { userId } = auth();
   if (!post) return <div>error fetching post</div>;
-  if (!user) return <div>failed to fetch user</div>;
+  if (!userId) return <div>failed to fetch user</div>;
 
   return (
-    <CampaignPost postData={post} userId={user.id} />
+    <Suspense fallback={<Spinner />}>
+      <CampaignPost postData={post} userId={userId} />
+    </Suspense>
   );
 }

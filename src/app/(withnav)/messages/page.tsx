@@ -1,5 +1,7 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
+
+//components
 import MyMessages from "~/components/profile/myMessages";
 
 export default function Messages() {

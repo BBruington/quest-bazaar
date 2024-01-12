@@ -1,33 +1,14 @@
-"use client";
 import type { Post } from "~/app/types/Posts";
-import { api } from "~/utils/trpc";
-import { Button } from "~/components/ui/button";
 import toast, { Toaster } from "react-hot-toast";
-import { useState } from "react";
 
-export default function CampaignPost(props: {
+//components
+import JoinButton from "./joinButton";
+
+export default async function CampaignPost(props: {
   postData: Post;
   userId: string;
 }) {
   const { postData, userId } = props;
-
-  const requestInviteToCampaign = api.requestInviteToCampaign.useMutation({
-    onSuccess: () => toast.success("Request sent successfully"),
-  });
-
-  const [sentRequest, setSentRequest] = useState(false);
-
-  const handleInviteToCampaign = () => {
-    if (sentRequest === false) {
-      requestInviteToCampaign.mutate({
-        playerId: userId,
-        campaignId: postData.id,
-      });
-      setSentRequest(true)
-    } else {
-      toast.error("Request was already sent")
-    }
-  };
 
   return (
     <div className="m-5 flex w-full flex-col justify-center bg-accent-foreground">
@@ -64,9 +45,7 @@ export default function CampaignPost(props: {
           </div>
           <div className="mx-2 py-5 text-slate-300">{postData.description}</div>
           <div className="flex justify-center">
-            <Button className="mb-1 h-10 w-40" onClick={handleInviteToCampaign}>
-              Join
-            </Button>
+            <JoinButton toast={toast} postData={postData} userId={userId}/>
           </div>
         </div>
       </div>
