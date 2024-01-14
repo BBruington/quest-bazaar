@@ -6,6 +6,16 @@ import { Suspense } from "react";
 import Spinner from "~/components/spinner/spinner";
 import CampaignPost from "~/components/post/singlePost";
 
+export async function generateStaticParams() { 
+  const posts = await prisma.post.findMany({
+    include: {
+      comments: true,
+      likes: true,
+    },
+  });
+  return posts.map((post) => ({ id: post.id }));
+}
+
 export default async function Post({ params }: { params: { id: string } }) {
   const post = await prisma.post.findUnique({
     where: {

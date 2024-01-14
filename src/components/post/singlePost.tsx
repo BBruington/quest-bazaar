@@ -27,10 +27,10 @@ export default async function CampaignPost(props: {
           {postData.title}
         </h1>
 
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-extralight text-slate-300">
+        <div className="flex items-center space-x-2 justify-center">
+          <p className="text-sm font-extralight text-slate-300 text-center">
             By: <span className="text-green-300">{postData.author}</span> -
-            Published at {new Date().toLocaleString()}
+            Published at {postData.updatedAt.toLocaleString()}
           </p>
         </div>
       </article>
