@@ -611,7 +611,7 @@ export default function CharacterData(props: {
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(saveCharacterSheet)}
-          className="charsheet flex w-[1000px] flex-col bg-white align-middle min-w-[900px]"
+          className="charsheet flex w-[1000px] flex-col bg-white align-middle min-w-[1000px]"
         >
           {/* header with char name, basic class info */}
           <header className="flex">
