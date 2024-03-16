@@ -1,11 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
+
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
 }
 
 model User {
@@ -38,7 +39,7 @@ model Friendship {
   receiverName   String
   senderImgUrl   String?
   receiverImgUrl String?
-  status         FriendshipStatus
+  status         String
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   sender         User             @relation("sentRequests", fields: [senderId], references: [clerkId])
@@ -47,7 +48,7 @@ model Friendship {
 
 model Message {
   id          String   @id @default(cuid())
-  content     String   @db.Text
+  content     String   //@db.Text
   senderId    String
   recipientId String
   sentAt      DateTime @default(now())
@@ -62,10 +63,10 @@ model Post {
   startingLevel  Int?
   finishingLevel Int?
   title          String
-  description    String    @db.Text
+  description    String    //@db.Text
   author         String
   mainImage      String
-  body           String    @db.Text
+  body           String    //@db.Text
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   campaignId     String?
@@ -289,7 +290,7 @@ model InvitedGame {
   @@map("_InvitedGame")
 }
 
-enum FriendshipStatus {
-  PENDING
-  ACCEPTED
-}
+// enum FriendshipStatus {
+//   PENDING
+//   ACCEPTED
+// }

@@ -4,18 +4,18 @@ import { prisma } from "~/utils/context";
 import { Suspense } from "react";
 
 export default async function DisplayPosts() {
-  const campaignPosts = await prisma.post.findMany({
-    include: {
-      comments: true,
-      likes: true,
-    },
-  });
+  // const campaignPosts = await prisma.post.findMany({
+  //   include: {
+  //     comments: true,
+  //     likes: true,
+  //   },
+  // });
 
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 items-center gap-3 p-3 md:gap-6 md:p-6 lg:grid-cols-2 2xl:grid-cols-3">
         <Suspense fallback={<Spinner />}>
-          {campaignPosts?.map((post) => (
+          {/* {campaignPosts?.map((post) => (
             <Link className="w-full" key={post.id} href={`/post/${post.id}`}>
               <div className="border-primary-foregroun group cursor-pointer overflow-hidden rounded-lg border">
                 <img
@@ -46,16 +46,16 @@ export default async function DisplayPosts() {
                 </div>
               </div>
             </Link>
-          ))}
+          ))} */}
         </Suspense>
       </div>
-      {campaignPosts?.length === 0 || campaignPosts === null ? (
+      {/* {campaignPosts?.length === 0 || campaignPosts === null ? (
         <div className="text-white">
           There seems to be an issue finding any posts...
         </div>
       ) : (
         <></>
-      )}
+      )} */}
     </div>
   );
 }

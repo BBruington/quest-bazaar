@@ -65,8 +65,8 @@ export default function CreatePostComponent(props: {
   const handleCreatePost = () => {
     if (postProps.title === "" || postProps.description === "") {
       if (postProps.title === "" && postProps.description === "") {
-        setPostChecker({ description:true, title: true });
-        return
+        setPostChecker({ description: true, title: true });
+        return;
       } else {
         if (postProps.title === "")
           setPostChecker({ ...postChecker, title: true });
@@ -75,7 +75,6 @@ export default function CreatePostComponent(props: {
         }
         return;
       }
-
     }
     mutate({
       userId: userId,
@@ -107,11 +106,9 @@ export default function CreatePostComponent(props: {
             value={postProps.title}
             onChange={handleChange}
           />
-          {
-            postChecker.title && (
-              <span className="text-red-500">Please give the post a name</span>
-            )
-          }
+          {postChecker.title && (
+            <span className="text-red-500">Please give the post a name</span>
+          )}
         </div>
         <div className="mx-2 mb-1">
           <Label className="text-white" htmlFor="description">
@@ -124,11 +121,11 @@ export default function CreatePostComponent(props: {
             value={postProps.description}
             onChange={handleChange}
           />
-          {
-            postChecker.description && (
-              <span className="text-red-500">Please give the post a description</span>
-            )
-          }
+          {postChecker.description && (
+            <span className="text-red-500">
+              Please give the post a description
+            </span>
+          )}
         </div>
         <div className="mx-2 mb-1">
           <Label className="text-white" htmlFor="body">
@@ -210,7 +207,6 @@ export default function CreatePostComponent(props: {
             Create Post
           </Button>
         </div>
-        T
       </div>
     </div>
   );
