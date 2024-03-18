@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/nextjs";
 
 //components
-import MyMessages from "~/components/profile/myMessages";
+import MyMessages from "./_components/my-messages";
 
 export default function Messages() {
   const user = useUser();

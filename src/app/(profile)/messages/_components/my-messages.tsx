@@ -8,9 +8,12 @@ import { useUser } from "@clerk/nextjs";
 import { useState, type ChangeEvent } from "react";
 import React from "react";
 
+//actions
+// import { addFriendRequest, handleCampaignInvite } from "../actions";
+
 //components
-import DisplayMessages from "./displayMessages";
-import SelectedFriend from "./selectedFriend";
+import DisplayMessages from "./display-messages";
+import SelectedFriend from "./selected-friend";
 import {
   Accordion,
   AccordionContent,
@@ -70,7 +73,10 @@ export default function MyMessages(props: { userId: string }) {
     onSuccess: async (character) => {
       if (character) {
         await utils.queryCharactersByUserId.invalidate().then(() => {
-          window.open(`${process.env.NEXT_PUBLIC_BASE_URL}/character/${character.id}`, "_blank");
+          window.open(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/character/${character.id}`,
+            "_blank"
+          );
         });
       }
     },
@@ -102,8 +108,8 @@ export default function MyMessages(props: { userId: string }) {
     setAddFriendInput(value);
   };
 
-  const handleAddFriend = (friendName: string) => {
-    sendAddFriendRequest.mutate({
+  const handleAddFriend = async (friendName: string) => {
+    await sendAddFriendRequest.mutate({
       receiverName: friendName,
       userId: user.id,
       senderName: user.username!,

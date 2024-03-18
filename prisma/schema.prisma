@@ -48,7 +48,7 @@ model Friendship {
 
 model Message {
   id          String   @id @default(cuid())
-  content     String   //@db.Text
+  content     String   @db.Text
   senderId    String
   recipientId String
   sentAt      DateTime @default(now())
@@ -63,10 +63,10 @@ model Post {
   startingLevel  Int?
   finishingLevel Int?
   title          String
-  description    String    //@db.Text
+  description    String    @db.Text
   author         String
   mainImage      String
-  body           String    //@db.Text
+  body           String    @db.Text
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   campaignId     String?
