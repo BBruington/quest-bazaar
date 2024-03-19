@@ -14,6 +14,7 @@ import React from "react";
 //components
 import DisplayMessages from "./display-messages";
 import SelectedFriend from "./selected-friend";
+import AddFriendInput from "./add-friend-input";
 import {
   Accordion,
   AccordionContent,
@@ -101,22 +102,6 @@ export default function MyMessages(props: { userId: string }) {
     notificationsAmount =
       receivedInvitedCampaigns.length + pendingFriendRequests.length;
 
-  const handleAddFriendChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { value } = e.target;
-    setAddFriendInput(value);
-  };
-
-  const handleAddFriend = async (friendName: string) => {
-    await sendAddFriendRequest.mutate({
-      receiverName: friendName,
-      userId: user.id,
-      senderName: user.username!,
-    });
-    setAddFriendInput("");
-  };
-
   const handleCampaignInviteResponse = (
     campaignId: string,
     campaignRes: string
@@ -153,36 +138,10 @@ export default function MyMessages(props: { userId: string }) {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex">
-                  <Input
-                    id="name"
-                    name="name"
-                    value={addFriendInput}
-                    onChange={handleAddFriendChange}
-                    placeholder="Friend"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (addFriendInput !== "") {
-                          handleAddFriend(addFriendInput);
-                        }
-                      }
-                    }}
-                    className="mt-auto border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-                  />
-                  {addFriendInput.length > 0 ? (
-                    <Button
-                      onClick={() => handleAddFriend(addFriendInput)}
-                      className="ml-2"
-                    >
-                      Add
-                    </Button>
-                  ) : (
-                    <Button disabled className="ml-2">
-                      Add
-                    </Button>
-                  )}
-                </div>
+                <AddFriendInput
+                  userId={user.id}
+                  username={user.username ? user.username : ""}
+                />
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">

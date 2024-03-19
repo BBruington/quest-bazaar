@@ -3,6 +3,16 @@
 import { prisma } from "~/utils/context";
 import { revalidatePath } from "next/cache";
 
+export const testAddUser = async () => {
+  await prisma.user.create({
+    data: {
+      username: "testUser",
+      clerkId: "testid",
+      email: "testEmail@gmail.com",
+    },
+  });
+};
+
 export const addFriendRequest = async ({
   receiverName,
   senderName,
@@ -47,7 +57,7 @@ export const addFriendRequest = async ({
       },
     });
 
-    revalidatePath('/profile/edit')
+    revalidatePath("/profile/edit");
     return pendingFriend;
   } catch (error) {
     console.error("error: ", error);
@@ -55,7 +65,11 @@ export const addFriendRequest = async ({
   }
 };
 
-export const handleCampaignInvite = async ({ campaignId, userId, campaignRes }) => {
+export const handleCampaignInvite = async ({
+  campaignId,
+  userId,
+  campaignRes,
+}) => {
   if (campaignRes === "ACCEPTED") {
     try {
       const updatedCampaign = await prisma.campaign.update({
@@ -100,4 +114,4 @@ export const handleCampaignInvite = async ({ campaignId, userId, campaignRes }) 
       throw error;
     }
   }
-}
+};

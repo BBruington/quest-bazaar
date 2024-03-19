@@ -39,7 +39,7 @@ model Friendship {
   receiverName   String
   senderImgUrl   String?
   receiverImgUrl String?
-  status         String
+  status         FriendshipStatus
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   sender         User             @relation("sentRequests", fields: [senderId], references: [clerkId])
@@ -290,7 +290,7 @@ model InvitedGame {
   @@map("_InvitedGame")
 }
 
-// enum FriendshipStatus {
-//   PENDING
-//   ACCEPTED
-// }
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+}

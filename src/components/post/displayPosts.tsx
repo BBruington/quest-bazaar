@@ -1,9 +1,11 @@
+"use client";
 import Link from "next/link";
 import Spinner from "~/components/spinner/spinner";
 import { prisma } from "~/utils/context";
 import { Suspense } from "react";
+import { Button } from "../ui/button";
 
-export default async function DisplayPosts() {
+export default function DisplayPosts() {
   // const campaignPosts = await prisma.post.findMany({
   //   include: {
   //     comments: true,
