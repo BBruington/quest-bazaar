@@ -1,10 +1,10 @@
-"use client";
 import type { SelectedFriendType } from "~/app/types/Message";
+import { prisma } from "~/utils/context";
 import Link from "next/link";
+import { Campaign, Friendship, Character } from "@prisma/client";
 import { Mail, User, Plus, PersonStandingIcon } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { api } from "~/utils/trpc";
-import { useUser } from "@clerk/nextjs";
 import { useState, type ChangeEvent } from "react";
 import React from "react";
 
@@ -13,6 +13,8 @@ import React from "react";
 
 //components
 import DisplayMessages from "./display-messages";
+import FriendRequest from "./friend-requests";
+import CampaignInvite from "./campaign-invites";
 import SelectedFriend from "./selected-friend";
 import AddFriendInput from "./add-friend-input";
 import {
@@ -21,13 +23,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import Spinner from "~/components/spinner/spinner";
 
-export default function MyMessages(props: { userId: string }) {
-  const { userId } = props;
+export default async function MyMessages(props: {
+  userId: string;
+  username: string | null;
+}) {
+  const { userId, username } = props;
   const [selectedFriend, setSelectedFriend] = useState<SelectedFriendType>({
     id: "",
     status: "",
@@ -41,19 +44,22 @@ export default function MyMessages(props: { userId: string }) {
     updatedAt: "",
   });
 
-  const [addFriendInput, setAddFriendInput] = useState("");
-
-  const utils = api.useContext();
-  const { user } = useUser();
-
-  const sendAddFriendRequest = api.addFriend.useMutation({
-    onSuccess: () => {
-      toast.success("Friend Request Sent");
+  const userData = await prisma.user.findUnique({
+    where: {
+      clerkId: userId,
     },
-    onError: () => {
-      toast.error("Failed to Send Request");
+    include: {
+      characters: true,
+      invitedCampaigns: true,
+      receivedFriendRequests: true,
     },
   });
+  interface userDataProps {
+    characters: Character[];
+    invitedCampaigns: Campaign[];
+    receivedFriendRequests: Friendship[];
+  }
+  const utils = api.useContext();
 
   const handleReceivedFriendRequest = api.handleFriendRequest.useMutation({
     onSuccess: async () => {
@@ -67,9 +73,9 @@ export default function MyMessages(props: { userId: string }) {
     },
   });
 
-  const { data: charactersheets } = api.queryCharactersByUserId.useQuery({
-    userId,
-  });
+  // const { data: charactersheets } = api.queryCharactersByUserId.useQuery({
+  //   userId,
+  // });
   const { mutate: createNewCharacter } = api.createNewCharacter.useMutation({
     onSuccess: async (character) => {
       if (character) {
@@ -83,24 +89,23 @@ export default function MyMessages(props: { userId: string }) {
     },
   });
 
-  const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
-    id: userId,
-  });
+  // const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
+  //   id: userId,
+  // });
 
-  const { data: friends } = api.queryMyFriends.useQuery({ id: userId });
+  // const { data: friends } = api.queryMyFriends.useQuery({ id: userId });
 
-  const { data: receivedInvitedCampaigns } =
-    api.queryUserInvitedCampaigns.useQuery({ userId: userId });
-  if (!user) return <Spinner />;
+  // const { data: receivedInvitedCampaigns } =
+  //   api.queryUserInvitedCampaigns.useQuery({ userId: userId });
 
-  const pendingFriendRequests = friendRequests?.filter(function (request) {
-    return request.status === "PENDING";
-  });
+  // const pendingFriendRequests = friendRequests?.filter(function (request) {
+  //   return request.status === "PENDING";
+  // });
 
   let notificationsAmount = 0;
-  if (receivedInvitedCampaigns && pendingFriendRequests)
-    notificationsAmount =
-      receivedInvitedCampaigns.length + pendingFriendRequests.length;
+  // if (receivedInvitedCampaigns && pendingFriendRequests)
+  //   notificationsAmount =
+  //     receivedInvitedCampaigns.length + pendingFriendRequests.length;
 
   const handleCampaignInviteResponse = (
     campaignId: string,
@@ -108,7 +113,7 @@ export default function MyMessages(props: { userId: string }) {
   ) => {
     handleReceivedCampaignInvite.mutate({
       campaignId,
-      userId: user.id,
+      userId,
       campaignRes,
     });
   };
@@ -119,7 +124,7 @@ export default function MyMessages(props: { userId: string }) {
   ) => {
     handleReceivedFriendRequest.mutate({
       senderId,
-      receiverId: user.id,
+      receiverId: userId,
       response: requestResponse,
     });
   };
@@ -139,8 +144,8 @@ export default function MyMessages(props: { userId: string }) {
               </AccordionTrigger>
               <AccordionContent>
                 <AddFriendInput
-                  userId={user.id}
-                  username={user.username ? user.username : ""}
+                  userId={userId}
+                  username={username ? username : ""}
                 />
               </AccordionContent>
             </AccordionItem>
@@ -153,7 +158,7 @@ export default function MyMessages(props: { userId: string }) {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col">
-                  {!friends || friends.length === 0 ? (
+                  {/* {!friends || friends.length === 0 ? (
                     <span className="text-slate-400">Empty</span>
                   ) : (
                     <></>
@@ -166,7 +171,7 @@ export default function MyMessages(props: { userId: string }) {
                       onClick={() => setSelectedFriend(friend)}
                     >
                       <div className="flex items-center space-x-3">
-                        {friend.receiverId === user.id ? (
+                        {friend.receiverId === userId ? (
                           <>
                             <Avatar>
                               <AvatarImage
@@ -199,7 +204,7 @@ export default function MyMessages(props: { userId: string }) {
                         )}
                       </div>
                     </div>
-                  ))}
+                  ))} */}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -221,82 +226,36 @@ export default function MyMessages(props: { userId: string }) {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-3">
-                  {receivedInvitedCampaigns &&
-                    friendRequests &&
-                    receivedInvitedCampaigns?.length +
-                      friendRequests?.length ===
-                      0 && (
-                      <span className="flex justify-center text-slate-400">
-                        No New Notifications
-                      </span>
-                    )}
-                  {friendRequests?.map((friendRequest) => (
+                  {/* UserNotifications */}
+                  {userData?.receivedFriendRequests?.map((friendRequest) => (
                     <React.Fragment key={friendRequest.id}>
                       <div className="flex border-b border-white pb-3 md:flex-col">
                         <span className="mb-1 flex justify-center text-sm">
                           {friendRequest.senderName} would like to be Friends
                         </span>
                         <div className="mt-1 flex flex-col justify-around md:flex-row">
-                          <Button
-                            className="h-6"
-                            disabled={handleReceivedFriendRequest.isLoading}
-                            onClick={() =>
-                              handleFriendRequestResponse(
-                                friendRequest.senderId,
-                                "ACCEPTED"
-                              )
-                            }
-                          >
-                            Accept
-                          </Button>
-                          <Button
-                            className="h-6"
-                            disabled={handleReceivedFriendRequest.isLoading}
-                            onClick={() =>
-                              handleFriendRequestResponse(
-                                friendRequest.senderId,
-                                "DECLINED"
-                              )
-                            }
-                          >
-                            Decline
-                          </Button>
+                          <FriendRequest
+                            userId={userId}
+                            notification={friendRequest}
+                          />
                         </div>
                       </div>
                     </React.Fragment>
                   ))}
-                  {receivedInvitedCampaigns?.map((campaign) => (
+                  {userData?.invitedCampaigns?.map((campaign) => (
                     <React.Fragment key={campaign.id}>
-                      <div>
-                        <span>
-                          You have been invited to join {campaign.name}
-                        </span>
-                      </div>
-                      <div className="mt-1 flex flex-col justify-around md:flex-row">
-                        <Button
-                          className="h-6"
-                          disabled={handleReceivedCampaignInvite.isLoading}
-                          onClick={() =>
-                            handleCampaignInviteResponse(
-                              campaign.id,
-                              "ACCEPTED"
-                            )
-                          }
-                        >
-                          Accept
-                        </Button>
-                        <Button
-                          className="h-6"
-                          disabled={handleReceivedCampaignInvite.isLoading}
-                          onClick={() =>
-                            handleCampaignInviteResponse(
-                              campaign.id,
-                              "DECLINED"
-                            )
-                          }
-                        >
-                          Decline
-                        </Button>
+                      <div className="flex border-b border-white pb-3 md:flex-col">
+                        <div>
+                          <span>
+                            You have been invited to join {campaign.name}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex flex-col justify-around md:flex-row">
+                          <CampaignInvite
+                            userId={userId}
+                            notification={campaign}
+                          />
+                        </div>
                       </div>
                     </React.Fragment>
                   ))}
@@ -320,7 +279,7 @@ export default function MyMessages(props: { userId: string }) {
                       Create New Character
                     </span>
                   </div>
-                  {charactersheets?.map((sheet) => (
+                  {/* {charactersheets?.map((sheet) => (
                     <Link
                       className="w-full py-1 hover:bg-slate-800"
                       key={sheet.id}
@@ -331,12 +290,12 @@ export default function MyMessages(props: { userId: string }) {
                         <span className="">{sheet.charname}</span>
                       </div>
                     </Link>
-                  ))}
+                  ))} */}
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-          {selectedFriend.id !== "" && selectedFriend.receiverId === user.id ? (
+          {selectedFriend.id !== "" && selectedFriend.receiverId === userId ? (
             <div
               className={
                 selectedFriend.id === ""
@@ -380,14 +339,13 @@ export default function MyMessages(props: { userId: string }) {
             </div>
           )}
           <div className="invisible mt-5 flex h-0 w-full sm:visible sm:h-60 lg:invisible lg:h-0">
-            <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />d
+            <SelectedFriend selectedFriend={selectedFriend} userId={userId} />
           </div>
-          T
         </div>
 
-        <DisplayMessages selectedFriend={selectedFriend} userId={user.id} />
+        <DisplayMessages selectedFriend={selectedFriend} userId={userId} />
         <div className="invisible w-0 lg:visible lg:w-1/6">
-          <SelectedFriend selectedFriend={selectedFriend} userId={user.id} />
+          <SelectedFriend selectedFriend={selectedFriend} userId={userId} />
         </div>
       </div>
     </>

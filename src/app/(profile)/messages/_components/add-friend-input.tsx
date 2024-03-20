@@ -2,9 +2,10 @@
 
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { addFriendRequest } from "../actions";
 import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
+import { addFriendRequest } from "../actions";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userNameSchema } from "~/lib/validations/user";
 import { z } from "zod";
@@ -33,6 +34,11 @@ export default function AddFriendInput({
       senderName: username,
       userId,
     });
+    if (response.status === "ACCEPTED") {
+      toast.success("Friend request was sent")
+    } else {
+      toast.error("Something went wrong. Please try again.")
+    }
   };
   return (
     <Form {...form}>

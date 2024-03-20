@@ -30,7 +30,7 @@ export const addFriendRequest = async ({
     });
     if (recipient === null) {
       console.log("failed to find friend");
-      return false;
+      return {status: "ERROR"};
     }
     const sender = await prisma.user.findUnique({
       where: {
@@ -43,7 +43,7 @@ export const addFriendRequest = async ({
     });
     if (sender === null) {
       console.log("failed to find friend");
-      return false;
+      return {status: "ERROR"};
     }
     const pendingFriend = await prisma.friendship.create({
       data: {
@@ -58,10 +58,10 @@ export const addFriendRequest = async ({
     });
 
     revalidatePath("/profile/edit");
-    return pendingFriend;
+    return {status: "ACCEPTED"};
   } catch (error) {
     console.error("error: ", error);
-    return false;
+    return {status: "ERROR"};
   }
 };
 
