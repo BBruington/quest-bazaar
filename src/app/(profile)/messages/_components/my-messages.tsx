@@ -12,6 +12,7 @@ import React from "react";
 // import { addFriendRequest, handleCampaignInvite } from "../actions";
 
 //components
+import CharacterSheets from "./character-sheets";
 import DisplayMessages from "./display-messages";
 import FriendRequest from "./friend-requests";
 import CampaignInvite from "./campaign-invites";
@@ -54,80 +55,11 @@ export default async function MyMessages(props: {
       receivedFriendRequests: true,
     },
   });
-  interface userDataProps {
-    characters: Character[];
-    invitedCampaigns: Campaign[];
-    receivedFriendRequests: Friendship[];
-  }
-  const utils = api.useContext();
-
-  const handleReceivedFriendRequest = api.handleFriendRequest.useMutation({
-    onSuccess: async () => {
-      await utils.queryMyFriendRequests.invalidate();
-    },
-  });
-
-  const handleReceivedCampaignInvite = api.handleCampaignInvite.useMutation({
-    onSuccess: async () => {
-      await utils.queryUserInvitedCampaigns.invalidate();
-    },
-  });
-
-  // const { data: charactersheets } = api.queryCharactersByUserId.useQuery({
-  //   userId,
-  // });
-  const { mutate: createNewCharacter } = api.createNewCharacter.useMutation({
-    onSuccess: async (character) => {
-      if (character) {
-        await utils.queryCharactersByUserId.invalidate().then(() => {
-          window.open(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/character/${character.id}`,
-            "_blank"
-          );
-        });
-      }
-    },
-  });
-
-  // const { data: friendRequests } = api.queryMyFriendRequests.useQuery({
-  //   id: userId,
-  // });
-
-  // const { data: friends } = api.queryMyFriends.useQuery({ id: userId });
-
-  // const { data: receivedInvitedCampaigns } =
-  //   api.queryUserInvitedCampaigns.useQuery({ userId: userId });
-
-  // const pendingFriendRequests = friendRequests?.filter(function (request) {
-  //   return request.status === "PENDING";
-  // });
 
   let notificationsAmount = 0;
   // if (receivedInvitedCampaigns && pendingFriendRequests)
   //   notificationsAmount =
   //     receivedInvitedCampaigns.length + pendingFriendRequests.length;
-
-  const handleCampaignInviteResponse = (
-    campaignId: string,
-    campaignRes: string
-  ) => {
-    handleReceivedCampaignInvite.mutate({
-      campaignId,
-      userId,
-      campaignRes,
-    });
-  };
-
-  const handleFriendRequestResponse = (
-    senderId: string,
-    requestResponse: string
-  ) => {
-    handleReceivedFriendRequest.mutate({
-      senderId,
-      receiverId: userId,
-      response: requestResponse,
-    });
-  };
 
   return (
     <>
@@ -271,27 +203,7 @@ export default async function MyMessages(props: {
               </AccordionTrigger>
 
               <AccordionContent>
-                <div className="flex flex-col">
-                  <div className="flex w-full items-center justify-center space-x-3 py-1 hover:cursor-pointer hover:bg-slate-800">
-                    <span
-                      onClick={() => createNewCharacter({ userId: userId })}
-                    >
-                      Create New Character
-                    </span>
-                  </div>
-                  {/* {charactersheets?.map((sheet) => (
-                    <Link
-                      className="w-full py-1 hover:bg-slate-800"
-                      key={sheet.id}
-                      target="_blank"
-                      href={`/character/${sheet.id}`}
-                    >
-                      <div className="flex items-center justify-center space-x-3">
-                        <span className="">{sheet.charname}</span>
-                      </div>
-                    </Link>
-                  ))} */}
-                </div>
+                <CharacterSheets charactersheets={userData?.characters} userId={userId} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

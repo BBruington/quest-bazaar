@@ -3,7 +3,7 @@
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
-import { addFriendRequest } from "../actions";
+import { sendFriendRequest } from "../actions";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,7 @@ export default function AddFriendInput({
   });
   const { handleSubmit } = form;
   const handleAddFriend = async (friendName: FormData) => {
-    const response = await addFriendRequest({
+    const response = await sendFriendRequest({
       receiverName: friendName.name,
       senderName: username,
       userId,
