@@ -39,7 +39,7 @@ model Friendship {
   receiverName   String
   senderImgUrl   String?
   receiverImgUrl String?
-  status         FriendshipStatus
+  status         FriendshipStatus @default(PENDING)
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   sender         User             @relation("sentRequests", fields: [senderId], references: [clerkId])

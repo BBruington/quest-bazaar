@@ -1,4 +1,5 @@
-"use-client";
+"use client";
+
 import type { SelectedFriendType } from "~/app/types/Message";
 import { Input } from "~/components/ui/input";
 import { api } from "~/utils/trpc";

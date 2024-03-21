@@ -38,6 +38,28 @@ export const sendFriendRequest = async ({
   userId,
 }) => {
   try {
+    const friendRequest = await prisma.friendship.findFirst({
+      where: {
+        OR: [
+          {
+            receiverName: receiverName,
+            senderId: userId,
+            senderName: senderName,
+          },
+          {
+            receiverName: senderName,
+            senderName: receiverName,
+            receiverId: userId,
+          },
+        ],
+      },
+    });
+    if(friendRequest?.status === "PENDING") {
+      return {status: 'FAILED', message: "Already have sent a friend request"}
+    }
+    if(friendRequest?.status === "ACCEPTED") {
+      return {status: 'FAILED', message: "You are already friends"}
+    }
     const recipient = await prisma.user.findUnique({
       where: {
         username: receiverName,
@@ -48,8 +70,8 @@ export const sendFriendRequest = async ({
       },
     });
     if (recipient === null) {
-      console.log("failed to find friend");
-      return { status: "ERROR", message: "failed to find friend" };
+      console.log("Could not find friend");
+      return { status: "ERROR", message: "Could not find friend" };
     }
     const sender = await prisma.user.findUnique({
       where: {
@@ -62,9 +84,11 @@ export const sendFriendRequest = async ({
     });
     if (sender === null) {
       console.log("failed to find friend");
-      return { status: "ERROR", message: "failed to find friend" };
+      return { status: "ERROR", message: "Failed to find friend" };
     }
-    const pendingFriend = await prisma.friendship.create({
+
+
+    await prisma.friendship.create({
       data: {
         receiverId: recipient.clerkId,
         receiverName: receiverName,
@@ -72,15 +96,18 @@ export const sendFriendRequest = async ({
         senderId: userId,
         senderName: senderName,
         senderImgUrl: sender.imgUrl,
-        status: "PENDING",
       },
     });
 
     revalidatePath("/messages");
     return { status: "ACCEPTED", message: "Friend request was sent!" };
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("error: ", error);
-    return { status: "ERROR", message: "failed to find friend" };
+    return {
+      status: "ERROR",
+      message: "Something went wrong. Please try again.",
+    };
   }
 };
 

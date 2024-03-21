@@ -1,15 +1,6 @@
-import type { SelectedFriendType } from "~/app/types/Message";
 import { prisma } from "~/utils/context";
-import Link from "next/link";
-import { Campaign, Friendship, Character } from "@prisma/client";
 import { Mail, User, Plus, PersonStandingIcon } from "lucide-react";
 import { Toaster } from "react-hot-toast";
-import { api } from "~/utils/trpc";
-import { useState, type ChangeEvent } from "react";
-import React from "react";
-
-//actions
-// import { addFriendRequest, handleCampaignInvite } from "../actions";
 
 //components
 import CharacterSheets from "./character-sheets";
@@ -18,13 +9,13 @@ import FriendRequest from "./friend-requests";
 import CampaignInvite from "./campaign-invites";
 import SelectedFriend from "./selected-friend";
 import AddFriendInput from "./add-friend-input";
+import FriendsList from "./friends-list";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 export default async function MyMessages(props: {
@@ -32,7 +23,7 @@ export default async function MyMessages(props: {
   username: string | null;
 }) {
   const { userId, username } = props;
-  const [selectedFriend, setSelectedFriend] = useState<SelectedFriendType>({
+  const selectedFriend = {
     id: "",
     status: "",
     receiverName: "",
@@ -43,6 +34,24 @@ export default async function MyMessages(props: {
     senderImgUrl: null,
     createdAt: "",
     updatedAt: "",
+  };
+
+  const myFriends = await prisma.friendship.findMany({
+    where: {
+      OR: [
+        {
+          receiverId: userId,
+        },
+        {
+          senderId: userId,
+        },
+      ],
+      AND: [
+        {
+          status: "ACCEPTED",
+        },
+      ],
+    },
   });
 
   const userData = await prisma.user.findUnique({
@@ -55,11 +64,13 @@ export default async function MyMessages(props: {
       receivedFriendRequests: true,
     },
   });
-
+  const receivedFriendRequests = userData?.receivedFriendRequests.filter(
+    (friend) => friend.receiverId === userId && friend.status === "PENDING"
+  );
   let notificationsAmount = 0;
-  // if (receivedInvitedCampaigns && pendingFriendRequests)
-  //   notificationsAmount =
-  //     receivedInvitedCampaigns.length + pendingFriendRequests.length;
+  if (userData?.invitedCampaigns && receivedFriendRequests)
+    notificationsAmount =
+    userData?.invitedCampaigns.length + receivedFriendRequests.length;
 
   return (
     <>
@@ -90,53 +101,18 @@ export default async function MyMessages(props: {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col">
-                  {/* {!friends || friends.length === 0 ? (
+                  {!myFriends || myFriends.length === 0 ? (
                     <span className="text-slate-400">Empty</span>
                   ) : (
                     <></>
                   )}
-                  {friends?.map((friend) => (
-                    <div
+                  {myFriends?.map((friend) => (
+                    <FriendsList
                       key={friend.id}
-                      role="button"
-                      className="w-full py-1 hover:bg-slate-800"
-                      onClick={() => setSelectedFriend(friend)}
-                    >
-                      <div className="flex items-center space-x-3">
-                        {friend.receiverId === userId ? (
-                          <>
-                            <Avatar>
-                              <AvatarImage
-                                src={
-                                  friend.receiverId === userId
-                                    ? friend.senderImgUrl!
-                                    : friend.receiverImgUrl!
-                                }
-                                alt="@shadcn"
-                              />
-                              <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <span>{friend.senderName}</span>
-                          </>
-                        ) : (
-                          <>
-                            <Avatar>
-                              <AvatarImage
-                                src={
-                                  friend.receiverId === userId
-                                    ? friend.senderImgUrl!
-                                    : friend.receiverImgUrl!
-                                }
-                                alt="@shadcn"
-                              />
-                              <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <span>{friend.receiverName}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  ))} */}
+                      friend={friend}
+                      userId={userId}
+                    />
+                  ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -159,8 +135,15 @@ export default async function MyMessages(props: {
               <AccordionContent>
                 <div className="space-y-3">
                   {/* UserNotifications */}
-                  {userData?.receivedFriendRequests?.map((friendRequest) => (
-                    <React.Fragment key={friendRequest.id}>
+                  {receivedFriendRequests &&
+                    userData?.invitedCampaigns &&
+                    receivedFriendRequests?.length +
+                      userData?.invitedCampaigns.length ===
+                      0 && (
+                      <div className="flex justify-center text-white">Empty</div>
+                    )}
+                  {receivedFriendRequests?.map((friendRequest) => (
+                    <div key={friendRequest.id}>
                       <div className="flex border-b border-white pb-3 md:flex-col">
                         <span className="mb-1 flex justify-center text-sm">
                           {friendRequest.senderName} would like to be Friends
@@ -172,10 +155,10 @@ export default async function MyMessages(props: {
                           />
                         </div>
                       </div>
-                    </React.Fragment>
+                    </div>
                   ))}
                   {userData?.invitedCampaigns?.map((campaign) => (
-                    <React.Fragment key={campaign.id}>
+                    <div key={campaign.id}>
                       <div className="flex border-b border-white pb-3 md:flex-col">
                         <div>
                           <span>
@@ -189,7 +172,7 @@ export default async function MyMessages(props: {
                           />
                         </div>
                       </div>
-                    </React.Fragment>
+                    </div>
                   ))}
                 </div>
               </AccordionContent>
@@ -203,7 +186,10 @@ export default async function MyMessages(props: {
               </AccordionTrigger>
 
               <AccordionContent>
-                <CharacterSheets charactersheets={userData?.characters} userId={userId} />
+                <CharacterSheets
+                  charactersheets={userData?.characters}
+                  userId={userId}
+                />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

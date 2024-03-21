@@ -1,15 +1,14 @@
-"use client";
-import { useUser } from "@clerk/nextjs";
-
+import { currentUser } from "@clerk/nextjs";
 //components
 import MyMessages from "./_components/my-messages";
 
-export default function Messages() {
-  const user = useUser();
-  if (!user.user?.id) return <div>failed to load user</div>;
+export default async function Messages() {
+  const user = await currentUser();
+  if (!user) return <div>Not signed in</div>;
+  
   return (
     <>
-      <MyMessages userId={user.user?.id} username={user.user.username}/>;
+      <MyMessages userId={user.id} username={user.username}/>;
     </>
   );
 }

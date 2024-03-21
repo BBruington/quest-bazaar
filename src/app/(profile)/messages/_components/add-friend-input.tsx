@@ -27,7 +27,7 @@ export default function AddFriendInput({
       name: "",
     },
   });
-  const { handleSubmit } = form;
+  const { handleSubmit, reset } = form;
   const handleAddFriend = async (friendName: FormData) => {
     const response = await sendFriendRequest({
       receiverName: friendName.name,
@@ -35,14 +35,15 @@ export default function AddFriendInput({
       userId,
     });
     if (response.status === "ACCEPTED") {
-      toast.success("Friend request was sent")
+      toast.success(`${response.message}`);
     } else {
-      toast.error("Something went wrong. Please try again.")
+      toast.error(`${response.message}`);
     }
+    reset();
   };
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(handleAddFriend)} className="flex">
+      <form onSubmit={handleSubmit(handleAddFriend)} className="flex justify-between">
         <FormField
           control={form.control}
           name="name"

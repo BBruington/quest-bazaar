@@ -32,9 +32,9 @@ export default function CharacterSheets({
   return (
     <div className="flex flex-col">
       <div className="flex w-full items-center justify-center space-x-3 py-1 hover:cursor-pointer hover:bg-slate-800">
-        <Button disabled={isLoading} onClick={handleCreateNewCharacter}>
+        <button className=" text-lg" disabled={isLoading} onClick={handleCreateNewCharacter}>
           Create New Character
-        </Button>
+        </button>
       </div>
       {charactersheets?.map((sheet) => (
         <Link
