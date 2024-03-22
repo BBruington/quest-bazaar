@@ -8,7 +8,7 @@ export default async function Messages() {
   
   return (
     <>
-      <MyMessages userId={user.id} username={user.username}/>;
+      <MyMessages userId={user.id} username={user.username} />;
     </>
   );
 }

@@ -23,7 +23,7 @@ export default async function MyMessages(props: {
   username: string | null;
 }) {
   const { userId, username } = props;
-  const selectedFriend = {
+  let selectedFriend = {
     id: "",
     status: "",
     receiverName: "",
@@ -70,7 +70,7 @@ export default async function MyMessages(props: {
   let notificationsAmount = 0;
   if (userData?.invitedCampaigns && receivedFriendRequests)
     notificationsAmount =
-    userData?.invitedCampaigns.length + receivedFriendRequests.length;
+      userData?.invitedCampaigns.length + receivedFriendRequests.length;
 
   return (
     <>
@@ -140,7 +140,9 @@ export default async function MyMessages(props: {
                     receivedFriendRequests?.length +
                       userData?.invitedCampaigns.length ===
                       0 && (
-                      <div className="flex justify-center text-white">Empty</div>
+                      <div className="flex justify-center text-white">
+                        Empty
+                      </div>
                     )}
                   {receivedFriendRequests?.map((friendRequest) => (
                     <div key={friendRequest.id}>
@@ -237,13 +239,13 @@ export default async function MyMessages(props: {
             </div>
           )}
           <div className="invisible mt-5 flex h-0 w-full sm:visible sm:h-60 lg:invisible lg:h-0">
-            <SelectedFriend selectedFriend={selectedFriend} userId={userId} />
+            <SelectedFriend userId={userId} />
           </div>
         </div>
 
-        <DisplayMessages selectedFriend={selectedFriend} userId={userId} />
+        <DisplayMessages userId={userId} />
         <div className="invisible w-0 lg:visible lg:w-1/6">
-          <SelectedFriend selectedFriend={selectedFriend} userId={userId} />
+          <SelectedFriend userId={userId} />
         </div>
       </div>
     </>

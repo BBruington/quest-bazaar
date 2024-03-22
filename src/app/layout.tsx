@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Providers from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { TrpcProvider } from "./TrpcProvider";
 import "~/styles/globals.css";
@@ -18,7 +19,7 @@ export default function RootLayout({
       <TrpcProvider>
         <html lang="en">
           <body className="bg-foreground">
-            {children}
+            <Providers>{children}</Providers>
           </body>
         </html>
       </TrpcProvider>

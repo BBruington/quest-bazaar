@@ -4,13 +4,15 @@ import type { SelectedFriendType } from "~/app/types/Message";
 import { Input } from "~/components/ui/input";
 import { api } from "~/utils/trpc";
 import { useState } from "react";
+import { useAtom } from "jotai";
+import { selectedFriendAtom } from "./jotai";
 
 export default function DisplayMessages(props: {
-  selectedFriend: SelectedFriendType;
   userId: string;
 }) {
+  const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
   const [inputValue, setInputValue] = useState("");
-  const { selectedFriend, userId } = props;
+  const { userId } = props;
 
   const utils = api.useContext();
 

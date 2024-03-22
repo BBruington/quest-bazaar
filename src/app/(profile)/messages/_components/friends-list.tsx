@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
 import { Friendship } from "@prisma/client";
-import { useState } from "react";
+import { useAtom } from "jotai";
 import { SelectedFriendType } from "~/app/types/Message";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { selectedFriendAtom } from "./jotai";
 
 interface FriendsListProps {
   friend: Friendship;
@@ -11,26 +12,18 @@ interface FriendsListProps {
 }
 
 export default function FriendsList({ friend, userId }: FriendsListProps) {
+  const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
 
-  const [selectedFriend, setSelectedFriend] = useState<SelectedFriendType>({
-    id: "",
-    status: "",
-    receiverName: "",
-    receiverId: "",
-    receiverImgUrl: null,
-    senderName: "",
-    senderId: "",
-    senderImgUrl: null,
-    createdAt: "",
-    updatedAt: "",
-  });
+  const handleSelectedFriend = (friend: SelectedFriendType) => {
+    setSelectedFriend(friend)
+  };
 
   return (
     <div
       key={friend.id}
       role="button"
       className="w-full py-1 hover:bg-slate-800"
-      onClick={() => setSelectedFriend(friend)}
+      onClick={() => handleSelectedFriend(friend)}
     >
       <div className="flex items-center space-x-3">
         {friend.receiverId === userId ? (

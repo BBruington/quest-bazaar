@@ -3,7 +3,8 @@ import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import toast, { Toaster } from "react-hot-toast";
 import { api } from "~/utils/trpc";
-import type { SelectedFriendType } from "~/app/types/Message";
+import { useAtom } from "jotai";
+import { selectedFriendAtom } from "./jotai";
 
 import {
   DropdownMenu,
@@ -14,11 +15,9 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
-export default function SelectedFriend(props: {
-  selectedFriend: SelectedFriendType;
-  userId: string;
-}) {
-  const { selectedFriend, userId } = props;
+export default function SelectedFriend(props: { userId: string }) {
+  const { userId } = props;
+  const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
 
   const { data: userCampaigns } = api.queryUserCampaigns.useQuery({
     id: userId,
