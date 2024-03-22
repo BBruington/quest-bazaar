@@ -5,11 +5,10 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/utils/trpc";
 import { useState } from "react";
 import { useAtom } from "jotai";
-import { selectedFriendAtom } from "./jotai";
+import { selectedFriendAtom } from "../jotaiAtoms";
+import { User } from "@prisma/client";
 
-export default function DisplayMessages(props: {
-  userId: string;
-}) {
+export default function DisplayMessages(props: { userId: User["clerkId"] }) {
   const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
   const [inputValue, setInputValue] = useState("");
   const { userId } = props;
@@ -25,7 +24,7 @@ export default function DisplayMessages(props: {
       console.error(e);
     },
   });
-  const findFriendId = (myId: string) => {
+  const findFriendId = (myId: User["clerkId"]) => {
     if (myId === selectedFriend.senderId) return selectedFriend.receiverId;
     return selectedFriend.senderId;
   };
@@ -52,7 +51,7 @@ export default function DisplayMessages(props: {
   };
 
   return (
-    <div className="flex h-full sm:h-5/6 w-full sm:w-4/6 flex-col rounded-md bg-accent-foreground overflow-y-auto p-2 lg:w-4/6">
+    <div className="flex h-full w-full flex-col overflow-y-auto rounded-md bg-accent-foreground p-2 sm:h-5/6 sm:w-4/6 lg:w-4/6">
       <div className="mt-auto">
         {friendMessages?.map((message) => (
           <div key={message.id} className="bg-accent-foreground p-2">

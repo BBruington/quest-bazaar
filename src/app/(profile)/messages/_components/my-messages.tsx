@@ -16,25 +16,24 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 export default async function MyMessages(props: {
   userId: string;
   username: string | null;
 }) {
   const { userId, username } = props;
-  let selectedFriend = {
-    id: "",
-    status: "",
-    receiverName: "",
-    receiverId: "",
-    receiverImgUrl: null,
-    senderName: "",
-    senderId: "",
-    senderImgUrl: null,
-    createdAt: "",
-    updatedAt: "",
-  };
+
+  const userCampaignsData = await prisma.user.findUnique({
+    where: { clerkId: userId},
+    include: {
+      campaignplayer: true,
+      campaigndm: true,
+    },
+  });
+  const userCampaigns = [
+    ...userCampaignsData!.campaigndm,
+    ...userCampaignsData!.campaignplayer,
+  ];
 
   const myFriends = await prisma.friendship.findMany({
     where: {
@@ -102,7 +101,7 @@ export default async function MyMessages(props: {
               <AccordionContent>
                 <div className="flex flex-col">
                   {!myFriends || myFriends.length === 0 ? (
-                    <span className="text-slate-400">Empty</span>
+                    <div className="flex justify-center text-white">Empty</div>
                   ) : (
                     <></>
                   )}
@@ -195,57 +194,14 @@ export default async function MyMessages(props: {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-          {selectedFriend.id !== "" && selectedFriend.receiverId === userId ? (
-            <div
-              className={
-                selectedFriend.id === ""
-                  ? "invisible h-0"
-                  : "visible mb-1 mt-8 flex h-0 items-center justify-center space-x-2 sm:invisible"
-              }
-            >
-              <Avatar className={selectedFriend.id === "" ? "invisible" : ""}>
-                <AvatarImage
-                  src={
-                    selectedFriend.receiverId === userId
-                      ? selectedFriend.senderImgUrl!
-                      : selectedFriend.receiverImgUrl!
-                  }
-                  alt="@shadcn"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <span className="text-white">{selectedFriend.senderName}</span>
-            </div>
-          ) : (
-            <div
-              className={
-                selectedFriend.id === ""
-                  ? "invisible h-0"
-                  : "visible mb-1 mt-8 flex h-0 items-center justify-center space-x-2 sm:invisible"
-              }
-            >
-              <Avatar>
-                <AvatarImage
-                  src={
-                    selectedFriend.receiverId === userId
-                      ? selectedFriend.senderImgUrl!
-                      : selectedFriend.receiverImgUrl!
-                  }
-                  alt="@shadcn"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <span className="text-white">{selectedFriend.receiverName}</span>
-            </div>
-          )}
-          <div className="invisible mt-5 flex h-0 w-full sm:visible sm:h-60 lg:invisible lg:h-0">
-            <SelectedFriend userId={userId} />
+          <div className="invisible mt-20 flex h-0 w-full sm:visible sm:h-60 lg:invisible lg:h-0">
+            <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
           </div>
         </div>
 
         <DisplayMessages userId={userId} />
         <div className="invisible w-0 lg:visible lg:w-1/6">
-          <SelectedFriend userId={userId} />
+          <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
         </div>
       </div>
     </>

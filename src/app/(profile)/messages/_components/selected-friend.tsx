@@ -2,10 +2,9 @@
 import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import toast, { Toaster } from "react-hot-toast";
-import { api } from "~/utils/trpc";
+import { handleFriendRequest, inviteToCampaign } from "../actions";
 import { useAtom } from "jotai";
-import { selectedFriendAtom } from "./jotai";
-
+import { selectedFriendAtom } from "../jotaiAtoms";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,25 +13,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { Campaign, User } from "@prisma/client";
 
-export default function SelectedFriend(props: { userId: string }) {
-  const { userId } = props;
+interface SelectedFriendProps {
+  userId: User["clerkId"];
+  userCampaigns: Campaign[];
+}
+
+export default function SelectedFriend({
+  userId,
+  userCampaigns,
+}: SelectedFriendProps) {
   const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
-
-  const { data: userCampaigns } = api.queryUserCampaigns.useQuery({
-    id: userId,
-  });
-
-  const sendCampaignInvite = api.inviteToCampaign.useMutation({
-    onSuccess: () => {
-      toast.success("Invite Sent");
-    },
-  });
-  const handleRemoveFriend = api.handleFriendRequest.useMutation();
 
   let profilePic: string | undefined;
 
-  const findFriendId = (myId: string) => {
+  const findFriendId = (myId: User["clerkId"]) => {
     if (myId === selectedFriend.senderId) {
       profilePic = selectedFriend.receiverImgUrl!;
       return selectedFriend.receiverId;
@@ -43,21 +39,55 @@ export default function SelectedFriend(props: { userId: string }) {
 
   const friendId = findFriendId(userId);
 
-  const handleFriendRemove = () => {
+  interface InviteToCampaignProps {
+    playerId: User["clerkId"];
+    campaignId: Campaign["id"];
+  }
+
+  const handleInviteToCampaign = async ({
+    playerId,
+    campaignId,
+  }: InviteToCampaignProps) => {
+    const response = await inviteToCampaign({
+      playerId: playerId,
+      campaignId: campaignId,
+    });
+    if (response?.status === "SUCCESS") {
+      toast.success(response.message);
+    } else {
+      toast.error(
+        `${response?.message ? response?.message : "Something went wrong"}`
+      );
+    }
+  };
+
+  const handleFriendRemove = async () => {
     if (friendId === selectedFriend.senderId) {
-      handleRemoveFriend.mutate({
+      await handleFriendRequest({
         senderId: selectedFriend.senderId,
         receiverId: userId,
         response: "DECLINED",
       });
     }
     if (friendId === selectedFriend.receiverId) {
-      handleRemoveFriend.mutate({
+      await handleFriendRequest({
         senderId: userId,
         receiverId: selectedFriend.receiverId,
         response: "DECLINED",
       });
     }
+    setSelectedFriend({
+      id: "",
+      status: "",
+      receiverName: "",
+      receiverId: "",
+      receiverImgUrl: null,
+      senderName: "",
+      senderId: "",
+      senderImgUrl: null,
+      createdAt: "",
+      updatedAt: "",
+    });
   };
 
   return (
@@ -98,9 +128,8 @@ export default function SelectedFriend(props: { userId: string }) {
                   userCampaigns.length > 0 ? (
                     userCampaigns.map((campaign) => (
                       <DropdownMenuItem
-                        disabled={sendCampaignInvite.isLoading}
                         onClick={() =>
-                          sendCampaignInvite.mutate({
+                          handleInviteToCampaign({
                             playerId: friendId,
                             campaignId: campaign.id,
                           })
@@ -112,9 +141,7 @@ export default function SelectedFriend(props: { userId: string }) {
                     ))
                   ) : (
                     <>
-                      <DropdownMenuItem>
-                        Find a Campaign to Join
-                      </DropdownMenuItem>
+                      <div>Find a Campaign to Join</div>
                     </>
                   )}
                 </DropdownMenuContent>

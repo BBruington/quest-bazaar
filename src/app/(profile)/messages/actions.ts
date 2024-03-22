@@ -2,8 +2,16 @@
 
 import { prisma } from "~/utils/context";
 import { revalidatePath } from "next/cache";
+import { TRPCError } from "@trpc/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
-export const handleReceivedFriendRequest = async ({
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(8, "1 m"),
+});
+
+export const handleFriendRequest = async ({
   response,
   senderId,
   receiverId,
@@ -54,11 +62,14 @@ export const sendFriendRequest = async ({
         ],
       },
     });
-    if(friendRequest?.status === "PENDING") {
-      return {status: 'FAILED', message: "Already have sent a friend request"}
+    if (friendRequest?.status === "PENDING") {
+      return {
+        status: "FAILED",
+        message: "Already have sent a friend request",
+      };
     }
-    if(friendRequest?.status === "ACCEPTED") {
-      return {status: 'FAILED', message: "You are already friends"}
+    if (friendRequest?.status === "ACCEPTED") {
+      return { status: "FAILED", message: "You are already friends" };
     }
     const recipient = await prisma.user.findUnique({
       where: {
@@ -87,7 +98,6 @@ export const sendFriendRequest = async ({
       return { status: "ERROR", message: "Failed to find friend" };
     }
 
-
     await prisma.friendship.create({
       data: {
         receiverId: recipient.clerkId,
@@ -101,8 +111,7 @@ export const sendFriendRequest = async ({
 
     revalidatePath("/messages");
     return { status: "ACCEPTED", message: "Friend request was sent!" };
-  } 
-  catch (error) {
+  } catch (error) {
     console.error("error: ", error);
     return {
       status: "ERROR",
@@ -161,6 +170,41 @@ export const handleCampaignInvite = async ({
       console.error("Error updating campaign: ", error);
       throw error;
     }
+  }
+};
+
+export const inviteToCampaign = async ({ playerId, campaignId }) => {
+  const { success } = await ratelimit.limit(playerId);
+
+  if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+
+  try {
+    const campaign = await prisma.campaign.findUnique({
+      where: { id: campaignId },
+      include: { invitedPlayers: true, players: true }, // Include invitedPlayers relation
+    });
+    if (!campaign) {
+      throw new Error("Campaign not found");
+    }
+    if (campaign.players.find((player) => player.clerkId === playerId)) {
+      return { status: "FAILED", message: "They are already a member" };
+    }
+    await prisma.campaign.update({
+      where: {
+        id: campaignId,
+      },
+      data: {
+        invitedPlayers: {
+          connect: {
+            clerkId: playerId,
+          },
+        },
+      },
+    });
+    revalidatePath("/messages");
+    return { status: "SUCCESS", message: "Your invite was sent" };
+  } catch (error) {
+    console.error("error: ", error);
   }
 };
 

@@ -4,7 +4,7 @@ import { Friendship } from "@prisma/client";
 import { useAtom } from "jotai";
 import { SelectedFriendType } from "~/app/types/Message";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { selectedFriendAtom } from "./jotai";
+import { selectedFriendAtom } from "../jotaiAtoms";
 
 interface FriendsListProps {
   friend: Friendship;
@@ -15,7 +15,7 @@ export default function FriendsList({ friend, userId }: FriendsListProps) {
   const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
 
   const handleSelectedFriend = (friend: SelectedFriendType) => {
-    setSelectedFriend(friend)
+    setSelectedFriend(friend);
   };
 
   return (
