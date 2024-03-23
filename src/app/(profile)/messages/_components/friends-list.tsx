@@ -1,10 +1,12 @@
 "use client";
 
-import { Friendship } from "@prisma/client";
+import { Friendship, User } from "@prisma/client";
 import { useAtom } from "jotai";
 import { SelectedFriendType } from "~/app/types/Message";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { selectedFriendAtom } from "../jotaiAtoms";
+import { selectedFriendAtom, friendMessagesAtom } from "../jotaiAtoms";
+import { queryFriendChat } from "../actions";
+import { useState } from "react";
 
 interface FriendsListProps {
   friend: Friendship;
@@ -13,9 +15,20 @@ interface FriendsListProps {
 
 export default function FriendsList({ friend, userId }: FriendsListProps) {
   const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
+  const [friendMessages, setFriendMessages] = useAtom(friendMessagesAtom);
 
-  const handleSelectedFriend = (friend: SelectedFriendType) => {
+  const getMessages = async (friend: SelectedFriendType) => {
+    const friendChat = await queryFriendChat({
+      userId,
+      friendSenderId:
+        friend.receiverId !== userId ? friend.receiverId : friend.senderId,
+    });
+    setFriendMessages(friendChat);
+  };
+
+  const handleSelectedFriend = async (friend: SelectedFriendType) => {
     setSelectedFriend(friend);
+    await getMessages(friend);
   };
 
   return (

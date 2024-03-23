@@ -16,6 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
+import { queryFriendChat } from "../actions";
 
 export default async function MyMessages(props: {
   userId: string;
@@ -24,7 +25,7 @@ export default async function MyMessages(props: {
   const { userId, username } = props;
 
   const userCampaignsData = await prisma.user.findUnique({
-    where: { clerkId: userId},
+    where: { clerkId: userId },
     include: {
       campaignplayer: true,
       campaigndm: true,

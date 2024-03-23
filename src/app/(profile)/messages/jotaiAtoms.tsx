@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import { SelectedFriendType } from "~/app/types/Message";
+import { Message } from "@prisma/client";
 const selectedFriendAtom = atom<SelectedFriendType>({
   id: "",
   status: "",
@@ -13,4 +14,14 @@ const selectedFriendAtom = atom<SelectedFriendType>({
   updatedAt: "",
 });
 
-export { selectedFriendAtom };
+const date = new Date(Date.now().toString())
+
+const friendMessagesAtom = atom<Message[]>([{
+    id: "",
+    content: "",
+    senderId: "",
+    recipientId: "",
+    sentAt: date
+}])
+
+export { selectedFriendAtom, friendMessagesAtom };

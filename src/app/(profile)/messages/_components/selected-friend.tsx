@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Campaign, User } from "@prisma/client";
+import { useState } from "react";
 
 interface SelectedFriendProps {
   userId: User["clerkId"];
@@ -25,6 +26,7 @@ export default function SelectedFriend({
   userCampaigns,
 }: SelectedFriendProps) {
   const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
+  const [isLoading, setIsLoading] = useState(false);
 
   let profilePic: string | undefined;
 
@@ -48,6 +50,7 @@ export default function SelectedFriend({
     playerId,
     campaignId,
   }: InviteToCampaignProps) => {
+    setIsLoading(true);
     const response = await inviteToCampaign({
       playerId: playerId,
       campaignId: campaignId,
@@ -59,9 +62,11 @@ export default function SelectedFriend({
         `${response?.message ? response?.message : "Something went wrong"}`
       );
     }
+    setIsLoading(false);
   };
 
   const handleFriendRemove = async () => {
+    setIsLoading(true);
     if (friendId === selectedFriend.senderId) {
       await handleFriendRequest({
         senderId: selectedFriend.senderId,
@@ -88,6 +93,7 @@ export default function SelectedFriend({
       createdAt: "",
       updatedAt: "",
     });
+    setIsLoading(false);
   };
 
   return (
@@ -118,16 +124,21 @@ export default function SelectedFriend({
             <div className="mb-5 mt-auto flex flex-row items-center justify-center sm:flex-col sm:space-y-2 xl:flex-row xl:space-x-2 xl:space-y-0">
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Button className="h-8 w-20">Invite</Button>
+                  <Button disabled={isLoading} className="h-8 w-20">
+                    Invite
+                  </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
+                  <DropdownMenuLabel className="flex justify-center">
+                    Campaigns
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {selectedFriend.id &&
                   userCampaigns &&
                   userCampaigns.length > 0 ? (
                     userCampaigns.map((campaign) => (
                       <DropdownMenuItem
+                        disabled={isLoading}
                         onClick={() =>
                           handleInviteToCampaign({
                             playerId: friendId,
@@ -141,12 +152,15 @@ export default function SelectedFriend({
                     ))
                   ) : (
                     <>
-                      <div>Find a Campaign to Join</div>
+                      <div className="flex justify-center text-sm">
+                        Find a Campaign to Join
+                      </div>
                     </>
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
               <Button
+                disabled={isLoading}
                 onClick={() => handleFriendRemove()}
                 variant="destructive"
                 className="px-none h-8 w-20"

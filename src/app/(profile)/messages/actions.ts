@@ -11,6 +11,57 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(8, "1 m"),
 });
 
+export const sendMessage = async ({ userId, friendId, content }) => {
+  try {
+    const message = await prisma.message.create({
+      data: {
+        senderId: userId,
+        recipientId: friendId,
+        content: content,
+      },
+    });
+    revalidatePath("messages");
+    return message;
+  } catch {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+    });
+  }
+};
+
+export const queryFriendChat = async ({ userId, friendSenderId }) => {
+  try {
+    const messagesData = await prisma.message.findMany({
+      where: {
+        OR: [
+          {
+            senderId: userId,
+          },
+          {
+            recipientId: userId,
+          },
+        ],
+      },
+      orderBy: {
+        sentAt: "asc",
+      },
+    });
+    const filteredMessages = messagesData.filter((message) => {
+      return (
+        message.senderId === friendSenderId ||
+        message.recipientId === friendSenderId
+      );
+    });
+
+    revalidatePath("messages");
+    return filteredMessages;
+  } catch {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+    });
+  }
+};
+
 export const handleFriendRequest = async ({
   response,
   senderId,
@@ -188,6 +239,9 @@ export const inviteToCampaign = async ({ playerId, campaignId }) => {
     }
     if (campaign.players.find((player) => player.clerkId === playerId)) {
       return { status: "FAILED", message: "They are already a member" };
+    }
+    if (campaign.invitedPlayers.find((player) => player.clerkId === playerId)) {
+      return { status: "FAILED", message: "They have already been invited" };
     }
     await prisma.campaign.update({
       where: {
