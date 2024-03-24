@@ -5,13 +5,24 @@ import { revalidatePath } from "next/cache";
 import { TRPCError } from "@trpc/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { Campaign, Character, Message, User } from "@prisma/client";
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(8, "1 m"),
 });
 
-export const sendMessage = async ({ userId, friendId, content }) => {
+interface SendMessageProps {
+  userId: User["clerkId"];
+  friendId: string;
+  content: Message["content"];
+}
+
+export const sendMessage = async ({
+  userId,
+  friendId,
+  content,
+}: SendMessageProps): Promise<Message | undefined> => {
   try {
     const message = await prisma.message.create({
       data: {
@@ -29,7 +40,15 @@ export const sendMessage = async ({ userId, friendId, content }) => {
   }
 };
 
-export const queryFriendChat = async ({ userId, friendSenderId }) => {
+interface QueryFriendChatProps {
+  userId: User["clerkId"];
+  friendSenderId: string;
+}
+
+export const queryFriendChat = async ({
+  userId,
+  friendSenderId,
+}: QueryFriendChatProps): Promise<Message[] | undefined> => {
   try {
     const messagesData = await prisma.message.findMany({
       where: {
@@ -62,13 +81,21 @@ export const queryFriendChat = async ({ userId, friendSenderId }) => {
   }
 };
 
+interface HandleFriendRequestProps {
+  response: string;
+  senderId: string;
+  receiverId: string;
+}
+
 export const handleFriendRequest = async ({
   response,
   senderId,
   receiverId,
-}) => {
+}: HandleFriendRequestProps): Promise<
+  { message: string; status: string } | undefined
+> => {
   if (response === "ACCEPTED") {
-    const acceptedFriend = await prisma.friendship.updateMany({
+    await prisma.friendship.updateMany({
       where: {
         senderId: senderId,
         receiverId: receiverId,
@@ -78,24 +105,32 @@ export const handleFriendRequest = async ({
       },
     });
     revalidatePath("/messages");
-    return acceptedFriend;
+    return { status: "ACCEPTED", message: "Friend request was accepted" };
   } else {
-    const declinedFriend = await prisma.friendship.deleteMany({
+    await prisma.friendship.deleteMany({
       where: {
         senderId: senderId,
         receiverId: receiverId,
       },
     });
     revalidatePath("/messages");
-    return declinedFriend;
+    return { status: "ACCEPTED", message: "Friend request was declined" };
   }
 };
+
+interface SendFriendRequestProps {
+  receiverName: string;
+  senderName: string;
+  userId: User["clerkId"];
+}
 
 export const sendFriendRequest = async ({
   receiverName,
   senderName,
   userId,
-}) => {
+}: SendFriendRequestProps): Promise<
+  { message: string; status: string } | undefined
+> => {
   try {
     const friendRequest = await prisma.friendship.findFirst({
       where: {
@@ -171,11 +206,17 @@ export const sendFriendRequest = async ({
   }
 };
 
+interface HandleCampaignInvite {
+  campaignId: Campaign["id"];
+  userId: User["clerkId"];
+  response: string;
+}
+
 export const handleCampaignInvite = async ({
   campaignId,
   userId,
   response,
-}) => {
+}: HandleCampaignInvite): Promise<Campaign | undefined> => {
   if (response === "ACCEPTED") {
     try {
       const updatedCampaign = await prisma.campaign.update({
@@ -224,7 +265,17 @@ export const handleCampaignInvite = async ({
   }
 };
 
-export const inviteToCampaign = async ({ playerId, campaignId }) => {
+interface InviteToCampaignProps {
+  playerId: string;
+  campaignId: Campaign["id"];
+}
+
+export const inviteToCampaign = async ({
+  playerId,
+  campaignId,
+}: InviteToCampaignProps): Promise<
+  { message: string; status: string } | undefined
+> => {
   const { success } = await ratelimit.limit(playerId);
 
   if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
@@ -262,7 +313,13 @@ export const inviteToCampaign = async ({ playerId, campaignId }) => {
   }
 };
 
-export const createNewCharacterSheet = async ({ userId }) => {
+interface CreateNewCharacterProps {
+  userId: User["clerkId"]
+}
+
+export const createNewCharacterSheet = async ({ userId }: CreateNewCharacterProps): Promise<
+Character | undefined
+> => {
   const newCharacter = prisma.character.create({
     data: {
       userId,

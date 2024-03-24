@@ -34,10 +34,10 @@ export default function AddFriendInput({
       senderName: username,
       userId,
     });
-    if (response.status === "ACCEPTED") {
+    if (response?.status === "ACCEPTED") {
       toast.success(`${response.message}`);
     } else {
-      toast.error(`${response.message}`);
+      toast.error(`${response?.message}`);
     }
     reset();
   };

@@ -16,7 +16,7 @@ const selectedFriendAtom = atom<SelectedFriendType>({
 
 const date = new Date(Date.now().toString())
 
-const friendMessagesAtom = atom<Message[]>([{
+const friendMessagesAtom = atom<Message[] | undefined>([{
     id: "",
     content: "",
     senderId: "",

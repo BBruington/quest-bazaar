@@ -34,7 +34,7 @@ export default function DisplayMessages(props: { userId: User["clerkId"] }) {
         friendId,
         content: inputValue,
       });
-      if(friendMessages[0]?.id !== "" && friendMessages[0]?.id !== undefined) {
+      if(friendMessages !== undefined && friendMessages[0]?.id !== "" && friendMessages[0]?.id !== undefined) {
         setFriendMessages([...friendMessages, {
           id: uuid(),
           senderId: userId,
@@ -59,7 +59,7 @@ export default function DisplayMessages(props: { userId: User["clerkId"] }) {
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto rounded-md bg-accent-foreground p-2 sm:h-5/6 sm:w-4/6 lg:w-4/6">
       <div className="mt-auto">
-        {friendMessages[0]?.id !== "" && friendMessages[0]?.id !== undefined && friendMessages?.map((message) => (
+        {friendMessages !== undefined && friendMessages[0]?.id !== "" && friendMessages[0]?.id !== undefined && friendMessages?.map((message) => (
           <div key={message.id} className="bg-accent-foreground p-2">
             {message.senderId === userId && (
               <div className="flex justify-end text-right" key={message.id}>
