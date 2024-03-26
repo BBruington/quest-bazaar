@@ -14,10 +14,10 @@ interface CreateCampaignProps {
   dmProfileImg: User['imgUrl']
   dmName: Campaign["dmName"]
   imageUrl: Campaign["image"]
-  friendsIds: Friends[] | undefined
+  friends: Friends[] | undefined
 }
 
-export const createCampaign = async ({userId, title, description, dmProfileImg, dmName, imageUrl, friendsIds}: CreateCampaignProps) => {
+export const createCampaign = async ({userId, title, description, dmProfileImg, dmName, imageUrl, friends}: CreateCampaignProps) => {
   const campaignData = await prisma.campaign.create({
     data: {
       name: title,
@@ -29,7 +29,7 @@ export const createCampaign = async ({userId, title, description, dmProfileImg, 
     },
   });
   if (!campaignData) throw new TRPCError({ code: "NOT_FOUND" });
-  if (friendsIds !== undefined) {
+  if (friends !== undefined) {
     await prisma.campaign.update({
       where: {
         id: campaignData.id,
@@ -37,7 +37,7 @@ export const createCampaign = async ({userId, title, description, dmProfileImg, 
       data: {
         invitedPlayers: {
           connect:
-            friendsIds?.map((friendId) => ({
+            friends?.map((friendId) => ({
               clerkId: friendId.id,
             })) || [],
         },

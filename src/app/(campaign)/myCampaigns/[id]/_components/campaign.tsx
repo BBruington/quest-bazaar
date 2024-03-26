@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
-import NotesPage from "~/app/(campaign)/myCampaigns/_components/notes/notes";
+import NotesPage from "~/app/(campaign)/myCampaigns/[id]/_components/notes/notes";
 import PostCreator from "~/app/(withnav)/post/create";
 import {
   Accordion,
@@ -37,18 +37,21 @@ import {
 } from "~/components/ui/alert-dialog";
 import type { Campaign, Players } from "./types";
 import { useUser } from "@clerk/nextjs";
+import { CampaignNote } from "@prisma/client";
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
   campaignPlayers: Players[] | null | undefined;
   userId: string;
   campaignRequestingInvitePlayers: Players[] | null | undefined;
+  myNotes: CampaignNote[]
 }) {
   const {
     campaignData,
     campaignPlayers,
     userId,
     campaignRequestingInvitePlayers,
+    myNotes
   } = props;
 
   const user = useUser();
@@ -56,7 +59,7 @@ export default function CampaignComponent(props: {
 
   const utils = api.useContext();
 
-  const [privateNotes, setPrivateNotes] = useState(false);
+  const [isPrivateNotes, setIsPrivateNotes] = useState(false);
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
@@ -203,7 +206,7 @@ export default function CampaignComponent(props: {
                 <Button
                   className="h-8 w-36 py-3 text-sm text-white hover:underline"
                   onClick={() => {
-                    setPrivateNotes(false);
+                    setIsPrivateNotes(false);
                     setUiToggle({
                       editNotes: true,
                       posts: false,
@@ -217,7 +220,7 @@ export default function CampaignComponent(props: {
                 <Button
                   className="h-8 w-36 py-3 text-sm text-white hover:underline"
                   onClick={() => {
-                    setPrivateNotes(true);
+                    setIsPrivateNotes(true);
                     setUiToggle({
                       editNotes: true,
                       posts: false,
@@ -339,9 +342,10 @@ export default function CampaignComponent(props: {
           {campaignNotes !== undefined && (
             <NotesPage
               userId={userId}
-              privateNotes={privateNotes}
+              isPrivateNotes={isPrivateNotes}
               campaignData={campaignData}
               campaignNotes={campaignNotes}
+              myNotes={myNotes}
             />
           )}
         </div>

@@ -1,7 +1,7 @@
 import type { Campaign } from "../types";
 import uuid from "react-uuid";
 import React from "react";
-import { api } from "~/utils/trpc";
+import { upsertCampaignNote, deleteCampaignNote } from "../../actions";
 import { Button } from "~/components/ui/button";
 import type { CampaignNote } from "./types";
 const NoteList = (props: {
@@ -10,7 +10,7 @@ const NoteList = (props: {
   campaignData: Campaign;
   note: CampaignNote | undefined;
   privateNotes: boolean;
-  privateNotesData: CampaignNote[];
+  myNotes: CampaignNote[];
   userId: string;
 }) => {
   const {
@@ -19,28 +19,29 @@ const NoteList = (props: {
     campaignData,
     note,
     privateNotes,
-    privateNotesData,
+    myNotes,
     userId,
   } = props;
-  const utils = api.useContext();
-  const upsertNote = api.upsertCampaignNote.useMutation({
-    onSuccess: async () => {
-      if (privateNotes === false) {
-        await utils.queryCampaignNotes.invalidate();
-      } else {
-        await utils.queryCampaignPrivateNotes.invalidate();
-      }
-    },
-  });
-  const deleteNote = api.deleteCampaignNote.useMutation({
-    onSuccess: async () => {
-      if (privateNotes === false) {
-        await utils.queryCampaignNotes.invalidate();
-      } else {
-        await utils.queryCampaignPrivateNotes.invalidate();
-      }
-    },
-  });
+
+  const handleCreateNewCampaignNote = async () => {
+    await upsertCampaignNote({
+      noteId: uuid(),
+      campaignId: campaignData.id,
+      userId: userId,
+      privateNote: privateNotes ? true : false,
+      title: "New Note",
+      content: "",
+    });
+  };
+
+  const handleDeleteCampaignNote = async () => {
+    if (note?.id !== undefined) {
+      await deleteCampaignNote({
+        noteId: note?.id,
+        campaignId: campaignData.id,
+      });
+    }
+  };
   return (
     <div className="flex h-screen w-1/6  flex-col items-center border-l-2 border-slate-600 bg-accent-foreground">
       <div className="flex w-full flex-col">
@@ -48,36 +49,17 @@ const NoteList = (props: {
           Notes
         </h2>
         <div className="my-2 flex flex-col items-center justify-center gap-5 xl:flex-row">
-          <Button
-            className="w-20"
-            onClick={() =>
-              upsertNote.mutate({
-                id: uuid(),
-                campaignId: campaignData.id,
-                userId: userId,
-                private: privateNotes ? true : false,
-                title: "New Note",
-                content: "",
-              })
-            }
-          >
+          <Button className="w-20" onClick={handleCreateNewCampaignNote}>
             Add
           </Button>
-          <Button
-            className="w-20"
-            onClick={() =>
-              deleteNote.mutate({
-                id: note?.id,
-              })
-            }
-          >
+          <Button className="w-20" onClick={handleDeleteCampaignNote}>
             Delete
           </Button>
         </div>
       </div>
       <ul className="mt-1 w-full space-y-3 text-center">
         {privateNotes
-          ? privateNotesData.map((note) => (
+          ? myNotes.map((note) => (
               <div
                 key={note.id}
                 className="hover:cursor-pointer hover:bg-slate-800"

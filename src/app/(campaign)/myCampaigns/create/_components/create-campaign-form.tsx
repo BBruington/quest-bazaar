@@ -1,9 +1,11 @@
-"use-client"
+"use-client";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
 import { api } from "~/utils/trpc";
 import { useRouter } from "next/navigation";
 import { Input } from "~/components/ui/input";
+import {z} from 'zod'
+import { creatCampaignSchema } from "~/lib/validations/createCampaignForm";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -13,18 +15,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 import { Label } from "~/components/ui/label";
 import { Friendship, User } from "@prisma/client";
 import { createCampaign } from "../actions";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface CreateCampaignFormProps {
-  userId: User["clerkId"]
-  username: string
-  userImage: string
-  friendsList: Friendship[]
+  userId: User["clerkId"];
+  username: string;
+  userImage: string;
+  friendsList: Friendship[];
 }
 
-export default function CreateCampaignForm({userId, username, userImage, friendsList}: CreateCampaignFormProps) {
+type FormData = z.infer<typeof creatCampaignSchema>
+
+export default function CreateCampaignForm({
+  userId,
+  username,
+  userImage,
+  friendsList,
+}: CreateCampaignFormProps) {
   const router = useRouter();
 
   const [campaignChecker, setCampaignChecker] = useState({
@@ -38,6 +58,17 @@ export default function CreateCampaignForm({userId, username, userImage, friends
     friends: [{ id: "", name: "" }],
   });
   const [friends, setFriends] = useState([{ name: "", id: "" }]);
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(creatCampaignSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      // imageUrl: "",
+      // friends: [],
+    },
+  });
+  const { handleSubmit } = form;
 
   const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null) {
@@ -104,7 +135,7 @@ export default function CreateCampaignForm({userId, username, userImage, friends
 
   if (friends[0]?.id === "") findFriendsIds();
 
-  const handleCreateCampaign = async () => {
+  const onSubmit = async (campaign) => {
     if (campaignProps.name === "" || campaignProps.description === "") {
       if (campaignProps.name === "" && campaignProps.description === "") {
         setCampaignChecker({
@@ -133,97 +164,105 @@ export default function CreateCampaignForm({userId, username, userImage, friends
       imageUrl: imageFile ? imageFile : "",
       dmProfileImg: userImage ? userImage : null,
       dmName: username ? username : "",
-      title: campaignProps.name,
+      title: campaign.title,
       description: campaignProps.description,
-      friendsIds:
+      friends:
         campaignProps.friends[0]?.id === "" ? undefined : campaignProps.friends,
     });
   };
   return (
     <div className="flex w-full flex-col lg:flex-row">
-      <div className="flex w-full flex-col p-8 lg:w-1/2">
-        <div className="ml-2">
-          <Label className="text-white" htmlFor="name">
-            Campaign Name:
-          </Label>
-          <Input
-            className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            type="text"
-            id="name"
-            name="name"
-            value={campaignProps.name}
-            onChange={handleChange}
+      <Form {...form}>
+        <form className="flex w-full flex-col p-8 lg:w-1/2" onSubmit={handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="ml-2">
+                <FormLabel className="text-white" htmlFor="name">
+                  Campaign Name:
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
+                    type="text"
+                    id="title"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription />
+              </FormItem>
+            )}
           />
-          {campaignChecker.name && (
-            <span className="text-red-500">Please give the post a name</span>
-          )}
-        </div>
-        <div className="mb-2 ml-2">
-          <Label className="text-white" htmlFor="description">
-            Description:
-          </Label>
-          <Input
-            className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            id="description"
+          <FormField
+            control={form.control}
             name="description"
-            value={campaignProps.description}
-            onChange={handleChange}
+            render={({ field }) => (
+              <FormItem className="mb-2 ml-2">
+                <FormLabel className="text-white" htmlFor="description">
+                  Description:
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
+                    id="description"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {campaignChecker.description && (
-            <span className="text-red-500">
-              Please give the post a description
-            </span>
-          )}
-        </div>
-        <div className="mb-2 ml-2">
-          <Label className="text-white" htmlFor="description">
-            Image:
-          </Label>
-          <Input
-            className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            type="file"
-            id="imageUrl"
-            name="imageUrl"
-            onChange={handleImageFile}
-          />
-        </div>
-        <div className="mb-2 ml-2">
-          <Label className="text-white">Imgage Url</Label>
-          <Input
-            className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            type="text"
-            id="imageUrl"
-            value={imageFile ? imageFile : undefined}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="m-2 flex justify-between gap-5">
-          <Button className="w-30 h-10" onClick={handleCreateCampaign}>
-            Create Campaign
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="inline-flex h-10 w-40 items-center justify-center rounded-md bg-primary text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
-              Invite Friends
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Friends</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {friends ? (
-                friends.map((friend, index) => (
-                  <DropdownMenuItem
-                    onClick={() => inviteFriendToCampaign(friend)}
-                    key={index}
-                  >
-                    {friend.name}
-                  </DropdownMenuItem>
-                ))
-              ) : (
-                <></>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+          <div className="mb-2 ml-2">
+            <Label className="text-white" htmlFor="description">
+              Image:
+            </Label>
+            <Input
+              className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
+              type="file"
+              id="imageUrl"
+              name="imageUrl"
+              onChange={handleImageFile}
+            />
+          </div>
+          <div className="mb-2 ml-2">
+            <Label className="text-white">Imgage Url</Label>
+            <Input
+              className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
+              type="text"
+              id="imageUrl"
+              value={imageFile ? imageFile : undefined}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="m-2 flex justify-between gap-5">
+            <Button className="w-30 h-10" onClick={handleSubmit(onSubmit)}>
+              Create Campaign
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="inline-flex h-10 w-40 items-center justify-center rounded-md bg-primary text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                Invite Friends
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Friends</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {friends ? (
+                  friends.map((friend, index) => (
+                    <DropdownMenuItem
+                      onClick={() => inviteFriendToCampaign(friend)}
+                      key={index}
+                    >
+                      {friend.name}
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </form>
+      </Form>
       <div className="flex h-full w-full flex-col items-center justify-center p-3 lg:w-1/2">
         <h1 className="mb-5 w-full text-center text-2xl text-white">Preview</h1>
         <div className="group cursor-pointer items-center overflow-hidden rounded-md border border-primary-foreground lg:w-4/6 xl:w-1/2">
@@ -236,7 +275,7 @@ export default function CreateCampaignForm({userId, username, userImage, friends
             }`}
             alt="Campaign main image"
           />
-          <div className="flex justify-between bg-accent-foreground p-5 ">
+          <div className="flex justify-between bg-accent-foreground p-5">
             <div>
               <p className="text-lg font-bold text-white">
                 {campaignProps.name !== undefined ? (
@@ -247,11 +286,7 @@ export default function CreateCampaignForm({userId, username, userImage, friends
               </p>
               <div className="flex space-x-5">
                 <p className="flex text-xs text-white">
-                  {username ? (
-                    <>By: {username}</>
-                  ) : (
-                    <>By: John Smith</>
-                  )}
+                  {username ? <>By: {username}</> : <>By: John Smith</>}
                 </p>
               </div>
             </div>

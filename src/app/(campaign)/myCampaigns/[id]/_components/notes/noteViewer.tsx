@@ -2,9 +2,9 @@
 import type { Campaign } from "../types";
 import { Textarea } from "~/components/ui/textarea";
 import { useEffect, useState } from "react";
-import { api } from "~/utils/trpc";
 import type { CampaignNote } from "./types";
 import { Button } from "~/components/ui/button";
+import { upsertCampaignNote } from "../../actions";
 
 const NoteViewer = (props: {
   note: CampaignNote | undefined;
@@ -13,32 +13,21 @@ const NoteViewer = (props: {
   userId: string;
 }) => {
   const { note, campaignData, privateNotes, userId } = props;
-  const utils = api.useContext();
   const [campaignNote, setCampaigNote] = useState(note);
   const [editMode, setEditmode] = useState(false);
   useEffect(() => {
     setCampaigNote(note);
   }, [note]);
 
-  const upsertNote = api.upsertCampaignNote.useMutation({
-    onSuccess: async () => {
-      if (privateNotes === false) {
-        await utils.queryCampaignNotes.invalidate();
-      } else {
-        await utils.queryCampaignPrivateNotes.invalidate();
-      }
-    },
-  });
-
-  const handleSaveNote = () => {
+  const handleSaveNote = async () => {
     if (
       campaignNote?.title !== undefined &&
       campaignNote?.content !== undefined
     ) {
-      upsertNote.mutate({
-        id: campaignNote.id,
+      await upsertCampaignNote({
+        noteId: campaignNote.id,
         userId: userId,
-        private: privateNotes ? true : false,
+        privateNote: privateNotes ? true : false,
         campaignId: campaignData.id,
         title: campaignNote.title,
         content: campaignNote.content,

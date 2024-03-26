@@ -9,27 +9,28 @@ import type { CampaignNote } from "./types";
 const NotesPage = (props: {
   campaignData: Campaign;
   campaignNotes: CampaignNote[];
-  privateNotes: boolean;
+  isPrivateNotes: boolean;
+  myNotes: CampaignNote[];
   userId: string;
 }) => {
-  const { campaignData, campaignNotes, privateNotes, userId } = props;
+  const { campaignData, campaignNotes, isPrivateNotes, userId, myNotes } = props;
   const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);
-  const { data: privateNotesData } = api.queryCampaignPrivateNotes.useQuery({
-    campaignId: campaignData.id,
-    userId,
-  });
-  if (campaignNotes === undefined || privateNotesData === undefined)
+  // const { data: myNotes } = api.queryCampaignPrivateNotes.useQuery({
+  //   campaignId: campaignData.id,
+  //   userId,
+  // });
+  if (campaignNotes === undefined || myNotes === undefined)
     return <div>failed to load campaign notes</div>;
 
   const handleNoteClick = (noteId: string): CampaignNote | boolean => {
-    if (privateNotes === false) {
+    if (isPrivateNotes === false) {
       const selected = campaignNotes.find((note) => note.id === noteId);
       if (selected !== undefined) {
         setSelectedNote(selected);
         if (selected) return selected;
       }
     } else {
-      const selected = privateNotesData.find((note) => note.id === noteId);
+      const selected = myNotes.find((note) => note.id === noteId);
       if (selected !== undefined) {
         setSelectedNote(selected);
         if (selected) return selected;
@@ -43,7 +44,7 @@ const NotesPage = (props: {
       <NoteViewer
         note={selectedNote}
         campaignData={campaignData}
-        privateNotes={privateNotes}
+        privateNotes={isPrivateNotes}
         userId={userId}
       />
       <NoteList
@@ -51,8 +52,8 @@ const NotesPage = (props: {
         onNoteClick={handleNoteClick}
         campaignData={campaignData}
         note={selectedNote}
-        privateNotes={privateNotes}
-        privateNotesData={privateNotesData}
+        privateNotes={isPrivateNotes}
+        myNotes={myNotes}
         userId={userId}
       />
     </div>

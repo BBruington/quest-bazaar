@@ -43,10 +43,7 @@ export default function ChatInput({ username, campaignProps }: ChatInputProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmit(handleSendMessage)}
-        className="flex"
-      >
+      <form onSubmit={handleSubmit(handleSendMessage)} className="flex">
         <FormField
           control={form.control}
           name="message"
