@@ -43,7 +43,7 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
         return newDate;
       });
       setEventDays(allDates);
-      setUpdateEvents(!updateEvents)
+      setUpdateEvents(!updateEvents);
     }
   };
 
@@ -73,7 +73,10 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
                 Make changes to the calendar here to add scheduled events.
               </DialogDescription>
             </DialogHeader>
-            <Scheduler campaignData={campaignData} setUpdateEvents={setUpdateEvents}/>
+            <Scheduler
+              campaignData={campaignData}
+              setUpdateEvents={setUpdateEvents}
+            />
             <DialogFooter></DialogFooter>
           </DialogContent>
         </Dialog>
@@ -87,21 +90,21 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
           </div>
         </div>
       </div>
-      <div className="flex lg:w-1/6 mt-5 lg:mt-0 flex-col space-y-5 justify-center lg:self-start">
+      <div className="mt-5 flex flex-col justify-center space-y-5 lg:mt-0 lg:w-1/6 lg:self-start">
         {scheduledEvents.map((scheduledEvent) => (
           <div
-            className="flex flex-col 2xl:flex-row items-center justify-center space-x-4 border-b-2 border-white text-white "
+            className="flex flex-col items-center justify-center space-x-4 border-b-2 border-white text-white 2xl:flex-row "
             key={scheduledEvent.id}
           >
             <div className="flex flex-col">
               <div>{scheduledEvent.scheduledEvent}</div>
               <div>{scheduledEvent.date}</div>
-              <div className="flex justify-between mt-1">
+              <div className="mt-1 flex justify-between">
                 <div>
                   <div className="font-bold">{scheduledEvent.time}</div>
                 </div>
                 <Trash2
-                  className="flex text-white hover:cursor-pointer hover:text-slate-200 mr-5"
+                  className="mr-5 flex text-white hover:cursor-pointer hover:text-slate-200"
                   onClick={() => handleDeleteSchedule(scheduledEvent.id)}
                 />
               </div>

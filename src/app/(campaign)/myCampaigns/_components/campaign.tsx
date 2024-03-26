@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
-import NotesPage from "~/components/campaign/notes/notes";
+import NotesPage from "~/app/(campaign)/myCampaigns/_components/notes/notes";
 import PostCreator from "~/app/(withnav)/post/create";
 import {
   Accordion,
@@ -36,6 +36,7 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import type { Campaign, Players } from "./types";
+import { useUser } from "@clerk/nextjs";
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
@@ -49,6 +50,9 @@ export default function CampaignComponent(props: {
     userId,
     campaignRequestingInvitePlayers,
   } = props;
+
+  const user = useUser();
+  if (!user) return <div>Could not fetch user</div>;
 
   const utils = api.useContext();
 
@@ -71,7 +75,7 @@ export default function CampaignComponent(props: {
       console.error(e);
     },
   });
-  
+
   const handleRequestToJoinGame = api.handleRequestToJoinGame.useMutation({
     onSuccess: async () => {
       await utils.queryCampaignData.invalidate();
@@ -344,7 +348,13 @@ export default function CampaignComponent(props: {
       )}
       {uiToggle.schedules && <CalendarComponent campaignData={campaignData} />}
 
-      {uiToggle.chat && <CampaignChat campaignProps={campaignData} />}
+      {uiToggle.chat && (
+        <CampaignChat
+          userId={user.user?.id ? user.user?.id : ""}
+          username={user.user?.username ? user.user?.username : ""}
+          campaignProps={campaignData}
+        />
+      )}
     </div>
   );
 }
