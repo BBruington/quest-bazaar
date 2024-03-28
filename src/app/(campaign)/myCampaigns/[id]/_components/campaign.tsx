@@ -16,7 +16,7 @@ import { Button } from "~/components/ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
 import NotesPage from "~/app/(campaign)/myCampaigns/[id]/_components/notes/notes";
-import PostCreator from "~/app/(withnav)/post/create";
+import PostCreator from "~/app/(post)/post/create";
 import {
   Accordion,
   AccordionContent,

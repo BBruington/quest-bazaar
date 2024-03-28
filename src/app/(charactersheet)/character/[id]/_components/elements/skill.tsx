@@ -1,7 +1,7 @@
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { useFormContext, type SubmitHandler } from "react-hook-form";
-import type { CharacterForm } from "~/components/characterSheet/characterTypes";
+import type { CharacterForm } from "~/app/(charactersheet)/character/characterTypes";
 export default function CharacterSkill(props: {
   skill: string;
   prof: string;

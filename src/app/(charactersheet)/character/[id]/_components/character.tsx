@@ -1,5 +1,5 @@
 "use client";
-import type { CharacterForm } from "~/components/characterSheet/characterTypes";
+import type { CharacterForm } from "~/app/(charactersheet)/character/characterTypes";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
@@ -611,7 +611,7 @@ export default function CharacterData(props: {
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(saveCharacterSheet)}
-          className="charsheet flex w-[1000px] flex-col bg-white align-middle min-w-[1000px]"
+          className="charsheet flex w-[1000px] min-w-[1000px] flex-col bg-white align-middle"
         >
           {/* header with char name, basic class info */}
           <header className="flex">
@@ -958,7 +958,7 @@ export default function CharacterData(props: {
                       </div>
                     </div>
                   </div>
-                  <div className="deathsaves flex w-1/3 flex-col justify-center mr-4">
+                  <div className="deathsaves mr-4 flex w-1/3 flex-col justify-center">
                     <div className="flex h-[88px] w-[130px] flex-col-reverse items-center justify-between rounded-lg border-2 border-black bg-white">
                       <Label className="justify-center">Death Saves</Label>
                       <div className="marks p-2">

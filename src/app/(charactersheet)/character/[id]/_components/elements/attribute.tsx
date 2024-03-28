@@ -1,6 +1,6 @@
 import { Label } from "@radix-ui/react-label";
 import { useFormContext, type SubmitHandler } from "react-hook-form";
-import type { CharacterForm } from "~/components/characterSheet/characterTypes";
+import type { CharacterForm } from "~/app/(charactersheet)/character/characterTypes";
 
 const CharacterAttribute = (props: {
   name: string;

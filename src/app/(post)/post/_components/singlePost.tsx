@@ -27,8 +27,8 @@ export default async function CampaignPost(props: {
           {postData.title}
         </h1>
 
-        <div className="flex items-center space-x-2 justify-center">
-          <p className="text-sm font-extralight text-slate-300 text-center">
+        <div className="flex items-center justify-center space-x-2">
+          <p className="text-center text-sm font-extralight text-slate-300">
             By: <span className="text-green-300">{postData.author}</span> -
             Published at {postData.updatedAt.toLocaleString()}
           </p>
@@ -45,7 +45,7 @@ export default async function CampaignPost(props: {
           </div>
           <div className="mx-2 py-5 text-slate-300">{postData.description}</div>
           <div className="flex justify-center">
-            <JoinButton toast={toast} postData={postData} userId={userId}/>
+            <JoinButton toast={toast} postData={postData} userId={userId} />
           </div>
         </div>
       </div>

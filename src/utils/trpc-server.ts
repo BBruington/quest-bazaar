@@ -1,17 +1,17 @@
 import { initTRPC } from "@trpc/server";
-import { TRPCError } from "@trpc/server";
 import { prisma } from "~/utils/context";
 import { friendsForCampaignInvite } from "./types";
+import { z } from "zod";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { z } from "zod";
-
-export const t = initTRPC.create();
+import { TRPCError } from "@trpc/server";
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(8, "1 m"),
 });
+export const t = initTRPC.create();
+
 //clerkId
 // this is our RPC API
 export const appRouter = t.router({

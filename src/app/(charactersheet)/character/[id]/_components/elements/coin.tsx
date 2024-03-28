@@ -1,6 +1,6 @@
 import { Label } from "@radix-ui/react-label";
 import { useFormContext, type SubmitHandler } from "react-hook-form";
-import type { CharacterForm } from "~/components/characterSheet/characterTypes";
+import type { CharacterForm } from "~/app/(charactersheet)/character/characterTypes";
 
 export default function CharacterCoin(props: {
   coins: string;
@@ -11,14 +11,20 @@ export default function CharacterCoin(props: {
 
   return (
     <li className="flex items-center">
-      <Label className="rounded-lg border-2 border-r-0 border-black p-[3px]" htmlFor={coins}>
+      <Label
+        className="rounded-lg border-2 border-r-0 border-black p-[3px]"
+        htmlFor={coins}
+      >
         {coins}
       </Label>
       <input
         type="number"
-        {...register(coins, { valueAsNumber: true,  onBlur: handleSubmit(saveCharacter) })}
+        {...register(coins, {
+          valueAsNumber: true,
+          onBlur: handleSubmit(saveCharacter),
+        })}
         placeholder="0"
-        className="h-10 w-14 rounded-xl border-2 border-black text-center mr-4"
+        className="mr-4 h-10 w-14 rounded-xl border-2 border-black text-center"
         id={coins}
         name={coins}
       />

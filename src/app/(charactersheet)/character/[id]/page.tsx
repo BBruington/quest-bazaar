@@ -1,7 +1,6 @@
 import { prisma } from "~/utils/context";
-import CharacterData from "~/components/characterSheet/character";
+import CharacterData from "~/app/(charactersheet)/character/[id]/_components/character";
 import { Metadata } from "next";
-
 
 export default async function CharacterSheet({
   params,

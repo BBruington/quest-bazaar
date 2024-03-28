@@ -1,6 +1,6 @@
 import { Label } from "@radix-ui/react-label";
 import { useFormContext, type SubmitHandler } from "react-hook-form";
-import type { CharacterForm } from "~/components/characterSheet/characterTypes";
+import type { CharacterForm } from "~/app/(charactersheet)/character/characterTypes";
 
 export default function CharacterTrait(props: {
   name: string;
@@ -11,7 +11,10 @@ export default function CharacterTrait(props: {
 
   return (
     <div className="personality flex flex-col-reverse items-center rounded-md border-2 border-black">
-      <Label className="bg-slate-100 text-xs text-center rounded-sm w-full p-[2px]" htmlFor={name}>
+      <Label
+        className="w-full rounded-sm bg-slate-100 p-[2px] text-center text-xs"
+        htmlFor={name}
+      >
         {name.toUpperCase()}
       </Label>
       <textarea

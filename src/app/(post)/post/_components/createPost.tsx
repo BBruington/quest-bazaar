@@ -2,10 +2,10 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { api } from "~/utils/trpc";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
+import { createCampaignPost } from "../actions";
 
 export default function CreatePostComponent(props: {
   userId: string;
@@ -52,17 +52,8 @@ export default function CreatePostComponent(props: {
       setPostProps({ ...postProps, [name]: value });
     }
   };
-  const { mutate } = api.createCampaignPost.useMutation({
-    onSuccess: () => {
-      toast.success("Post Created");
-    },
-    onError: (e) => {
-      console.error(e);
-      toast.error("Failed to Create");
-    },
-  });
 
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     if (postProps.title === "" || postProps.description === "") {
       if (postProps.title === "" && postProps.description === "") {
         setPostChecker({ description: true, title: true });
@@ -76,7 +67,7 @@ export default function CreatePostComponent(props: {
         return;
       }
     }
-    mutate({
+    const response = await createCampaignPost({
       userId: userId,
       campaignId,
       players: postProps.players,
@@ -88,6 +79,11 @@ export default function CreatePostComponent(props: {
       body: postProps.body,
       mainImage: imageFile ? imageFile : "",
     });
+    if (response?.status === "SUCCESS") {
+      toast.success(`${response.message}`);
+    } else {
+      toast.error("Something went wrong creating the post. Please try again.");
+    }
   };
 
   return (

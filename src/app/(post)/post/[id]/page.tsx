@@ -1,12 +1,13 @@
 import { prisma } from "~/utils/context";
 import { auth } from "@clerk/nextjs";
 import { Suspense } from "react";
+import { Post } from "@prisma/client";
 
 //components
 import Spinner from "~/components/spinner/spinner";
-import CampaignPost from "~/components/post/singlePost";
+import CampaignPost from "~/app/(post)/post/_components/singlePost";
 
-export async function generateStaticParams() { 
+export async function generateStaticParams() {
   const posts = await prisma.post.findMany({
     include: {
       comments: true,
@@ -16,7 +17,7 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ id: post.id }));
 }
 
-export default async function Post({ params }: { params: { id: string } }) {
+export default async function Post({ params }: { params: { id: Post["id"] } }) {
   const post = await prisma.post.findUnique({
     where: {
       id: params.id,
