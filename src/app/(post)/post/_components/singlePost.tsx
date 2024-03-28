@@ -1,8 +1,9 @@
-import type { Post } from "~/app/types/Posts";
+
 import toast, { Toaster } from "react-hot-toast";
 
 //components
 import JoinButton from "./joinButton";
+import { Post } from "@prisma/client";
 
 export default async function CampaignPost(props: {
   postData: Post;
