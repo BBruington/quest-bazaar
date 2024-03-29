@@ -1,5 +1,4 @@
 "use client";
-import { api } from "~/utils/trpc";
 import {
   MessageCircle,
   CalendarDays,
@@ -8,7 +7,6 @@ import {
   Scroll,
   Settings,
 } from "lucide-react";
-import Spinner from "~/components/spinner/spinner";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -38,28 +36,30 @@ import {
 import type { Campaign, Players } from "./types";
 import { useUser } from "@clerk/nextjs";
 import { CampaignNote } from "@prisma/client";
+import { deleteCampaign, handleRequestToJoinGame } from "../actions";
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
   campaignPlayers: Players[] | null | undefined;
   userId: string;
   campaignRequestingInvitePlayers: Players[] | null | undefined;
-  myNotes: CampaignNote[]
+  myNotes: CampaignNote[];
+  publicNotes: CampaignNote[];
 }) {
   const {
     campaignData,
     campaignPlayers,
     userId,
     campaignRequestingInvitePlayers,
-    myNotes
+    myNotes,
+    publicNotes
   } = props;
 
   const user = useUser();
   if (!user) return <div>Could not fetch user</div>;
 
-  const utils = api.useContext();
-
   const [isPrivateNotes, setIsPrivateNotes] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
@@ -67,35 +67,24 @@ export default function CampaignComponent(props: {
     chat: true,
   });
   const router = useRouter();
-  const { data: campaignNotes, isLoading } = api.queryCampaignNotes.useQuery({
-    campaignId: campaignData.id,
-  });
-  const { mutate } = api.deleteCampaign.useMutation({
-    onSuccess: () => {
-      void router.push(`/myCampaigns`);
-    },
-    onError: (e) => {
-      console.error(e);
-    },
-  });
 
-  const handleRequestToJoinGame = api.handleRequestToJoinGame.useMutation({
-    onSuccess: async () => {
-      await utils.queryCampaignData.invalidate();
-    },
-  });
+  const handleDeleteCampaign = async () => {
+    await deleteCampaign({ campaignId: campaignData.id });
+    router.push(`/myCampaigns`);
+  };
 
-  const handleRequestToJoinGameResponse = (
+  const handleRequestToJoinGameResponse = async (
     playerId: string,
-    response: string
+    response: "ACCEPTED" | "DECLINED"
   ) => {
-    handleRequestToJoinGame.mutate({
+    setIsLoading(true)
+    await handleRequestToJoinGame({
       campaignId: campaignData.id,
       userId: playerId,
-      campaignRes: response,
+      response: response,
     });
+    setIsLoading(false)
   };
-  if (isLoading) return <Spinner />;
 
   return (
     <div className="flex h-screen w-screen flex-col lg:flex-row">
@@ -286,14 +275,7 @@ export default function CampaignComponent(props: {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={(e) => {
-                          e.preventDefault();
-                          mutate({
-                            id: campaignData.id,
-                          });
-                        }}
-                      >
+                      <AlertDialogAction onClick={handleDeleteCampaign}>
                         Continue
                       </AlertDialogAction>
                     </AlertDialogFooter>
@@ -307,7 +289,7 @@ export default function CampaignComponent(props: {
                     <div className="mt-1 flex flex-col justify-around md:flex-row">
                       <Button
                         className="h-6"
-                        disabled={handleRequestToJoinGame.isLoading}
+                        disabled={isLoading}
                         onClick={() =>
                           handleRequestToJoinGameResponse(
                             player.clerkId,
@@ -319,7 +301,7 @@ export default function CampaignComponent(props: {
                       </Button>
                       <Button
                         className="h-6"
-                        disabled={handleRequestToJoinGame.isLoading}
+                        disabled={isLoading}
                         onClick={() =>
                           handleRequestToJoinGameResponse(
                             player.clerkId,
@@ -339,12 +321,12 @@ export default function CampaignComponent(props: {
       </div>
       {uiToggle.editNotes && (
         <div className="w-full">
-          {campaignNotes !== undefined && (
+          {publicNotes !== undefined && (
             <NotesPage
               userId={userId}
               isPrivateNotes={isPrivateNotes}
               campaignData={campaignData}
-              campaignNotes={campaignNotes}
+              campaignNotes={publicNotes}
               myNotes={myNotes}
             />
           )}

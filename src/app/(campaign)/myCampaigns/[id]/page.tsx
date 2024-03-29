@@ -8,6 +8,7 @@ export default async function CampaignPage({
   params: { id: string };
 }) {
   const user = await currentUser();
+
   const campaignData = await prisma?.campaign.findUnique({
     where: {
       id: params.id,
@@ -17,21 +18,25 @@ export default async function CampaignPage({
       requestingInvitePlayers: true,
     },
   });
-  const myNotes = await prisma?.campaignNote.findMany({
+  const allNotes = await prisma?.campaignNote.findMany({
     where: {
       campaignId: params.id,
-      userId: user?.id,
-      private: true,
     },
   });
-  if (!myNotes) return <Spinner />;
-  if (!user) return <Spinner />;
-  if (!campaignData) return <Spinner />;
+
+  if (!user || !allNotes || !campaignData) return <Spinner />;
+  
+  const myNotes = allNotes?.filter(
+    (note) => note.private === true && note.userId === user?.id
+  );
+  const publicNotes = allNotes?.filter((note) => note.private === false);
+
   return (
     <CampaignComponent
       userId={user.id}
       campaignData={campaignData}
       myNotes={myNotes}
+      publicNotes={publicNotes}
       campaignPlayers={campaignData?.players ? campaignData.players : null}
       campaignRequestingInvitePlayers={
         campaignData?.requestingInvitePlayers

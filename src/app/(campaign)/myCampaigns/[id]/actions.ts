@@ -12,6 +12,11 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(8, "1 m"),
 });
 
+interface Response {
+  status: string;
+  message: string;
+}
+
 interface SendChatMessage {
   campaignId: Campaign["id"];
   username: User["username"];
@@ -92,6 +97,103 @@ export const deleteCampaignNote = async ({
       revalidatePath(`myCampaigns/${campaignId}`);
     } catch (e) {
       console.error(e);
+    }
+  }
+};
+
+interface DeleteCampaignProps {
+  campaignId: Campaign["id"];
+}
+
+export const deleteCampaign = async ({
+  campaignId,
+}: DeleteCampaignProps): Promise<Response | undefined> => {
+  await prisma.campaignNote.deleteMany({
+    where: {
+      campaignId: campaignId,
+    },
+  });
+
+  await prisma.campaign.delete({
+    where: {
+      id: campaignId,
+    },
+  });
+  revalidatePath(`myCampaigns`);
+  return { status: "SUCCESS", message: "You have deleted the campaign." };
+};
+
+interface HandleRequestToJoinGameProps {
+  campaignId: Campaign["id"];
+  userId: User["clerkId"];
+  response: "ACCEPTED" | "DECLINED";
+}
+
+export const handleRequestToJoinGame = async ({
+  campaignId,
+  userId,
+  response,
+}: HandleRequestToJoinGameProps): Promise<Response | undefined> => {
+  const { success } = await ratelimit.limit(userId);
+
+  if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+
+  if (response === "ACCEPTED") {
+    try {
+      await prisma.campaign.update({
+        where: {
+          id: campaignId,
+        },
+        data: {
+          players: {
+            connect: {
+              clerkId: userId,
+            },
+          },
+          requestingInvitePlayers: {
+            disconnect: {
+              clerkId: userId,
+            },
+          },
+        },
+      });
+      revalidatePath(`myCampaigns/${campaignId}`);
+      return {
+        status: "SUCCESS",
+        message: "Request to join game was accepted.",
+      };
+    } catch (error) {
+      console.error("Error updating campaign: ", error);
+      return {
+        status: "ERROR",
+        message: `Something went wrong. Error: ${error}`,
+      };
+    }
+  } else {
+    try {
+      await prisma.campaign.update({
+        where: {
+          id: campaignId,
+        },
+        data: {
+          requestingInvitePlayers: {
+            disconnect: {
+              clerkId: userId,
+            },
+          },
+        },
+      });
+      revalidatePath(`myCampaigns/${campaignId}`);
+      return {
+        status: "SUCCESS",
+        message: "Request to join game was declined.",
+      };
+    } catch (error) {
+      console.error("Error updating campaign: ", error);
+      return {
+        status: "ERROR",
+        message: `Something went wrong. Error: ${error}`,
+      };
     }
   }
 };
