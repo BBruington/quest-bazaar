@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { TRPCError } from "@trpc/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { Campaign, Character, Message, User } from "@prisma/client";
+import { Campaign, Character, Friendship, Message, User } from "@prisma/client";
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -19,7 +19,7 @@ interface Response {
 
 interface SendMessageProps {
   userId: User["clerkId"];
-  friendId: string;
+  friendId: Message["recipientId"];
   content: Message["content"];
 }
 
@@ -87,18 +87,16 @@ export const queryFriendChat = async ({
 };
 
 interface HandleFriendRequestProps {
-  response: string;
-  senderId: string;
-  receiverId: string;
+  response: "ACCEPTED" | "DECLINED";
+  senderId: Friendship["senderId"];
+  receiverId: Friendship["receiverId"];
 }
 
 export const handleFriendRequest = async ({
   response,
   senderId,
   receiverId,
-}: HandleFriendRequestProps): Promise<
-  { message: string; status: string } | undefined
-> => {
+}: HandleFriendRequestProps): Promise<Response | undefined> => {
   if (response === "ACCEPTED") {
     await prisma.friendship.updateMany({
       where: {
@@ -110,7 +108,7 @@ export const handleFriendRequest = async ({
       },
     });
     revalidatePath("/messages");
-    return { status: "ACCEPTED", message: "Friend request was accepted" };
+    return { status: "SUCCESS", message: "Friend request was accepted" };
   } else {
     await prisma.friendship.deleteMany({
       where: {
@@ -119,13 +117,13 @@ export const handleFriendRequest = async ({
       },
     });
     revalidatePath("/messages");
-    return { status: "ACCEPTED", message: "Friend request was declined" };
+    return { status: "SUCCESS", message: "Friend request was declined" };
   }
 };
 
 interface SendFriendRequestProps {
-  receiverName: string;
-  senderName: string;
+  receiverName: Friendship["receiverId"];
+  senderName: Friendship["senderId"];
   userId: User["clerkId"];
 }
 
@@ -133,9 +131,7 @@ export const sendFriendRequest = async ({
   receiverName,
   senderName,
   userId,
-}: SendFriendRequestProps): Promise<
-  { message: string; status: string } | undefined
-> => {
+}: SendFriendRequestProps): Promise<Response | undefined> => {
   try {
     const friendRequest = await prisma.friendship.findFirst({
       where: {
@@ -201,7 +197,7 @@ export const sendFriendRequest = async ({
     });
 
     revalidatePath("/messages");
-    return { status: "ACCEPTED", message: "Friend request was sent!" };
+    return { status: "SUCCESS", message: "Friend request was sent!" };
   } catch (error) {
     console.error("error: ", error);
     return {
@@ -214,7 +210,7 @@ export const sendFriendRequest = async ({
 interface HandleCampaignInvite {
   campaignId: Campaign["id"];
   userId: User["clerkId"];
-  response: string;
+  response: "ACCEPTED" | "DECLINED";
 }
 
 export const handleCampaignInvite = async ({
@@ -271,7 +267,7 @@ export const handleCampaignInvite = async ({
 };
 
 interface InviteToCampaignProps {
-  playerId: string;
+  playerId: User["clerkId"];
   campaignId: Campaign["id"];
 }
 
