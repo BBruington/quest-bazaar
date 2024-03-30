@@ -33,7 +33,7 @@ export default async function Post({ params }: { params: { id: Post["id"] } }) {
 
   return (
     <Suspense fallback={<Spinner />}>
-      <CampaignPost postData={post} userId={userId} />
+      <CampaignPost post={post} userId={userId} />
     </Suspense>
   );
 }

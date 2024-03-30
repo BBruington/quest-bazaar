@@ -4,6 +4,7 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { TRPCError } from "@trpc/server";
 import { Campaign, Post, User } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -17,16 +18,19 @@ interface Response {
 
 interface RequestInviteToCampaignProps {
   userId: User["clerkId"];
-  campaignId: Campaign["id"];
+  campaignId: Post["campaignId"];
+  postId: Post["id"]
 }
 
 export const requestInviteToCampaign = async ({
   userId,
   campaignId,
+  postId
 }: RequestInviteToCampaignProps): Promise<Response | undefined> => {
   const { success } = await ratelimit.limit(userId);
 
   if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+  if(campaignId === null) return {status: "ERROR", message: "Something went wrong finding campaign."}
 
   try {
     const campaign = await prisma.campaign.findUnique({
@@ -57,6 +61,7 @@ export const requestInviteToCampaign = async ({
         },
       },
     });
+    revalidatePath(`post/${postId}`)
     return {
       status: "SUCCESS",
       message: "Request to campaign was sent successfully",
