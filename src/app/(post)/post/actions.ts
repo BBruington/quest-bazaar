@@ -12,7 +12,7 @@ const ratelimit = new Ratelimit({
 });
 
 interface Response {
-  status: string
+  status: "SUCCESS" | "ERROR" | "FAILED";
   message: string
 }
 

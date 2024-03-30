@@ -12,6 +12,11 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(8, "1 m"),
 });
 
+interface Response {
+  status: "SUCCESS" | "ERROR" | "FAILED";
+  message: string;
+}
+
 interface SendMessageProps {
   userId: User["clerkId"];
   friendId: string;
@@ -273,9 +278,7 @@ interface InviteToCampaignProps {
 export const inviteToCampaign = async ({
   playerId,
   campaignId,
-}: InviteToCampaignProps): Promise<
-  { message: string; status: string } | undefined
-> => {
+}: InviteToCampaignProps): Promise<Response | undefined> => {
   const { success } = await ratelimit.limit(playerId);
 
   if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
@@ -314,12 +317,12 @@ export const inviteToCampaign = async ({
 };
 
 interface CreateNewCharacterProps {
-  userId: User["clerkId"]
+  userId: User["clerkId"];
 }
 
-export const createNewCharacterSheet = async ({ userId }: CreateNewCharacterProps): Promise<
-Character | undefined
-> => {
+export const createNewCharacterSheet = async ({
+  userId,
+}: CreateNewCharacterProps): Promise<Character | undefined> => {
   const newCharacter = prisma.character.create({
     data: {
       userId,
