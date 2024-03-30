@@ -4,7 +4,7 @@ import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Label } from "~/components/ui/label";
-import { api } from "~/utils/trpc";
+import { updateCharacterSheet } from "../actions";
 
 // components
 import CharacterAttribute from "./elements/attribute";
@@ -23,7 +23,6 @@ export default function CharacterData(props: {
 
   if (!user) return null;
 
-  const { mutate: updateCharacter } = api.updateCharacterSheet.useMutation();
   const [checkMarks, setCheckmarks] = useState({
     inspiration: character.inspiration ? character.inspiration : false,
     deathfail1: character.deathfail1 ? character.deathfail1 : false,
@@ -35,10 +34,10 @@ export default function CharacterData(props: {
   });
 
   const saveCharacterSheet: SubmitHandler<CharacterForm> = (data) => {
-    updateCharacter({
-      id: characterId,
+    updateCharacterSheet({
+      characterId: characterId,
       userId: user.id,
-      charname: data.charname,
+      charactername: data.charname,
       classname: data.classname,
       background: data.background,
       playername: data.playername,
