@@ -12,28 +12,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { api } from "~/utils/trpc";
 import Scheduler from "./scheduler";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import { deleteCampaignScheduledEvent } from "../../actions";
 import type { Campaign } from "../types";
+import { CampaignSchedules } from "@prisma/client";
 
-export default function CalendarComponent(props: { campaignData: Campaign }) {
-  const { campaignData } = props;
+export default function CalendarComponent(props: { campaignData: Campaign, scheduledEvents: CampaignSchedules[] }) {
+  const { campaignData, scheduledEvents } = props;
   const [updateEvents, setUpdateEvents] = useState(false);
-  const utils = api.useContext();
   const [eventDays, setEventDays] = useState<Date[] | undefined>([]);
-  const { data: scheduledEvents } = api.queryCampaignScheduledEvents.useQuery({
-    campaignId: campaignData.id,
-  });
-  const deleteEvent = api.deleteCampaignScheduledEvent.useMutation({
-    onSuccess: async () => {
-      await utils.queryCampaignScheduledEvents.invalidate().then(() => {
-        handleUpdatingCalendar();
-      });
-    },
-  });
-  if (!scheduledEvents) return <div>failed to load events</div>;
   const handleUpdatingCalendar = () => {
     if (updateEvents === true) {
       setUpdateEvents(!updateEvents);
@@ -51,10 +40,14 @@ export default function CalendarComponent(props: { campaignData: Campaign }) {
     handleUpdatingCalendar();
   }
 
-  const handleDeleteSchedule = (eventId: string) => {
-    deleteEvent.mutate({
-      eventId,
+  const handleDeleteSchedule = async (scheduledEventId: CampaignSchedules["id"]) => {
+    const response = await deleteCampaignScheduledEvent({
+      scheduledEventId,
+      campaignId: campaignData.id,
     });
+    if(response?.status === "SUCCESS") {
+      handleUpdatingCalendar();
+    }
   };
 
   return (

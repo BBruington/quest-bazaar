@@ -13,7 +13,7 @@ export default function CampaignInvite({
 }: UserNotificationProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCampaignInviteResponse = async (response: string) => {
+  const handleCampaignInviteResponse = async (response: "ACCEPTED" | "DECLINED") => {
     setIsLoading(true);
     await handleCampaignInvite({
       campaignId: notification.id,

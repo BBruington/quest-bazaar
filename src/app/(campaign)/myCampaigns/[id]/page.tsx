@@ -16,6 +16,7 @@ export default async function CampaignPage({
     include: {
       players: true,
       requestingInvitePlayers: true,
+      schedules: true,
     },
   });
   const allNotes = await prisma?.campaignNote.findMany({
@@ -35,6 +36,7 @@ export default async function CampaignPage({
     <CampaignComponent
       userId={user.id}
       campaignData={campaignData}
+      scheduledEvents={campaignData.schedules}
       myNotes={myNotes}
       publicNotes={publicNotes}
       campaignPlayers={campaignData?.players ? campaignData.players : null}

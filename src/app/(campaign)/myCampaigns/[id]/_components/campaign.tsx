@@ -35,7 +35,7 @@ import {
 } from "~/components/ui/alert-dialog";
 import type { Campaign, Players } from "./types";
 import { useUser } from "@clerk/nextjs";
-import { CampaignNote } from "@prisma/client";
+import { CampaignNote, CampaignSchedules } from "@prisma/client";
 import { deleteCampaign, handleRequestToJoinGame } from "../actions";
 
 export default function CampaignComponent(props: {
@@ -45,6 +45,7 @@ export default function CampaignComponent(props: {
   campaignRequestingInvitePlayers: Players[] | null | undefined;
   myNotes: CampaignNote[];
   publicNotes: CampaignNote[];
+  scheduledEvents: CampaignSchedules[];
 }) {
   const {
     campaignData,
@@ -52,7 +53,8 @@ export default function CampaignComponent(props: {
     userId,
     campaignRequestingInvitePlayers,
     myNotes,
-    publicNotes
+    publicNotes,
+    scheduledEvents,
   } = props;
 
   const user = useUser();
@@ -332,7 +334,7 @@ export default function CampaignComponent(props: {
           )}
         </div>
       )}
-      {uiToggle.schedules && <CalendarComponent campaignData={campaignData} />}
+      {uiToggle.schedules && <CalendarComponent scheduledEvents={scheduledEvents} campaignData={campaignData} />}
 
       {uiToggle.chat && (
         <CampaignChat

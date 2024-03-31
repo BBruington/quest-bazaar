@@ -1,12 +1,12 @@
 "use client";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { Calendar } from "~/components/ui/calendar";
-import { api } from "~/utils/trpc";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import TimePicker from "react-time-picker";
 import { DialogTrigger } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
+import { createCampaginScheduledEvent } from "../../actions";
 import type { Campaign } from "../types";
 
 export default function Scheduler(props: {
@@ -17,33 +17,25 @@ export default function Scheduler(props: {
   const [date, setDate] = useState<Date | undefined>();
   const [scheduledEvent, setScheduledEvent] = useState("");
   const [time, setTime] = useState<Date | string | null>();
-  const utils = api.useContext();
-
-  const { mutate: createCampaignEvent } =
-    api.createCampaignScheduledEvent.useMutation({
-      onSuccess: async () => {
-        await utils.queryCampaignScheduledEvents.invalidate();
-        setUpdateEvents(false);
-      },
-    });
 
   const handleScheduledEventChange = (e: string) => {
     setScheduledEvent(e);
   };
 
-  const handleSetSchedule = () => {
+  const handleSetSchedule = async () => {
     if (
       date !== undefined &&
       time !== null &&
       scheduledEvent !== "" &&
       typeof time === "string"
     ) {
-      createCampaignEvent({
+      await createCampaginScheduledEvent({
         campaignId: campaignData.id,
         time: time,
         date: date.toUTCString(),
         scheduledEvent: scheduledEvent,
       });
+      setUpdateEvents(false);
     }
   };
 

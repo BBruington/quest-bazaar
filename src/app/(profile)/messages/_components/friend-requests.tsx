@@ -14,7 +14,7 @@ export default function FriendRequest({
 }: UserNotificationProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFriendRequestResponse = async (requestResponse: string) => {
+  const handleFriendRequestResponse = async (requestResponse: "ACCEPTED" | "DECLINED") => {
     setIsLoading(true);
     await handleFriendRequest({
       senderId: notification.senderId,

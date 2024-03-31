@@ -1,6 +1,12 @@
 "use server";
 
-import { Campaign, CampaignChat, CampaignNote, User } from "@prisma/client";
+import {
+  Campaign,
+  CampaignChat,
+  CampaignNote,
+  CampaignSchedules,
+  User,
+} from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { TRPCError } from "@trpc/server";
 import { Ratelimit } from "@upstash/ratelimit";
@@ -196,4 +202,56 @@ export const handleRequestToJoinGame = async ({
       };
     }
   }
+};
+interface CreateCampaignScheduledEventProps {
+  time: CampaignSchedules["time"];
+  date: CampaignSchedules["date"];
+  scheduledEvent: CampaignSchedules["scheduledEvent"];
+  campaignId: Campaign["id"];
+}
+
+export const createCampaginScheduledEvent = async ({
+  time,
+  date,
+  scheduledEvent,
+  campaignId,
+}: CreateCampaignScheduledEventProps): Promise<Response | undefined> => {
+  const { success } = await ratelimit.limit(campaignId);
+
+  if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+
+  await prisma.campaignSchedules.create({
+    data: {
+      campaignId: campaignId,
+      time: time,
+      date: date,
+      scheduledEvent: scheduledEvent,
+    },
+  });
+
+  revalidatePath(`myCampaigns/${campaignId}`);
+  return {
+    status: "SUCCESS",
+    message: "Scheduled event created.",
+  };
+};
+interface DeleteCampaignScheduledEventProps {
+  scheduledEventId: CampaignSchedules["id"];
+  campaignId: Campaign["id"];
+}
+
+export const deleteCampaignScheduledEvent = async ({
+  scheduledEventId,
+  campaignId,
+}: DeleteCampaignScheduledEventProps): Promise<Response | undefined> => {
+  await prisma.campaignSchedules.delete({
+    where: {
+      id: scheduledEventId,
+    },
+  });
+  revalidatePath(`myCampaigns/${campaignId}`);
+  return {
+    status: "SUCCESS",
+    message: "The scheduled event for the campaign calendar was deleted.",
+  };
 };
