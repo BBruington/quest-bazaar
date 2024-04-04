@@ -1,6 +1,7 @@
 "use client";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { Calendar } from "~/components/ui/calendar";
+import uuid from "react-uuid";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import TimePicker from "react-time-picker";
@@ -12,8 +13,21 @@ import type { Campaign } from "../types";
 export default function Scheduler(props: {
   campaignData: Campaign;
   setUpdateEvents: Dispatch<SetStateAction<boolean>>;
+  setScheduledEventsState: (action: {
+    id: string;
+    campaignId: string;
+    time: string;
+    date: string;
+    scheduledEvent: string;
+  }) => void;
+  setEventDaysState: (action: Date) => void;
 }) {
-  const { campaignData, setUpdateEvents } = props;
+  const {
+    campaignData,
+    setUpdateEvents,
+    setScheduledEventsState,
+    setEventDaysState,
+  } = props;
   const [date, setDate] = useState<Date | undefined>();
   const [scheduledEvent, setScheduledEvent] = useState("");
   const [time, setTime] = useState<Date | string | null>();
@@ -29,6 +43,14 @@ export default function Scheduler(props: {
       scheduledEvent !== "" &&
       typeof time === "string"
     ) {
+      setScheduledEventsState({
+        id: uuid(),
+        campaignId: campaignData.id,
+        time: time,
+        date: date.toUTCString(),
+        scheduledEvent: scheduledEvent,
+      });
+      setEventDaysState(date);
       await createCampaginScheduledEvent({
         campaignId: campaignData.id,
         time: time,

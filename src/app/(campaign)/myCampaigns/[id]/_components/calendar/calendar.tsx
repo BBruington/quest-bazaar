@@ -1,7 +1,8 @@
 "use client";
 import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useOptimistic } from "react";
 import { Calendar } from "~/components/ui/calendar";
+import uuid from "react-uuid";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -19,10 +20,35 @@ import { deleteCampaignScheduledEvent } from "../../actions";
 import type { Campaign } from "../types";
 import { CampaignSchedules } from "@prisma/client";
 
-export default function CalendarComponent(props: { campaignData: Campaign, scheduledEvents: CampaignSchedules[] }) {
+export default function CalendarComponent(props: {
+  campaignData: Campaign;
+  scheduledEvents: CampaignSchedules[];
+}) {
   const { campaignData, scheduledEvents } = props;
+
+  const allDates = scheduledEvents.map((eventDay) => {
+    const newDate = new Date(eventDay.date);
+    return newDate;
+  });
+
+  const [scheduledEventsState, setScheduledEventsState] = useOptimistic(
+    scheduledEvents,
+    (state, newSchedule: CampaignSchedules) => [
+      ...state,
+      {
+        id: uuid(),
+        campaignId: campaignData.id,
+        time: newSchedule.time,
+        date: newSchedule.date,
+        scheduledEvent: newSchedule.scheduledEvent,
+      },
+    ]
+  );
   const [updateEvents, setUpdateEvents] = useState(false);
-  const [eventDays, setEventDays] = useState<Date[] | undefined>([]);
+  const [eventDaysState, setEventDaysState] = useOptimistic(allDates, (state, newEventDate: Date) => [
+    ...state,
+    newEventDate,
+  ]);
   const handleUpdatingCalendar = () => {
     if (updateEvents === true) {
       setUpdateEvents(!updateEvents);
@@ -31,7 +57,7 @@ export default function CalendarComponent(props: { campaignData: Campaign, sched
         const newDate = new Date(eventDay.date);
         return newDate;
       });
-      setEventDays(allDates);
+      // setEventDaysState(allDates);
       setUpdateEvents(!updateEvents);
     }
   };
@@ -40,12 +66,14 @@ export default function CalendarComponent(props: { campaignData: Campaign, sched
     handleUpdatingCalendar();
   }
 
-  const handleDeleteSchedule = async (scheduledEventId: CampaignSchedules["id"]) => {
+  const handleDeleteSchedule = async (
+    scheduledEventId: CampaignSchedules["id"]
+  ) => {
     const response = await deleteCampaignScheduledEvent({
       scheduledEventId,
       campaignId: campaignData.id,
     });
-    if(response?.status === "SUCCESS") {
+    if (response?.status === "SUCCESS") {
       handleUpdatingCalendar();
     }
   };
@@ -69,6 +97,8 @@ export default function CalendarComponent(props: { campaignData: Campaign, sched
             <Scheduler
               campaignData={campaignData}
               setUpdateEvents={setUpdateEvents}
+              setEventDaysState={setEventDaysState}
+              setScheduledEventsState={setScheduledEventsState}
             />
             <DialogFooter></DialogFooter>
           </DialogContent>
@@ -77,14 +107,14 @@ export default function CalendarComponent(props: { campaignData: Campaign, sched
           <div className="mt-5 flex flex-col items-center justify-center">
             <Calendar
               mode="multiple"
-              selected={eventDays}
+              selected={eventDaysState}
               className="rounded-md border text-white"
             />
           </div>
         </div>
       </div>
       <div className="mt-5 flex flex-col justify-center space-y-5 lg:mt-0 lg:w-1/6 lg:self-start">
-        {scheduledEvents.map((scheduledEvent) => (
+        {scheduledEventsState.map((scheduledEvent) => (
           <div
             className="flex flex-col items-center justify-center space-x-4 border-b-2 border-white text-white 2xl:flex-row "
             key={scheduledEvent.id}
