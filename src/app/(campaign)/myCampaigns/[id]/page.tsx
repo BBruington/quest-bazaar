@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 import CampaignComponent from "~/app/(campaign)/myCampaigns/[id]/_components/campaign";
 import Spinner from "~//components/spinner/spinner";
+import { prisma } from "~/utils/context";
 
 export default async function CampaignPage({
   params,

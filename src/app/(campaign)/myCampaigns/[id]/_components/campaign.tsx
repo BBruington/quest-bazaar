@@ -61,7 +61,7 @@ export default function CampaignComponent(props: {
   if (!user) return <div>Could not fetch user</div>;
 
   const [isPrivateNotes, setIsPrivateNotes] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [uiToggle, setUiToggle] = useState({
     editNotes: false,
     posts: false,
@@ -79,13 +79,13 @@ export default function CampaignComponent(props: {
     playerId: string,
     response: "ACCEPTED" | "DECLINED"
   ) => {
-    setIsLoading(true)
+    setIsLoading(true);
     await handleRequestToJoinGame({
       campaignId: campaignData.id,
       userId: playerId,
       response: response,
     });
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   return (
@@ -160,7 +160,9 @@ export default function CampaignComponent(props: {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              {campaignPlayers !== null ? (
+              {campaignPlayers !== null &&
+              campaignPlayers?.length !== 0 &&
+              campaignPlayers !== undefined ? (
                 campaignPlayers?.map((player) => (
                   <div
                     className="mb-2 flex items-center justify-center space-x-6 lg:justify-start"
@@ -181,7 +183,7 @@ export default function CampaignComponent(props: {
                   </div>
                 ))
               ) : (
-                <></>
+                <span className="text-white ml-3">Invite some friends!</span>
               )}
             </AccordionContent>
           </AccordionItem>
@@ -195,7 +197,7 @@ export default function CampaignComponent(props: {
             <AccordionContent>
               <div className="flex justify-center space-x-5 lg:justify-around">
                 <Button
-                  className="h-8 w-36 py-3 text-sm text-white hover:underline"
+                  className="h-8 w-32 py-3 text-xs text-white hover:underline"
                   onClick={() => {
                     setIsPrivateNotes(false);
                     setUiToggle({
@@ -209,7 +211,7 @@ export default function CampaignComponent(props: {
                   Public Notes
                 </Button>
                 <Button
-                  className="h-8 w-36 py-3 text-sm text-white hover:underline"
+                  className="h-8 w-32 py-3 text-xs text-white hover:underline"
                   onClick={() => {
                     setIsPrivateNotes(true);
                     setUiToggle({
@@ -242,7 +244,7 @@ export default function CampaignComponent(props: {
                       <Button
                         variant="destructive"
                         disabled={userId !== campaignData.dmUserId}
-                        className="h-8 w-36"
+                        className="h-8 w-32"
                       >
                         Delete
                       </Button>
@@ -255,7 +257,7 @@ export default function CampaignComponent(props: {
                       >
                         <Button
                           disabled={userId !== campaignData.dmUserId}
-                          className="h-8 w-36"
+                          className="h-8 w-32"
                         >
                           Create Post
                         </Button>
@@ -334,7 +336,12 @@ export default function CampaignComponent(props: {
           )}
         </div>
       )}
-      {uiToggle.schedules && <CalendarComponent scheduledEvents={scheduledEvents} campaignData={campaignData} />}
+      {uiToggle.schedules && (
+        <CalendarComponent
+          scheduledEvents={scheduledEvents}
+          campaignData={campaignData}
+        />
+      )}
 
       {uiToggle.chat && (
         <CampaignChat

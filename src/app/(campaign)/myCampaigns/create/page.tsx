@@ -1,3 +1,4 @@
+"use client"
 import { currentUser } from "@clerk/nextjs";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
