@@ -1,6 +1,5 @@
 import { currentUser } from "@clerk/nextjs";
 import CampaignComponent from "~/app/(campaign)/myCampaigns/[id]/_components/campaign";
-import Spinner from "~//components/spinner/spinner";
 import { prisma } from "~/utils/context";
 
 export default async function CampaignPage({
@@ -27,19 +26,18 @@ export default async function CampaignPage({
     },
   });
 
-  if (!user || !allNotes || !campaignData) return <Spinner />;
-
   const myNotes = allNotes?.filter(
     (note) => note.private === true && note.userId === user?.id
   );
   const publicNotes = allNotes?.filter((note) => note.private === false);
+  if (!campaignData || ! user ) return <div>something went wrong</div>
 
   return (
     <CampaignComponent
-      campaignMessages={campaignData.chat}
-      userId={user.id}
+      campaignMessages={campaignData?.chat}
+      userId={user?.id}
       campaignData={campaignData}
-      scheduledEvents={campaignData.schedules}
+      scheduledEvents={campaignData?.schedules}
       myNotes={myNotes}
       publicNotes={publicNotes}
       campaignPlayers={campaignData?.players ? campaignData.players : null}
