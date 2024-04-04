@@ -27,8 +27,7 @@ export default async function CampaignPage({
     },
   });
 
-  if (!user || !allNotes || !campaignData)
-    return <Spinner />;
+  if (!user || !allNotes || !campaignData) return <Spinner />;
 
   const myNotes = allNotes?.filter(
     (note) => note.private === true && note.userId === user?.id

@@ -17,6 +17,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
+import Spinner from "~/components/spinner/spinner";
 
 export default async function Messages() {
   const user = await currentUser();
@@ -100,18 +101,20 @@ export default async function Messages() {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col">
-                  {!myFriends || myFriends.length === 0 ? (
-                    <div className="flex justify-center text-white">Empty</div>
-                  ) : (
-                    <></>
-                  )}
-                  {myFriends?.map((friend) => (
-                    <FriendsList
-                      key={friend.id}
-                      friend={friend}
-                      userId={userId}
-                    />
-                  ))}
+                    {!myFriends || myFriends.length === 0 ? (
+                      <div className="flex justify-center text-white">
+                        Empty
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    {myFriends?.map((friend) => (
+                      <FriendsList
+                        key={friend.id}
+                        friend={friend}
+                        userId={userId}
+                      />
+                    ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -134,15 +137,15 @@ export default async function Messages() {
               <AccordionContent>
                 <div className="space-y-3">
                   {/* UserNotifications */}
-                  {receivedFriendRequests &&
-                    userData?.invitedCampaigns &&
-                    receivedFriendRequests?.length +
-                      userData?.invitedCampaigns.length ===
-                      0 && (
-                      <div className="flex justify-center text-white">
-                        Empty
-                      </div>
-                    )}
+                    {receivedFriendRequests &&
+                      userData?.invitedCampaigns &&
+                      receivedFriendRequests?.length +
+                        userData?.invitedCampaigns.length ===
+                        0 && (
+                        <div className="flex justify-center text-white">
+                          Empty
+                        </div>
+                      )}
                   {receivedFriendRequests?.map((friendRequest) => (
                     <div key={friendRequest.id}>
                       <div className="flex border-b border-white pb-3 md:flex-col">
@@ -158,23 +161,23 @@ export default async function Messages() {
                       </div>
                     </div>
                   ))}
-                  {userData?.invitedCampaigns?.map((campaign) => (
-                    <div key={campaign.id}>
-                      <div className="flex border-b border-white pb-3 md:flex-col">
-                        <div>
-                          <span>
-                            You have been invited to join {campaign.name}
-                          </span>
-                        </div>
-                        <div className="mt-1 flex flex-col justify-around md:flex-row">
-                          <CampaignInvite
-                            userId={userId}
-                            notification={campaign}
-                          />
+                    {userData?.invitedCampaigns?.map((campaign) => (
+                      <div key={campaign.id}>
+                        <div className="flex border-b border-white pb-3 md:flex-col">
+                          <div>
+                            <span>
+                              You have been invited to join {campaign.name}
+                            </span>
+                          </div>
+                          <div className="mt-1 flex flex-col justify-around md:flex-row">
+                            <CampaignInvite
+                              userId={userId}
+                              notification={campaign}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -195,13 +198,13 @@ export default async function Messages() {
             </AccordionItem>
           </Accordion>
           <div className="invisible mt-20 flex h-0 w-full sm:visible sm:h-60 lg:invisible lg:h-0">
-            <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
+              <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
           </div>
         </div>
 
         <DisplayMessages userId={userId} />
         <div className="invisible w-0 lg:visible lg:w-1/6">
-          <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
+            <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
         </div>
       </div>
     </>
