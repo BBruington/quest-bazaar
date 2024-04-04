@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import CampaignChat from "./chat/chat";
+import CampaignChatComponent from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
 import NotesPage from "../_components/notes/notes";
 import PostCreator from "~/app/(post)/post/create";
@@ -35,7 +35,11 @@ import {
 } from "~/components/ui/alert-dialog";
 import type { Campaign, Players } from "./types";
 import { useUser } from "@clerk/nextjs";
-import { CampaignNote, CampaignSchedules } from "@prisma/client";
+import type {
+  CampaignChat,
+  CampaignNote,
+  CampaignSchedules,
+} from "@prisma/client";
 import { deleteCampaign, handleRequestToJoinGame } from "../actions";
 
 export default function CampaignComponent(props: {
@@ -46,6 +50,7 @@ export default function CampaignComponent(props: {
   myNotes: CampaignNote[];
   publicNotes: CampaignNote[];
   scheduledEvents: CampaignSchedules[];
+  campaignMessages: CampaignChat[];
 }) {
   const {
     campaignData,
@@ -55,6 +60,7 @@ export default function CampaignComponent(props: {
     myNotes,
     publicNotes,
     scheduledEvents,
+    campaignMessages,
   } = props;
 
   const user = useUser();
@@ -183,7 +189,7 @@ export default function CampaignComponent(props: {
                   </div>
                 ))
               ) : (
-                <span className="text-white ml-3">Invite some friends!</span>
+                <span className="ml-3 text-white">Invite some friends!</span>
               )}
             </AccordionContent>
           </AccordionItem>
@@ -344,7 +350,8 @@ export default function CampaignComponent(props: {
       )}
 
       {uiToggle.chat && (
-        <CampaignChat
+        <CampaignChatComponent
+          campaignMessages={campaignMessages}
           userId={user.user?.id ? user.user?.id : ""}
           username={user.user?.username ? user.user?.username : ""}
           campaignProps={campaignData}
