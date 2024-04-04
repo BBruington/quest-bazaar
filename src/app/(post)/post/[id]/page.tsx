@@ -1,7 +1,7 @@
 import { prisma } from "~/utils/context";
 import { auth } from "@clerk/nextjs";
 import { Suspense } from "react";
-import { Post } from "@prisma/client";
+import { type Post } from "@prisma/client";
 
 //components
 import Spinner from "~/components/spinner/spinner";

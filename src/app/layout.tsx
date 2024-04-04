@@ -19,7 +19,9 @@ export default function RootLayout({
       <TrpcProvider>
         <html lang="en">
           <body className="bg-foreground">
-            <Providers>{children}</Providers>
+            <Providers>
+              {children}
+            </Providers>
           </body>
         </html>
       </TrpcProvider>

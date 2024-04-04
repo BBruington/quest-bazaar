@@ -1,16 +1,13 @@
 import Navigation from "~/components/navigation";
-
-export default function RootLayout({
-  children,
-}: {
+interface CampaignLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function RootLayout({ children }: CampaignLayoutProps) {
   return (
-    <html lang="en">
-      <body className="bg-foreground">
-      <Navigation></Navigation>
+    <div className="bg-foreground">
+      <Navigation />
       {children}
-      </body>
-    </html>
+    </div>
   );
 }

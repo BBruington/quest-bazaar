@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import CampaignChat from "./chat/chat";
 import CalendarComponent from "./calendar/calendar";
-import NotesPage from "~/app/(campaign)/myCampaigns/[id]/_components/notes/notes";
+import NotesPage from "../_components/notes/notes";
 import PostCreator from "~/app/(post)/post/create";
 import {
   Accordion,
