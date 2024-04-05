@@ -1,6 +1,8 @@
+"use client";
+
 import type { Campaign } from "../types";
 import uuid from "react-uuid";
-import React from "react";
+import { useOptimistic, useState } from "react";
 import { upsertCampaignNote, deleteCampaignNote } from "../../actions";
 import { Button } from "~/components/ui/button";
 import type { CampaignNote } from "./types";
@@ -23,7 +25,52 @@ const NoteList = (props: {
     userId,
   } = props;
 
+  const [optimisticMyNotes, setOptimisticMyNotes] = useOptimistic(
+    myNotes,
+    (myNotes, newNote: CampaignNote) => [...myNotes, newNote]
+  );
+  const [optimisticNotes, setOptimisticNotes] = useOptimistic(
+    notes,
+    (notes, newNote: CampaignNote) => [...notes, newNote]
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleCreateNewCampaignNote = async () => {
+    setIsLoading(true);
+    if (privateNotes === true) {
+      setOptimisticMyNotes({
+        id: uuid(),
+        campaignId: campaignData.id,
+        title: "New Note",
+        content: "",
+        createdAt: new Date(Date.now()).toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        updatedAt: new Date(Date.now()).toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      });
+    }
+
+    if (privateNotes === false) {
+      setOptimisticNotes({
+        id: uuid(),
+        campaignId: campaignData.id,
+        title: "New Note",
+        content: "",
+        createdAt: new Date(Date.now()).toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        updatedAt: new Date(Date.now()).toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      });
+    }
+
     await upsertCampaignNote({
       noteId: uuid(),
       campaignId: campaignData.id,
@@ -32,6 +79,7 @@ const NoteList = (props: {
       title: "New Note",
       content: "",
     });
+    setIsLoading(false);
   };
 
   const handleDeleteCampaignNote = async () => {
@@ -49,7 +97,7 @@ const NoteList = (props: {
           Notes
         </h2>
         <div className="my-2 flex flex-col items-center justify-center gap-5 xl:flex-row">
-          <Button className="w-20" onClick={handleCreateNewCampaignNote}>
+          <Button disabled={isLoading} className="w-20" onClick={handleCreateNewCampaignNote}>
             Add
           </Button>
           <Button className="w-20" onClick={handleDeleteCampaignNote}>
@@ -59,7 +107,7 @@ const NoteList = (props: {
       </div>
       <ul className="mt-1 w-full space-y-3 text-center">
         {privateNotes
-          ? myNotes.map((note) => (
+          ? optimisticMyNotes.map((note) => (
               <div
                 key={note.id}
                 className="hover:cursor-pointer hover:bg-slate-800"
@@ -77,7 +125,7 @@ const NoteList = (props: {
                 </li>
               </div>
             ))
-          : notes.map((note) => (
+          : optimisticNotes.map((note) => (
               <div
                 key={note.id}
                 className="hover:cursor-pointer hover:bg-slate-800"

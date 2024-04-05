@@ -66,7 +66,7 @@ export const upsertCampaignNote = async ({
 
   if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
-  const upsertCampaign = await prisma.campaignNote.upsert({
+  const upsertCampaignNote = await prisma.campaignNote.upsert({
     where: {
       id: noteId,
     },
@@ -83,7 +83,7 @@ export const upsertCampaignNote = async ({
     },
   });
   revalidatePath(`myCampaigns/${campaignId}`);
-  return upsertCampaign;
+  return upsertCampaignNote;
 };
 
 interface DeleteCampaignNoteProps {

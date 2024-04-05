@@ -2,7 +2,6 @@
 import { useState } from "react";
 import NoteList from "./note-list";
 import NoteViewer from "./note-viewer";
-import { api } from "~/utils/trpc";
 import type { Campaign } from "../types";
 import type { CampaignNote } from "./types";
 
@@ -15,10 +14,6 @@ const NotesPage = (props: {
 }) => {
   const { campaignData, campaignNotes, isPrivateNotes, userId, myNotes } = props;
   const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);
-  // const { data: myNotes } = api.queryCampaignPrivateNotes.useQuery({
-  //   campaignId: campaignData.id,
-  //   userId,
-  // });
   if (campaignNotes === undefined || myNotes === undefined)
     return <div>failed to load campaign notes</div>;
 
