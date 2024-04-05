@@ -1,47 +1,28 @@
-"use client"
 import { currentUser } from "@clerk/nextjs";
-import { useState } from "react";
-import type { ChangeEvent } from "react";
 import { prisma } from "~/utils/context";
-import { api } from "~/utils/trpc";
-import { useRouter } from "next/navigation";
-import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { Label } from "~/components/ui/label";
+import CreateCampaignForm from "./_components/create-campaign-form";
 
 export default async function CreateCampaign() {
-  const user = await currentUser();
-  if (!user?.id || !user?.username) return <div>failed to load user...</div>;
-  const userId = user.id;
-  const router = useRouter();
+  const userData = await currentUser();
+  
+  const user = await prisma.user.findUnique({
+    where: {
+      clerkId: userData?.id
+    }
+  })
+  if (!userData?.id || !userData?.username || !user) return <div>failed to load user...</div>;
 
-  const [campaignChecker, setCampaignChecker] = useState({
-    name: false,
-    description: false,
-  });
-  const [imageFile, setImageFile] = useState<string | undefined>();
-  const [campaignProps, setCampaignProps] = useState({
-    name: "",
-    description: "",
-    friends: [{ id: "", name: "" }],
-  });
-  const [friends, setFriends] = useState([{ name: "", id: "" }]);
+
+  
+
   const friendsList = await prisma.friendship.findMany({
     where: {
       OR: [
         {
-          receiverId: userId,
+          receiverId: user?.clerkId,
         },
         {
-          senderId: userId,
+          senderId: user?.clerkId,
         },
       ],
       AND: [
@@ -51,110 +32,10 @@ export default async function CreateCampaign() {
       ],
     },
   });
-
-  const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files !== null) {
-      const file = event.target.files[0];
-      if (file !== undefined) {
-        const fileString = URL.createObjectURL(file);
-        setImageFile(fileString);
-      }
-    }
-  };
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setCampaignProps({ ...campaignProps, [name]: value });
-  };
-
-  type FriendList = {
-    id: string;
-    name: string;
-  };
-  const removeFriend = (friendIndex: number) => {
-    campaignProps.friends.splice(friendIndex, 1);
-    router.refresh();
-  };
-
-  const inviteFriendToCampaign = (invitedFriend: FriendList) => {
-    if (campaignProps.friends.find((friend) => friend.id === invitedFriend.id))
-      return;
-    if (
-      campaignProps.friends[0] !== undefined &&
-      campaignProps.friends[0].name === ""
-    ) {
-      campaignProps.friends[0] = invitedFriend;
-    } else {
-      campaignProps.friends.push(invitedFriend);
-    }
-    router.refresh();
-  };
-
-  const findFriendsIds = () => {
-    const array: FriendList[] = [];
-    friendsList?.map((friend) => {
-      if (friend.receiverId === userId)
-        array.push({ id: friend.senderId, name: friend.senderName });
-      else if (friend.senderId === userId)
-        array.push({ id: friend.receiverId, name: friend.receiverName });
-      if (array.length === 0) {
-        setFriends([{ name: "You don't seem to have anyone to add", id: "" }]);
-      } else {
-        setFriends(array);
-      }
-    });
-  };
-  const { mutate } = api.createCampaign.useMutation({
-    onSuccess: (campaign) => {
-      void router.push(`/myCampaigns/${campaign.id}`);
-    },
-    onError: (e) => {
-      console.error(e);
-    },
-  });
-
-  if (friends[0]?.id === "") findFriendsIds();
-
-  const handleCreateCampaign = () => {
-    if (campaignProps.name === "" || campaignProps.description === "") {
-      if (campaignProps.name === "" && campaignProps.description === "") {
-        setCampaignChecker({
-          name: true,
-          description: true,
-        });
-        return;
-      } else {
-        if (campaignProps.name === "") {
-          setCampaignChecker({
-            ...campaignChecker,
-            name: true,
-          });
-        }
-        if (campaignProps.description === "") {
-          setCampaignChecker({
-            ...campaignChecker,
-            description: true,
-          });
-        }
-        return;
-      }
-    }
-    mutate({
-      id: userId,
-      imageUrl: imageFile ? imageFile : "",
-      dmProfileImg: user.imageUrl ? user.imageUrl : undefined,
-      dmName: user.username ? user.username : "",
-      name: campaignProps.name,
-      description: campaignProps.description,
-      friendsIds:
-        campaignProps.friends[0]?.id === "" ? undefined : campaignProps.friends,
-    });
-  };
   return (
     <div className="flex w-full flex-col lg:flex-row">
-      <div className="flex w-full flex-col p-8 lg:w-1/2">
+      <CreateCampaignForm friendsList={friendsList} user={user}/>
+      {/* <div className="flex w-full flex-col p-8 lg:w-1/2">
         <div className="ml-2">
           <Label className="text-white" htmlFor="name">
             Campaign Name:
@@ -292,7 +173,7 @@ export default async function CreateCampaign() {
               ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
