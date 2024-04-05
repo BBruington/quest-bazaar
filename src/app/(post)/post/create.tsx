@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/nextjs";
 
 //components
-import CreatePostComponent from "~/app/(post)/post/_components/createPost";
+import CreatePostComponent from "~/app/(post)/post/_components/create-post";
 
 export default function PostCreator(props: { campaignId: string }) {
   const { campaignId } = props;

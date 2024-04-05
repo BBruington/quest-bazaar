@@ -5,7 +5,7 @@ import { type Post } from "@prisma/client";
 
 //components
 import Spinner from "~/components/spinner/spinner";
-import CampaignPost from "~/app/(post)/post/_components/singlePost";
+import CampaignPost from "~/app/(post)/post/_components/single-post";
 
 export async function generateStaticParams() {
   const posts = await prisma.post.findMany({

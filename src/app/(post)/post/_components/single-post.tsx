@@ -2,7 +2,7 @@
 import toast, { Toaster } from "react-hot-toast";
 
 //components
-import JoinButton from "./joinButton";
+import JoinButton from "./join-button";
 import { Post } from "@prisma/client";
 
 export default async function CampaignPost(props: {

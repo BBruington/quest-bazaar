@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import NoteList from "./noteList";
-import NoteViewer from "./noteViewer";
+import NoteList from "./note-list";
+import NoteViewer from "./note-viewer";
 import { api } from "~/utils/trpc";
 import type { Campaign } from "../types";
 import type { CampaignNote } from "./types";
