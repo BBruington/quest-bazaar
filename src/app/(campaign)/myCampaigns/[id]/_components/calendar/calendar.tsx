@@ -19,6 +19,7 @@ import "react-clock/dist/Clock.css";
 import { deleteCampaignScheduledEvent } from "../../actions";
 import type { Campaign } from "../types";
 import { CampaignSchedules } from "@prisma/client";
+import { convertMilitaryTime } from "../../../../../../../helpers/convertMilitaryTime";
 
 export default function CalendarComponent(props: {
   campaignData: Campaign;
@@ -121,13 +122,13 @@ export default function CalendarComponent(props: {
           >
             <div className="flex flex-col">
               <div>{scheduledEvent.scheduledEvent}</div>
-              <div>{scheduledEvent.date}</div>
+              <div>{new Date(scheduledEvent.date).toLocaleString('en-us', { weekday: 'short' })}, {new Date(scheduledEvent.date).toLocaleString('en-us', { month: 'short' })} {new Date(scheduledEvent.date).getFullYear()}</div>
               <div className="mt-1 flex justify-between">
                 <div>
-                  <div className="font-bold">{scheduledEvent.time}</div>
+                  <div className="font-bold">{convertMilitaryTime(scheduledEvent.time)}</div>
                 </div>
                 <Trash2
-                  className="mr-5 flex text-white hover:cursor-pointer hover:text-slate-200"
+                  className="ml-5 flex text-white hover:cursor-pointer hover:text-slate-200"
                   onClick={() => handleDeleteSchedule(scheduledEvent.id)}
                 />
               </div>

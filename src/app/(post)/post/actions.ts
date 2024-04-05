@@ -11,12 +11,12 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(8, "1 m"),
 });
 
-interface Response {
+type Response = {
   status: "SUCCESS" | "ERROR" | "FAILED";
   message: string
 }
 
-interface RequestInviteToCampaignProps {
+type RequestInviteToCampaignProps = {
   userId: User["clerkId"];
   campaignId: Post["campaignId"];
   postId: Post["id"]
@@ -43,10 +43,10 @@ export const requestInviteToCampaign = async ({
         message: "Somethign went wrong. Failed to find campaign.",
       };
     }
-    if (campaign.players.find((player) => player.clerkId === userId)) {
+    if (campaign.dmUserId === userId || campaign.players.find((player) => player.clerkId === userId)) {
       return {
         status: "FAILED",
-        message: "You are already a member of the campaign",
+        message: "You are already a member of this campaign",
       };
     }
     await prisma.campaign.update({
