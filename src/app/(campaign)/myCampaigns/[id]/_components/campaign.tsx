@@ -201,9 +201,9 @@ export default function CampaignComponent(props: {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="flex justify-center space-x-5 lg:justify-around">
+              <div className="flex justify-center space-x-3 lg:justify-around">
                 <Button
-                  className="h-8 w-32 py-3 text-xs text-white hover:underline"
+                  className="h-8 w-28 py-3 text-xs text-white hover:underline"
                   onClick={() => {
                     setIsPrivateNotes(false);
                     setUiToggle({
@@ -217,7 +217,7 @@ export default function CampaignComponent(props: {
                   Public Notes
                 </Button>
                 <Button
-                  className="h-8 w-32 py-3 text-xs text-white hover:underline"
+                  className="h-8 w-28 py-3 text-xs text-white hover:underline"
                   onClick={() => {
                     setIsPrivateNotes(true);
                     setUiToggle({
@@ -228,7 +228,7 @@ export default function CampaignComponent(props: {
                     });
                   }}
                 >
-                  Personal Notes
+                  Private Notes
                 </Button>
               </div>
             </AccordionContent>
@@ -243,14 +243,14 @@ export default function CampaignComponent(props: {
             <AccordionContent>
               <div className="space-y-3">
                 <AlertDialog>
-                  <div className="flex justify-center space-x-5">
+                  <div className="flex justify-center space-x-3">
                     <AlertDialogTrigger
                       disabled={userId !== campaignData.dmUserId}
                     >
                       <Button
                         variant="destructive"
                         disabled={userId !== campaignData.dmUserId}
-                        className="h-8 w-32"
+                        className="h-8 w-28"
                       >
                         Delete
                       </Button>
@@ -263,7 +263,7 @@ export default function CampaignComponent(props: {
                       >
                         <Button
                           disabled={userId !== campaignData.dmUserId}
-                          className="h-8 w-32"
+                          className="h-8 w-28"
                         >
                           Create Post
                         </Button>
