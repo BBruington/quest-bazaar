@@ -67,7 +67,7 @@ export const queryFriendChat = async ({
         ],
       },
       orderBy: {
-        sentAt: "asc",
+        sentAt: "desc",
       },
     });
     const filteredMessages = messagesData.filter((message) => {

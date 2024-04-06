@@ -12,6 +12,7 @@ const NoteViewer = (props: {
   userId: string;
 }) => {
   const { note, campaignData, privateNotes, userId } = props;
+  
   const [campaignNote, setCampaigNote] = useState(note);
   useEffect(() => {
     setCampaigNote(note);
