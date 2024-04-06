@@ -12,7 +12,6 @@ export default function DisplayMessages(props: { userId: User["clerkId"] }) {
   const { userId } = props;
   const [selectedFriend, setSelectedFriend] = useAtom(selectedFriendAtom);
   const [friendMessages, setFriendMessages] = useAtom(friendMessagesAtom);
-  const [isLoading, setIsloading] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   const findFriendId = (userId: User["clerkId"]) => {
@@ -27,7 +26,6 @@ export default function DisplayMessages(props: { userId: User["clerkId"] }) {
   };
 
   const handleSendMessage = async () => {
-    setIsloading(true);
     if (inputValue !== "") {
       await sendMessage({
         userId,
@@ -62,7 +60,6 @@ export default function DisplayMessages(props: { userId: User["clerkId"] }) {
       }
     }
     setInputValue("");
-    setIsloading(false);
   };
 
   return (

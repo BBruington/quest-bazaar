@@ -20,6 +20,13 @@ export default async function CampaignPage({
       chat: true,
     },
   });
+
+  const campaignChat = await prisma.campaignChat.findMany({
+    where: {
+      campaignId: params.id
+    },
+    orderBy: { createdAt: "desc"}
+  })
   const allNotes = await prisma?.campaignNote.findMany({
     where: {
       campaignId: params.id,
@@ -34,7 +41,7 @@ export default async function CampaignPage({
 
   return (
     <CampaignComponent
-      campaignMessages={campaignData?.chat}
+      campaignMessages={campaignChat}
       userId={user?.id}
       campaignData={campaignData}
       scheduledEvents={campaignData?.schedules}

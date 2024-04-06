@@ -1,21 +1,39 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Campaign } from "@prisma/client";
-import { useState } from "react";
+import { Campaign, CampaignChat } from "@prisma/client";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useForm } from "react-hook-form";
 import { sendChatMessage } from "../../actions";
 import { Form, FormField, FormItem, FormControl } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { chatMessageSchema } from "~/lib/validations/chatMessage";
+import uuid from "react-uuid";
 
 interface ChatInputProps {
   username: string;
   campaignProps: Campaign;
+  campaignMessages: CampaignChat[];
+  setCampaignChat: Dispatch<
+    SetStateAction<
+      {
+        id: string;
+        campaignId: string;
+        username: string;
+        chat: string;
+        createdAt: Date;
+      }[]
+    >
+  >;
 }
 
-export default function ChatInput({ username, campaignProps }: ChatInputProps) {
+export default function ChatInput({
+  username,
+  campaignProps,
+  campaignMessages,
+  setCampaignChat,
+}: ChatInputProps) {
   type FormData = {
     message: string;
   };
@@ -27,10 +45,18 @@ export default function ChatInput({ username, campaignProps }: ChatInputProps) {
     },
   });
   const { handleSubmit, reset } = form;
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendMessage = async (message: FormData) => {
-    setIsLoading(true);
+    setCampaignChat([
+      {
+        id: uuid(),
+        campaignId: campaignProps.id,
+        chat: message.message,
+        username: username,
+        createdAt: new Date(Date.now().toString()),
+      },
+      ...campaignMessages,
+    ]);
     await sendChatMessage({
       campaignId: campaignProps.id,
       username: username,
@@ -38,7 +64,6 @@ export default function ChatInput({ username, campaignProps }: ChatInputProps) {
     });
 
     reset();
-    setIsLoading(false);
   };
 
   return (
@@ -56,13 +81,9 @@ export default function ChatInput({ username, campaignProps }: ChatInputProps) {
                     {...field}
                     placeholder="Message"
                     className=" mt-auto border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-                    disabled={isLoading}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (field.name.length !== 0) {
-                          handleSubmit(handleSendMessage);
-                        }
+                      if (e.key === "Enter" && field.name.length !== 0) {
+                        handleSubmit(handleSendMessage);
                       }
                     }}
                   />
