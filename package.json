@@ -31,6 +31,7 @@
     "@trpc/next": "^10.26.0",
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
+    "@uploadthing/react": "^6.4.1",
     "@upstash/ratelimit": "^1.0.0",
     "@upstash/redis": "^1.25.2",
     "class-variance-authority": "^0.7.0",
@@ -53,6 +54,7 @@
     "svix": "^1.10.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.7.0",
     "ws": "^8.16.0",
     "zod": "^3.22.4"
   },

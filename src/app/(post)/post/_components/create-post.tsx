@@ -6,6 +6,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { createCampaignPost } from "../actions";
+import { UploadButton } from "~/utils/uploadthing";
 
 export default function CreatePostComponent(props: {
   userId: string;
@@ -18,7 +19,7 @@ export default function CreatePostComponent(props: {
     title: false,
     description: false,
   });
-  const [imageFile, setImageFile] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | undefined>();
   const [postProps, setPostProps] = useState({
     title: "",
     description: "",
@@ -27,16 +28,6 @@ export default function CreatePostComponent(props: {
     startingLevel: 1,
     finishingLevel: 1,
   });
-
-  const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files !== null) {
-      const file = event.target.files[0];
-      if (file !== undefined) {
-        const fileString = URL.createObjectURL(file);
-        setImageFile(fileString);
-      }
-    }
-  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -77,7 +68,7 @@ export default function CreatePostComponent(props: {
       description: postProps.description,
       author: username!,
       body: postProps.body,
-      mainImage: imageFile ? imageFile : "",
+      mainImage: imageUrl ? imageUrl : "",
     });
     if (response?.status === "SUCCESS") {
       toast.success(`${response.message}`);
@@ -139,12 +130,14 @@ export default function CreatePostComponent(props: {
           <Label className="text-white" htmlFor="imageUrl">
             Image:
           </Label>
-          <Input
-            className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            type="file"
-            id="imageUrl"
-            name="imageUrl"
-            onChange={handleImageFile}
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              setImageUrl(res[0].url);
+            }}
+            onUploadError={(error: Error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
           />
         </div>
         <div className="mx-2 mb-2">
@@ -153,7 +146,7 @@ export default function CreatePostComponent(props: {
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
             type="text"
             id="imageUrl"
-            value={imageFile ? imageFile : undefined}
+            value={imageUrl ? imageUrl : undefined}
             onChange={handleChange}
           />
         </div>

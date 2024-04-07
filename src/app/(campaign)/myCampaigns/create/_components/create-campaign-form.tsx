@@ -15,6 +15,7 @@ import React, { ChangeEvent, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { createCampaign } from "../actions";
+import { UploadButton } from "~/utils/uploadthing";
 
 interface CreateCampaignFormProps {
   friendsList: Friendship[];
@@ -31,23 +32,13 @@ export default function CreateCampaignForm({
     name: false,
     description: false,
   });
-  const [imageFile, setImageFile] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | undefined>();
   const [campaignProps, setCampaignProps] = useState({
     name: "",
     description: "",
     friends: [{ id: "", name: "" }],
   });
   const [friends, setFriends] = useState([{ name: "", id: "" }]);
-
-  const handleImageFile = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files !== null) {
-      const file = event.target.files[0];
-      if (file !== undefined) {
-        const fileString = URL.createObjectURL(file);
-        setImageFile(fileString);
-      }
-    }
-  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -83,9 +74,9 @@ export default function CreateCampaignForm({
   const findFriendsIds = () => {
     const array: FriendList[] = [];
     friendsList?.map((friend) => {
-      if (friend.receiverId === user.id)
+      if (friend.receiverId === user.clerkId)
         array.push({ id: friend.senderId, name: friend.senderName });
-      else if (friend.senderId === user.id)
+      else if (friend.senderId === user.clerkId)
         array.push({ id: friend.receiverId, name: friend.receiverName });
       if (array.length === 0) {
         setFriends([{ name: "You don't seem to have anyone to add", id: "" }]);
@@ -122,8 +113,8 @@ export default function CreateCampaignForm({
       }
     }
     const response = await createCampaign({
-      userId: user.id,
-      imageUrl: imageFile ? imageFile : "",
+      userId: user.clerkId,
+      imageUrl: imageUrl ? imageUrl : "",
       dmProfileImg: user.imgUrl ? user.imgUrl : null,
       dmName: user.username ? user.username : "",
       title: campaignProps.name,
@@ -176,12 +167,14 @@ export default function CreateCampaignForm({
           <Label className="text-white" htmlFor="description">
             Image:
           </Label>
-          <Input
-            className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            type="file"
-            id="imageUrl"
-            name="imageUrl"
-            onChange={handleImageFile}
+          <UploadButton 
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              setImageUrl(res[0].url)
+            }}
+            onUploadError={(error: Error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
           />
         </div>
         <div className="m-2 flex justify-between gap-5">
@@ -217,9 +210,9 @@ export default function CreateCampaignForm({
           <img
             className="h-60 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105"
             src={`${
-              imageFile === "" || imageFile === undefined
-                ? "https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
-                : imageFile
+              imageUrl === "" || imageUrl === undefined
+                ? "https://scgovlibrary.librarymarket.com/sites/default/Urls/2020-12/dndmobile-br-1559158957902.jpg"
+                : imageUrl
             }`}
             alt="Campaign main image"
           />
