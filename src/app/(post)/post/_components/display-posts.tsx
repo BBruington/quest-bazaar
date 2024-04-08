@@ -20,7 +20,11 @@ export default async function DisplayPosts() {
               <div className="border-primary-foregroun group cursor-pointer overflow-hidden rounded-lg border">
                 <img
                   className="h-60 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105"
-                  src="https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
+                  src={
+                    post.mainImage
+                      ? post.mainImage
+                      : "https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
+                  }
                   alt="Post main image"
                 />
                 <div className="flex justify-between bg-accent-foreground p-5 ">

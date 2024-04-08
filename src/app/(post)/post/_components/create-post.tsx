@@ -83,7 +83,7 @@ export default function CreatePostComponent(props: {
       <div className="flex w-full flex-col">
         <div className="mx-2">
           <Label className="text-white" htmlFor="title">
-            Campaign Name:
+            Title:
           </Label>
           <Input
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
@@ -131,6 +131,7 @@ export default function CreatePostComponent(props: {
             Image:
           </Label>
           <UploadButton
+          className="bg-primary h-10 rounded-sm"
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
               setImageUrl(res[0].url);
@@ -138,16 +139,6 @@ export default function CreatePostComponent(props: {
             onUploadError={(error: Error) => {
               alert(`ERROR! ${error.message}`);
             }}
-          />
-        </div>
-        <div className="mx-2 mb-2">
-          <Label className="text-white">Imgage Url</Label>
-          <Input
-            className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
-            type="text"
-            id="imageUrl"
-            value={imageUrl ? imageUrl : undefined}
-            onChange={handleChange}
           />
         </div>
         <div className="mx-2 mb-2">
