@@ -131,7 +131,7 @@ export default function CreatePostComponent(props: {
             Image:
           </Label>
           <UploadButton
-          className="bg-primary h-10 rounded-sm"
+            className="h-10 rounded-sm bg-primary"
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
               setImageUrl(res[0].url);

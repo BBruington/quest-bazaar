@@ -32,13 +32,19 @@ export default function CreateCampaignForm({
     name: false,
     description: false,
   });
-  const [imageUrl, setImageUrl] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | undefined>("");
   const [campaignProps, setCampaignProps] = useState({
     name: "",
     description: "",
     friends: [{ id: "", name: "" }],
   });
-  const [friends, setFriends] = useState([{ name: "", id: "" }]);
+
+  type Friend = {
+    id: string;
+    name: string;
+  };
+
+  const [friends, setFriends] = useState<Friend[]>([]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -47,17 +53,12 @@ export default function CreateCampaignForm({
     setCampaignProps({ ...campaignProps, [name]: value });
   };
 
-  type FriendList = {
-    id: string;
-    name: string;
-  };
-
   const removeFriend = (friendIndex: number) => {
     campaignProps.friends.splice(friendIndex, 1);
     router.refresh();
   };
 
-  const inviteFriendToCampaign = (invitedFriend: FriendList) => {
+  const inviteFriendToCampaign = (invitedFriend: Friend) => {
     if (campaignProps.friends.find((friend) => friend.id === invitedFriend.id))
       return;
     if (
@@ -72,7 +73,7 @@ export default function CreateCampaignForm({
   };
 
   const findFriendsIds = () => {
-    const array: FriendList[] = [];
+    const array: Friend[] = [];
     friendsList?.map((friend) => {
       if (friend.receiverId === user.clerkId)
         array.push({ id: friend.senderId, name: friend.senderName });
@@ -86,7 +87,7 @@ export default function CreateCampaignForm({
     });
   };
 
-  //if (friends[0]?.id === "") findFriendsIds();
+  if (friends.length === 0) findFriendsIds();
 
   const handleCreateCampaign = async () => {
     if (campaignProps.name === "" || campaignProps.description === "") {
@@ -167,10 +168,11 @@ export default function CreateCampaignForm({
           <Label className="text-white" htmlFor="description">
             Image:
           </Label>
-          <UploadButton 
+          <UploadButton
+            className="h-10 rounded-sm bg-primary"
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
-              setImageUrl(res[0].url)
+              setImageUrl(res[0].url);
             }}
             onUploadError={(error: Error) => {
               alert(`ERROR! ${error.message}`);
@@ -185,12 +187,16 @@ export default function CreateCampaignForm({
             <DropdownMenuTrigger className="inline-flex h-10 w-40 items-center justify-center rounded-md bg-primary text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
               Invite Friends
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Friends</DropdownMenuLabel>
+            <DropdownMenuContent className="w-32 bg-primary/90">
+              <DropdownMenuLabel className="flex justify-center border-b-2 border-black py-1">
+                My Friends
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               {friends ? (
                 friends.map((friend, index) => (
                   <DropdownMenuItem
+                    disabled={friend.id === ""}
+                    className="flex cursor-pointer justify-center"
                     onClick={() => inviteFriendToCampaign(friend)}
                     key={index}
                   >
@@ -211,7 +217,7 @@ export default function CreateCampaignForm({
             className="h-60 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105"
             src={`${
               imageUrl === "" || imageUrl === undefined
-                ? "https://scgovlibrary.librarymarket.com/sites/default/Urls/2020-12/dndmobile-br-1559158957902.jpg"
+                ? "https://scgovlibrary.librarymarket.com/sites/default/files/2020-12/dndmobile-br-1559158957902.jpg"
                 : imageUrl
             }`}
             alt="Campaign main image"

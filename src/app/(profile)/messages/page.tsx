@@ -101,51 +101,51 @@ export default async function Messages() {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col">
-                    {!myFriends || myFriends.length === 0 ? (
-                      <div className="flex justify-center text-white">
-                        Empty
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                    {myFriends?.map((friend) => (
-                      <FriendsList
-                        key={friend.id}
-                        friend={friend}
-                        userId={userId}
-                      />
-                    ))}
+                  {!myFriends || myFriends.length === 0 ? (
+                    <div className="flex justify-center text-white">Empty</div>
+                  ) : (
+                    <></>
+                  )}
+                  {myFriends?.map((friend) => (
+                    <FriendsList
+                      key={friend.id}
+                      friend={friend}
+                      userId={userId}
+                    />
+                  ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger className="flex justify-center hover:text-slate-200 sm:justify-start">
-                <div className="flex sm:w-2/3 sm:justify-between">
-                  <span>Notifications</span>{" "}
-                  <Mail className="invisible sm:visible sm:ml-2" />
+                <div className="flex items-center sm:w-2/3 sm:justify-between">
+                  <span>Notifications</span>
+                  <div className="relative flex items-center">
+                    <Mail className="invisible sm:visible sm:ml-2" />
+                    <span
+                      className={`${
+                        notificationsAmount > 0
+                          ? "absolute right-1 h-4 w-4 items-center rounded-full bg-red-600 text-xs text-white sm:left-5 sm:right-0 sm:top-3"
+                          : ""
+                      }`}
+                    >
+                      {notificationsAmount === 0 ? null : notificationsAmount}
+                    </span>
+                  </div>
                 </div>
-                <span
-                  className={`${
-                    notificationsAmount > 0
-                      ? "h-4 w-4 items-center rounded-full bg-red-600 text-xs text-white"
-                      : ""
-                  }`}
-                >
-                  {notificationsAmount === 0 ? null : notificationsAmount}
-                </span>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-3">
                   {/* UserNotifications */}
-                    {receivedFriendRequests &&
-                      userData?.invitedCampaigns &&
-                      receivedFriendRequests?.length +
-                        userData?.invitedCampaigns.length ===
-                        0 && (
-                        <div className="flex justify-center text-white">
-                          Empty
-                        </div>
-                      )}
+                  {receivedFriendRequests &&
+                    userData?.invitedCampaigns &&
+                    receivedFriendRequests?.length +
+                      userData?.invitedCampaigns.length ===
+                      0 && (
+                      <div className="flex justify-center text-white">
+                        Empty
+                      </div>
+                    )}
                   {receivedFriendRequests?.map((friendRequest) => (
                     <div key={friendRequest.id}>
                       <div className="flex border-b border-white pb-3 md:flex-col">
@@ -161,23 +161,23 @@ export default async function Messages() {
                       </div>
                     </div>
                   ))}
-                    {userData?.invitedCampaigns?.map((campaign) => (
-                      <div key={campaign.id}>
-                        <div className="flex border-b border-white pb-3 md:flex-col">
-                          <div>
-                            <span>
-                              You have been invited to join {campaign.name}
-                            </span>
-                          </div>
-                          <div className="mt-1 flex flex-col justify-around md:flex-row">
-                            <CampaignInvite
-                              userId={userId}
-                              notification={campaign}
-                            />
-                          </div>
+                  {userData?.invitedCampaigns?.map((campaign) => (
+                    <div key={campaign.id}>
+                      <div className="flex border-b border-white pb-3 md:flex-col">
+                        <div>
+                          <span>
+                            You have been invited to join {campaign.name}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex flex-col justify-around md:flex-row">
+                          <CampaignInvite
+                            userId={userId}
+                            notification={campaign}
+                          />
                         </div>
                       </div>
-                    ))}
+                    </div>
+                  ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -198,13 +198,13 @@ export default async function Messages() {
             </AccordionItem>
           </Accordion>
           <div className="invisible mt-20 flex h-0 w-full sm:visible sm:h-60 lg:invisible lg:h-0">
-              <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
+            <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
           </div>
         </div>
 
         <DisplayMessages userId={userId} />
         <div className="invisible w-0 lg:visible lg:w-1/6">
-            <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
+          <SelectedFriend userId={userId} userCampaigns={userCampaigns} />
         </div>
       </div>
     </>
