@@ -122,7 +122,7 @@ export default function CalendarComponent(props: {
           >
             <div className="flex flex-col">
               <div>{scheduledEvent.scheduledEvent}</div>
-              <div>{new Date(scheduledEvent.date).toLocaleString('en-us', { weekday: 'short' })}, {new Date(scheduledEvent.date).toLocaleString('en-us', { month: 'short' })} {new Date(scheduledEvent.date).getFullYear()}</div>
+              <div>{new Date(scheduledEvent.date).toLocaleString('en-us', { month: 'short' })} {new Date(scheduledEvent.date).toLocaleString('en-us', { day: '2-digit' })}, {new Date(scheduledEvent.date).getFullYear()}</div>
               <div className="mt-1 flex justify-between">
                 <div>
                   <div className="font-bold">{convertMilitaryTime(scheduledEvent.time)}</div>
