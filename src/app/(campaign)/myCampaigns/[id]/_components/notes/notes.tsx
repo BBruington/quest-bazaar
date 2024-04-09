@@ -13,7 +13,7 @@ const NotesPage = (props: {
   userId: string;
 }) => {
   const { campaignData, campaignNotes, isPrivateNotes, userId, myNotes } = props;
-  const [selectedNote, setSelectedNote] = useState(campaignNotes[0]);
+  const [selectedNote, setSelectedNote] = useState<CampaignNote | undefined>();
   if (campaignNotes === undefined || myNotes === undefined)
     return <div>failed to load campaign notes</div>;
 

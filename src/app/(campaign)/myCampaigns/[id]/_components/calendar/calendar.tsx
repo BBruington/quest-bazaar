@@ -46,10 +46,10 @@ export default function CalendarComponent(props: {
     ]
   );
   const [updateEvents, setUpdateEvents] = useState(false);
-  const [eventDaysState, setEventDaysState] = useOptimistic(allDates, (state, newEventDate: Date) => [
-    ...state,
-    newEventDate,
-  ]);
+  const [eventDaysState, setEventDaysState] = useOptimistic(
+    allDates,
+    (state, newEventDate: Date) => [...state, newEventDate]
+  );
   const handleUpdatingCalendar = () => {
     if (updateEvents === true) {
       setUpdateEvents(!updateEvents);
@@ -122,10 +122,20 @@ export default function CalendarComponent(props: {
           >
             <div className="flex flex-col">
               <div>{scheduledEvent.scheduledEvent}</div>
-              <div>{new Date(scheduledEvent.date).toLocaleString('en-us', { month: 'short' })} {new Date(scheduledEvent.date).toLocaleString('en-us', { day: '2-digit' })}, {new Date(scheduledEvent.date).getFullYear()}</div>
+              <div>
+                {new Date(scheduledEvent.date).toLocaleString("en-us", {
+                  month: "short",
+                })}{" "}
+                {new Date(scheduledEvent.date).toLocaleString("en-us", {
+                  day: "2-digit",
+                })}
+                , {new Date(scheduledEvent.date).getFullYear()}
+              </div>
               <div className="mt-1 flex justify-between">
                 <div>
-                  <div className="font-bold">{convertMilitaryTime(scheduledEvent.time)}</div>
+                  <div className="font-bold">
+                    {convertMilitaryTime(scheduledEvent.time)}
+                  </div>
                 </div>
                 <Trash2
                   className="ml-5 flex text-white hover:cursor-pointer hover:text-slate-200"
