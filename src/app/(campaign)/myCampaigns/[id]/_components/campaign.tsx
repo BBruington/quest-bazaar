@@ -171,20 +171,37 @@ export default function CampaignComponent(props: {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="flex items-center justify-center space-x-6 lg:justify-start">
-                <Avatar>
-                  <AvatarImage
-                    src={
-                      campaignData.dmProfileImg
-                        ? campaignData.dmProfileImg
-                        : "https://github.com/shadcn.png"
+              <DropdownMenu>
+                <DropdownMenuTrigger className="w-full hover:bg-slate-800">
+                  <div className="flex items-center justify-center space-x-6 lg:justify-start">
+                    <Avatar>
+                      <AvatarImage
+                        src={
+                          campaignData.dmProfileImg
+                            ? campaignData.dmProfileImg
+                            : "https://github.com/shadcn.png"
+                        }
+                        alt="@shadcn"
+                      />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <span>{campaignData.dmName}</span>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-32 bg-primary/90">
+                  <Button
+                    disabled={userId === campaignData.dmUserId}
+                    onClick={() =>
+                      handleAddFriend({
+                        name: campaignData.dmName ? campaignData.dmName : "",
+                      })
                     }
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <span>{campaignData.dmName}</span>
-              </div>
+                    className="w-full"
+                  >
+                    Add Friend
+                  </Button>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
@@ -220,8 +237,17 @@ export default function CampaignComponent(props: {
                       </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-32 bg-primary/90">
-                      <Button onClick={() => handleAddFriend({name: player.username ? player.username : ""})} className="w-full">Add Friend</Button>
-                      <DropdownMenuSeparator />
+                      <Button
+                        disabled={userId === player.clerkId}
+                        onClick={() =>
+                          handleAddFriend({
+                            name: player.username ? player.username : "",
+                          })
+                        }
+                        className="w-full"
+                      >
+                        Add Friend
+                      </Button>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ))

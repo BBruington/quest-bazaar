@@ -139,10 +139,8 @@ export const sendFriendRequest = async ({
           {
             receiverName: receiverName,
             senderId: userId,
-            senderName: senderName,
           },
           {
-            receiverName: senderName,
             senderName: receiverName,
             receiverId: userId,
           },
