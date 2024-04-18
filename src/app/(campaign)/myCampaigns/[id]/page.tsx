@@ -1,4 +1,5 @@
 import { currentUser } from "@clerk/nextjs";
+import { Toaster } from "react-hot-toast";
 import CampaignComponent from "~/app/(campaign)/myCampaigns/[id]/_components/campaign";
 import { prisma } from "~/utils/context";
 
@@ -23,10 +24,10 @@ export default async function CampaignPage({
 
   const campaignChat = await prisma.campaignChat.findMany({
     where: {
-      campaignId: params.id
+      campaignId: params.id,
     },
-    orderBy: { createdAt: "desc"}
-  })
+    orderBy: { createdAt: "desc" },
+  });
   const allNotes = await prisma?.campaignNote.findMany({
     where: {
       campaignId: params.id,
@@ -37,22 +38,25 @@ export default async function CampaignPage({
     (note) => note.private === true && note.userId === user?.id
   );
   const publicNotes = allNotes?.filter((note) => note.private === false);
-  if (!campaignData || ! user ) return <div>something went wrong</div>
+  if (!campaignData || !user) return <div>something went wrong</div>;
 
   return (
-    <CampaignComponent
-      campaignMessages={campaignChat}
-      userId={user?.id}
-      campaignData={campaignData}
-      scheduledEvents={campaignData?.schedules}
-      myNotes={myNotes}
-      publicNotes={publicNotes}
-      campaignPlayers={campaignData?.players ? campaignData.players : null}
-      campaignRequestingInvitePlayers={
-        campaignData?.requestingInvitePlayers
-          ? campaignData.requestingInvitePlayers
-          : null
-      }
-    />
+    <>
+      <Toaster position="top-center" />
+      <CampaignComponent
+        campaignMessages={campaignChat}
+        userId={user?.id}
+        campaignData={campaignData}
+        scheduledEvents={campaignData?.schedules}
+        myNotes={myNotes}
+        publicNotes={publicNotes}
+        campaignPlayers={campaignData?.players ? campaignData.players : null}
+        campaignRequestingInvitePlayers={
+          campaignData?.requestingInvitePlayers
+            ? campaignData.requestingInvitePlayers
+            : null
+        }
+      />
+    </>
   );
 }

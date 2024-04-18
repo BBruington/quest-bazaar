@@ -7,6 +7,14 @@ import {
   Scroll,
   Settings,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -41,6 +49,10 @@ import type {
   CampaignSchedules,
 } from "@prisma/client";
 import { deleteCampaign, handleRequestToJoinGame } from "../actions";
+import toast from "react-hot-toast";
+import { z } from "zod";
+import { sendFriendRequest } from "~/app/(profile)/messages/actions";
+import { userNameSchema } from "~/lib/validations/user";
 
 export default function CampaignComponent(props: {
   campaignData: Campaign;
@@ -79,6 +91,23 @@ export default function CampaignComponent(props: {
   const handleDeleteCampaign = async () => {
     await deleteCampaign({ campaignId: campaignData.id });
     router.push(`/myCampaigns`);
+  };
+
+  type FormData = z.infer<typeof userNameSchema>;
+
+  const handleAddFriend = async (friendName: FormData) => {
+    if (user.user?.username !== null && user.user?.username !== undefined) {
+      const response = await sendFriendRequest({
+        receiverName: friendName.name,
+        senderName: user.user?.username,
+        userId,
+      });
+      if (response?.status === "SUCCESS") {
+        toast.success(`${response.message}`);
+      } else {
+        toast.error(`${response?.message}`);
+      }
+    }
   };
 
   const handleRequestToJoinGameResponse = async (
@@ -170,23 +199,31 @@ export default function CampaignComponent(props: {
               campaignPlayers?.length !== 0 &&
               campaignPlayers !== undefined ? (
                 campaignPlayers?.map((player) => (
-                  <div
-                    className="mb-2 flex items-center justify-center space-x-6 lg:justify-start"
-                    key={player.id}
-                  >
-                    <Avatar>
-                      <AvatarImage
-                        src={
-                          player.imgUrl
-                            ? player.imgUrl
-                            : "https://github.com/shadcn.png"
-                        }
-                        alt="@shadcn"
-                      />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <span>{player.username}</span>
-                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="w-full hover:bg-slate-800">
+                      <div
+                        className="my-1 ml-1 flex w-full items-center justify-center space-x-6 lg:justify-start"
+                        key={player.id}
+                      >
+                        <Avatar>
+                          <AvatarImage
+                            src={
+                              player.imgUrl
+                                ? player.imgUrl
+                                : "https://github.com/shadcn.png"
+                            }
+                            alt="@shadcn"
+                          />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                        <span>{player.username}</span>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-32 bg-primary/90">
+                      <Button onClick={() => handleAddFriend({name: player.username ? player.username : ""})} className="w-full">Add Friend</Button>
+                      <DropdownMenuSeparator />
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 ))
               ) : (
                 <span className="ml-3 text-white">Invite some friends!</span>

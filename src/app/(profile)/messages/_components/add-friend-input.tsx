@@ -41,6 +41,7 @@ export default function AddFriendInput({
     }
     reset();
   };
+  
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(handleAddFriend)} className="flex justify-between">
