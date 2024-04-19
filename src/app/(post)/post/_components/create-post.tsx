@@ -22,7 +22,7 @@ export default function CreatePostComponent(props: {
     title: false,
     description: false,
   });
-  const [imageUrl, setImageUrl] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | undefined>(campaignPost?.mainImage);
   const [postProps, setPostProps] = useState({
     title: campaignPost?.title ? campaignPost?.title : "",
     description: campaignPost?.description ? campaignPost?.description : "",
@@ -62,6 +62,7 @@ export default function CreatePostComponent(props: {
       }
     }
     const response = await upsertCampaignPost({
+      postId: campaignPost?.id,
       userId: userId,
       campaignId,
       players: postProps.players,
@@ -82,7 +83,6 @@ export default function CreatePostComponent(props: {
 
   return (
     <div className="flex h-[600px] max-h-[1200px] w-full flex-col bg-black lg:flex-row">
-      <Toaster position="top-center" />
       <div className="flex w-full flex-col">
         <div className="mx-2">
           <Label className="text-white" htmlFor="title">

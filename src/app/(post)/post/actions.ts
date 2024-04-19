@@ -84,6 +84,7 @@ export const requestInviteToCampaign = async ({
 };
 
 interface CreateCampaignPostProps {
+  postId: Post["id"] | undefined;
   userId: User["clerkId"];
   campaignId: Campaign["id"];
   players: Post["players"];
@@ -97,6 +98,7 @@ interface CreateCampaignPostProps {
 }
 
 export const upsertCampaignPost = async ({
+  postId,
   userId,
   campaignId,
   players,
@@ -109,36 +111,51 @@ export const upsertCampaignPost = async ({
   body,
 }: CreateCampaignPostProps): Promise<Response | undefined> => {
   try {
-    await prisma.post.upsert({
-      where: {
-        campaignId: campaignId,
-      },
-      update: {
-        campaignId: campaignId,
-        userId: userId,
-        players: players,
-        startingLevel: startingLevel,
-        finishingLevel: finishingLevel,
-        title: title,
-        description: description,
-        author: author,
-        mainImage: mainImage,
-        body: body,
-      },
-      create: {
-        campaignId: campaignId,
-        userId: userId,
-        players: players,
-        startingLevel: startingLevel,
-        finishingLevel: finishingLevel,
-        title: title,
-        description: description,
-        author: author,
-        mainImage: mainImage,
-        body: body,
-      },
-    });
-    return { status: "SUCCESS", message: "Post was created" };
+    if (postId === undefined) {
+      await prisma.post.create({
+        data: {
+          campaignId: campaignId,
+          userId: userId,
+          players: players,
+          startingLevel: startingLevel,
+          finishingLevel: finishingLevel,
+          title: title,
+          description: description,
+          author: author,
+          mainImage: mainImage,
+          body: body,
+        },
+      });
+    } else {
+      await prisma.post.upsert({
+        where: {
+          id: postId,
+        },
+        update: {
+          players: players,
+          startingLevel: startingLevel,
+          finishingLevel: finishingLevel,
+          title: title,
+          description: description,
+          mainImage: mainImage,
+          body: body,
+        },
+        create: {
+          campaignId: campaignId,
+          userId: userId,
+          players: players,
+          startingLevel: startingLevel,
+          finishingLevel: finishingLevel,
+          title: title,
+          description: description,
+          author: author,
+          mainImage: mainImage,
+          body: body,
+        },
+      });
+    }
+    revalidatePath(`myCampaigns/${campaignId}`)
+    return { status: "SUCCESS", message: "Post was updated" };
   } catch (e) {
     console.error(e);
     return {

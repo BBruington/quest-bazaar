@@ -65,25 +65,32 @@ export const upsertCampaignNote = async ({
   const { success } = await ratelimit.limit(userId);
 
   if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
-
-  const upsertCampaignNote = await prisma.campaignNote.upsert({
-    where: {
-      id: noteId,
-    },
-    update: {
-      title: title,
-      content: content,
-    },
-    create: {
-      userId: userId,
-      private: privateNote,
-      campaignId: campaignId,
-      title: title,
-      content: content,
-    },
-  });
-  revalidatePath(`myCampaigns/${campaignId}`);
-  return upsertCampaignNote;
+  try {
+    const upsertCampaignNote = await prisma.campaignNote.upsert({
+      where: {
+        id: noteId,
+      },
+      update: {
+        title: title,
+        content: content,
+      },
+      create: {
+        userId: userId,
+        private: privateNote,
+        campaignId: campaignId,
+        title: title,
+        content: content,
+      },
+    });
+    revalidatePath(`myCampaigns/${campaignId}`);
+    return upsertCampaignNote;
+  } catch (e) {
+    console.error(e);
+    return {
+      status: "ERROR",
+      message: "Something went wrong while trying to update the note.",
+    };
+  }
 };
 
 interface DeleteCampaignNoteProps {
