@@ -13,24 +13,28 @@ const ratelimit = new Ratelimit({
 
 type Response = {
   status: "SUCCESS" | "ERROR" | "FAILED";
-  message: string
-}
+  message: string;
+};
 
 type RequestInviteToCampaignProps = {
   userId: User["clerkId"];
   campaignId: Post["campaignId"];
-  postId: Post["id"]
-}
+  postId: Post["id"];
+};
 
 export const requestInviteToCampaign = async ({
   userId,
   campaignId,
-  postId
+  postId,
 }: RequestInviteToCampaignProps): Promise<Response | undefined> => {
   const { success } = await ratelimit.limit(userId);
 
   if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
-  if(campaignId === null) return {status: "ERROR", message: "Something went wrong finding campaign."}
+  if (campaignId === null)
+    return {
+      status: "ERROR",
+      message: "Something went wrong finding campaign.",
+    };
 
   try {
     const campaign = await prisma.campaign.findUnique({
@@ -43,7 +47,10 @@ export const requestInviteToCampaign = async ({
         message: "Somethign went wrong. Failed to find campaign.",
       };
     }
-    if (campaign.dmUserId === userId || campaign.players.find((player) => player.clerkId === userId)) {
+    if (
+      campaign.dmUserId === userId ||
+      campaign.players.find((player) => player.clerkId === userId)
+    ) {
       return {
         status: "FAILED",
         message: "You are already a member of this campaign",
@@ -61,7 +68,7 @@ export const requestInviteToCampaign = async ({
         },
       },
     });
-    revalidatePath(`post/${postId}`)
+    revalidatePath(`post/${postId}`);
     return {
       status: "SUCCESS",
       message: "Request to campaign was sent successfully",
@@ -70,7 +77,8 @@ export const requestInviteToCampaign = async ({
     console.error("error: ", error);
     return {
       status: "ERROR",
-      message: "Something went wrong while trying to send request to the campaign.",
+      message:
+        "Something went wrong while trying to send request to the campaign.",
     };
   }
 };
@@ -88,7 +96,7 @@ interface CreateCampaignPostProps {
   body: Post["body"];
 }
 
-export const createCampaignPost = async ({
+export const upsertCampaignPost = async ({
   userId,
   campaignId,
   players,
@@ -101,8 +109,23 @@ export const createCampaignPost = async ({
   body,
 }: CreateCampaignPostProps): Promise<Response | undefined> => {
   try {
-    await prisma.post.create({
-      data: {
+    await prisma.post.upsert({
+      where: {
+        campaignId: campaignId,
+      },
+      update: {
+        campaignId: campaignId,
+        userId: userId,
+        players: players,
+        startingLevel: startingLevel,
+        finishingLevel: finishingLevel,
+        title: title,
+        description: description,
+        author: author,
+        mainImage: mainImage,
+        body: body,
+      },
+      create: {
         campaignId: campaignId,
         userId: userId,
         players: players,
@@ -115,9 +138,12 @@ export const createCampaignPost = async ({
         body: body,
       },
     });
-    return {status: "SUCCESS", message: "Post was created"};
+    return { status: "SUCCESS", message: "Post was created" };
   } catch (e) {
     console.error(e);
-    return {status: "ERROR", message: "Something went wrong while trying to create the post."};
+    return {
+      status: "ERROR",
+      message: "Something went wrong while trying to create the post.",
+    };
   }
 };

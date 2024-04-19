@@ -5,15 +5,18 @@ import toast, { Toaster } from "react-hot-toast";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
-import { createCampaignPost } from "../actions";
+import { upsertCampaignPost } from "../actions";
 import { UploadButton } from "~/utils/uploadthing";
+import { Campaign, Post } from "@prisma/client";
+import { Textarea } from "~/components/ui/textarea";
 
 export default function CreatePostComponent(props: {
   userId: string;
   username: string | undefined;
-  campaignId: string;
+  campaignId: Campaign["id"];
+  campaignPost: Post | null
 }) {
-  const { userId, username, campaignId } = props;
+  const { userId, username, campaignId, campaignPost } = props;
 
   const [postChecker, setPostChecker] = useState({
     title: false,
@@ -21,12 +24,12 @@ export default function CreatePostComponent(props: {
   });
   const [imageUrl, setImageUrl] = useState<string | undefined>();
   const [postProps, setPostProps] = useState({
-    title: "",
-    description: "",
-    body: "",
-    players: 0,
-    startingLevel: 1,
-    finishingLevel: 1,
+    title: campaignPost?.title ? campaignPost?.title : "",
+    description: campaignPost?.description ? campaignPost?.description : "",
+    body: campaignPost?.body ? campaignPost?.body : "",
+    players: campaignPost?.players ? campaignPost?.players : 0,
+    startingLevel: campaignPost?.startingLevel ? campaignPost?.startingLevel : 1,
+    finishingLevel: campaignPost?.finishingLevel ? campaignPost?.finishingLevel : 1,
   });
 
   const handleChange = (
@@ -44,7 +47,7 @@ export default function CreatePostComponent(props: {
     }
   };
 
-  const handleCreatePost = async () => {
+  const handleUpsertPost = async () => {
     if (postProps.title === "" || postProps.description === "") {
       if (postProps.title === "" && postProps.description === "") {
         setPostChecker({ description: true, title: true });
@@ -58,7 +61,7 @@ export default function CreatePostComponent(props: {
         return;
       }
     }
-    const response = await createCampaignPost({
+    const response = await upsertCampaignPost({
       userId: userId,
       campaignId,
       players: postProps.players,
@@ -118,7 +121,7 @@ export default function CreatePostComponent(props: {
           <Label className="text-white" htmlFor="body">
             Body:
           </Label>
-          <Input
+          <Textarea
             className="border-none bg-primary text-black ring-2 ring-offset-black placeholder:text-black focus-visible:ring-accent-foreground"
             id="body"
             name="body"
@@ -183,8 +186,8 @@ export default function CreatePostComponent(props: {
           </div>
         </div>
         <div className="m-2 flex justify-between gap-5">
-          <Button className="w-30 h-10" onClick={handleCreatePost}>
-            Create Post
+          <Button className="w-30 h-10" onClick={handleUpsertPost}>
+            {campaignPost === null ? "Create Post" : "Update Post"}
           </Button>
         </div>
       </div>

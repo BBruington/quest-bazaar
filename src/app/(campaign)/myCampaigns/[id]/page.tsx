@@ -22,6 +22,12 @@ export default async function CampaignPage({
     },
   });
 
+  const post = await prisma.post.findFirst({
+    where: {
+      campaignId: params.id,
+    },
+  });
+
   const campaignChat = await prisma.campaignChat.findMany({
     where: {
       campaignId: params.id,
@@ -56,6 +62,7 @@ export default async function CampaignPage({
             ? campaignData.requestingInvitePlayers
             : null
         }
+        campaignPost={post}
       />
     </>
   );

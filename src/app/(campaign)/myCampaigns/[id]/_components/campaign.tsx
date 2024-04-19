@@ -11,8 +11,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -47,6 +45,7 @@ import type {
   CampaignChat,
   CampaignNote,
   CampaignSchedules,
+  Post,
 } from "@prisma/client";
 import { deleteCampaign, handleRequestToJoinGame } from "../actions";
 import toast from "react-hot-toast";
@@ -57,6 +56,7 @@ import { userNameSchema } from "~/lib/validations/user";
 export default function CampaignComponent(props: {
   campaignData: Campaign;
   campaignPlayers: Players[] | null | undefined;
+  campaignPost: Post | null
   userId: string;
   campaignRequestingInvitePlayers: Players[] | null | undefined;
   myNotes: CampaignNote[];
@@ -67,6 +67,7 @@ export default function CampaignComponent(props: {
   const {
     campaignData,
     campaignPlayers,
+    campaignPost,
     userId,
     campaignRequestingInvitePlayers,
     myNotes,
@@ -189,17 +190,19 @@ export default function CampaignComponent(props: {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-32 bg-primary/90">
-                  <Button
-                    disabled={userId === campaignData.dmUserId}
-                    onClick={() =>
-                      handleAddFriend({
-                        name: campaignData.dmName ? campaignData.dmName : "",
-                      })
-                    }
-                    className="w-full"
-                  >
-                    Add Friend
-                  </Button>
+                  <DropdownMenuItem>
+                    <Button
+                      disabled={userId === campaignData.dmUserId}
+                      onClick={() =>
+                        handleAddFriend({
+                          name: campaignData.dmName ? campaignData.dmName : "",
+                        })
+                      }
+                      className="w-full"
+                    >
+                      Add Friend
+                    </Button>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </AccordionContent>
@@ -237,17 +240,19 @@ export default function CampaignComponent(props: {
                       </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-32 bg-primary/90">
-                      <Button
-                        disabled={userId === player.clerkId}
-                        onClick={() =>
-                          handleAddFriend({
-                            name: player.username ? player.username : "",
-                          })
-                        }
-                        className="w-full"
-                      >
-                        Add Friend
-                      </Button>
+                      <DropdownMenuItem>
+                        <Button
+                          disabled={userId === player.clerkId}
+                          onClick={() =>
+                            handleAddFriend({
+                              name: player.username ? player.username : "",
+                            })
+                          }
+                          className="w-full"
+                        >
+                          Add Friend
+                        </Button>
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ))
@@ -326,13 +331,13 @@ export default function CampaignComponent(props: {
                       >
                         <Button
                           disabled={userId !== campaignData.dmUserId}
-                          className="h-8 w-28"
+                          className="h-8 w-28 text-xs"
                         >
-                          Create Post
+                          {campaignPost === null ? "Create Post" : "Update Post"}
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-h-[1000px] bg-black sm:max-w-[1200px]">
-                        <PostCreator campaignId={campaignData.id} />
+                        <PostCreator campaignPost={campaignPost} campaignId={campaignData.id} />
                       </DialogContent>
                     </Dialog>
                   </div>

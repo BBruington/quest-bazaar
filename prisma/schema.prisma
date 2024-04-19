@@ -69,7 +69,7 @@ model Post {
   body           String    @db.Text
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  campaignId     String?
+  campaignId     String    @unique
   user           User      @relation(fields: [userId], references: [clerkId])
   likes          Like[]
   comments       Comment[]
@@ -109,7 +109,7 @@ model Campaign {
   dmNotes                 CampaignNote[]
   schedules               CampaignSchedules[]
   chat                    CampaignChat[]
-  posts                   Post[]              @relation("CampaignPosts")
+  post                    Post?                @relation("CampaignPosts")
   dm                      User?               @relation("CampaignDm", fields: [dmUserId], references: [clerkId])
   players                 User[]              @relation("CampaignPlayers")
   requestingInvitePlayers User[]              @relation("RequestingInvite")
