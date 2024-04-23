@@ -140,7 +140,7 @@ export default function CreatePostComponent(props: {
               setImageUrl(res[0].url);
             }}
             onUploadError={(error: Error) => {
-              alert(`ERROR! ${error.message}`);
+              toast.error("Failed to upload the image.");
             }}
           />
         </div>

@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Campaign, User } from "@prisma/client";
-import { useState, useOptimistic } from "react";
+import { useState } from "react";
 
 interface SelectedFriendProps {
   userId: User["clerkId"];
