@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Campaign, User } from "@prisma/client";
-import { useState } from "react";
+import { useState, useOptimistic } from "react";
 
 interface SelectedFriendProps {
   userId: User["clerkId"];
@@ -124,7 +124,7 @@ export default function SelectedFriend({
             <div className="mb-5 mt-auto flex flex-row items-center justify-center sm:flex-col sm:space-y-2 xl:flex-row xl:space-x-2 xl:space-y-0">
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Button disabled={isLoading} className="h-8 w-20">
+                  <Button className="h-8 w-20">
                     Invite
                   </Button>
                 </DropdownMenuTrigger>
@@ -160,7 +160,6 @@ export default function SelectedFriend({
                 </DropdownMenuContent>
               </DropdownMenu>
               <Button
-                disabled={isLoading}
                 onClick={() => handleFriendRemove()}
                 variant="destructive"
                 className="px-none h-8 w-20"
