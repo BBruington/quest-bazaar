@@ -36,7 +36,6 @@ const NoteList = (props: {
     console.log("here");
     const selected = notes.find((note) => note.id === noteId);
     setSelectedNote(selected);
-    console.log(selectedNote);
     if (selected) return selected;
 
     return false;
