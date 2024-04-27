@@ -1,8 +1,7 @@
 "use client";
 import NoteList from "./note-list";
 import NoteViewer from "./note-viewer";
-import type { Campaign } from "../types";
-import type { CampaignNote } from "./types";
+import type { CampaignNote, Campaign } from "@prisma/client";
 
 const NotesPage = (props: {
   campaignData: Campaign;

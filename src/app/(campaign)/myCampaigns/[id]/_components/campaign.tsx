@@ -39,13 +39,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
-import type { Campaign, Players } from "./types";
+import type { Players } from "./types";
 import { useUser } from "@clerk/nextjs";
 import type {
   CampaignChat,
   CampaignNote,
   CampaignSchedules,
   Post,
+  Campaign
 } from "@prisma/client";
 import { deleteCampaign, handleRequestToJoinGame } from "../actions";
 import toast from "react-hot-toast";

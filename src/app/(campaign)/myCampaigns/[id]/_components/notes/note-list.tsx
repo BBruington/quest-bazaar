@@ -13,10 +13,12 @@ const NoteList = (props: {
   notes: CampaignNote[];
   campaignData: Campaign;
   isPrivateNotes: boolean;
-  myNotes: CampaignNote[];
   userId: string;
 }) => {
-  const { notes, campaignData, isPrivateNotes, myNotes, userId } = props;
+  const { notes, campaignData, isPrivateNotes, userId } = props;
+
+  const myNotes = notes.filter((note) => note.private === true);
+  const publicNotes = notes.filter((note) => note.private === false);
 
   const [selectedNote, setSelectedNote] = useAtom(selectedNoteAtom);
 
@@ -25,7 +27,7 @@ const NoteList = (props: {
     (myNotes, newNote: CampaignNote) => [...myNotes, newNote]
   );
   const [optimisticNotes, setOptimisticNotes] = useOptimistic(
-    notes,
+    publicNotes,
     (notes, newNote: CampaignNote) => [...notes, newNote]
   );
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +50,7 @@ const NoteList = (props: {
         campaignId: campaignData.id,
         title: "New Note",
         content: "",
+        private: true,
         createdAt: new Date(Date.now()).toLocaleString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
@@ -65,6 +68,7 @@ const NoteList = (props: {
         campaignId: campaignData.id,
         title: "New Note",
         content: "",
+        private: false,
         createdAt: new Date(Date.now()).toLocaleString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
