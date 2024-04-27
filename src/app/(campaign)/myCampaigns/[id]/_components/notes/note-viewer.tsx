@@ -1,22 +1,18 @@
 "use-client";
 import type { Campaign } from "../types";
 import { Textarea } from "~/components/ui/textarea";
-import { useEffect, useState } from "react";
-import type { CampaignNote } from "./types";
+import { useEffect } from "react";
 import { upsertCampaignNote } from "../../actions";
+import { useAtom } from "jotai";
+import { selectedNoteAtom } from "../../jotaiAtoms";
 
 const NoteViewer = (props: {
-  note: CampaignNote | undefined;
   campaignData: Campaign;
-  privateNotes: boolean;
+  isPrivateNotes: boolean;
   userId: string;
 }) => {
-  const { note, campaignData, privateNotes, userId } = props;
-  
-  const [campaignNote, setCampaigNote] = useState(note);
-  useEffect(() => {
-    setCampaigNote(note);
-  }, [note]);
+  const { campaignData, isPrivateNotes, userId } = props;
+  const [campaignNote, setCampaigNote] = useAtom(selectedNoteAtom)
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -33,7 +29,7 @@ const NoteViewer = (props: {
       await upsertCampaignNote({
         noteId: campaignNote.id,
         userId: userId,
-        privateNote: privateNotes ? true : false,
+        privateNote: isPrivateNotes ? true : false,
         campaignId: campaignData.id,
         title: campaignNote.title,
         content: campaignNote.content,

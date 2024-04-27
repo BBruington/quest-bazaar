@@ -5,25 +5,20 @@ import uuid from "react-uuid";
 import { useOptimistic, useState } from "react";
 import { upsertCampaignNote, deleteCampaignNote } from "../../actions";
 import { Button } from "~/components/ui/button";
+import { useAtom } from "jotai";
+import { selectedNoteAtom } from "../../jotaiAtoms";
 import type { CampaignNote } from "./types";
+
 const NoteList = (props: {
   notes: CampaignNote[];
-  onNoteClick: (noteId: string) => CampaignNote | boolean;
   campaignData: Campaign;
-  note: CampaignNote | undefined;
-  privateNotes: boolean;
+  isPrivateNotes: boolean;
   myNotes: CampaignNote[];
   userId: string;
 }) => {
-  const {
-    notes,
-    onNoteClick,
-    campaignData,
-    note,
-    privateNotes,
-    myNotes,
-    userId,
-  } = props;
+  const { notes, campaignData, isPrivateNotes, myNotes, userId } = props;
+
+  const [selectedNote, setSelectedNote] = useAtom(selectedNoteAtom);
 
   const [optimisticMyNotes, setOptimisticMyNotes] = useOptimistic(
     myNotes,
@@ -35,9 +30,19 @@ const NoteList = (props: {
   );
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleNoteClick = (noteId: string): CampaignNote | boolean => {
+    console.log("here");
+    const selected = notes.find((note) => note.id === noteId);
+    setSelectedNote(selected);
+    console.log(selectedNote);
+    if (selected) return selected;
+
+    return false;
+  };
+
   const handleCreateNewCampaignNote = async () => {
     setIsLoading(true);
-    if (privateNotes === true) {
+    if (isPrivateNotes === true) {
       setOptimisticMyNotes({
         id: uuid(),
         campaignId: campaignData.id,
@@ -54,7 +59,7 @@ const NoteList = (props: {
       });
     }
 
-    if (privateNotes === false) {
+    if (isPrivateNotes === false) {
       setOptimisticNotes({
         id: uuid(),
         campaignId: campaignData.id,
@@ -75,7 +80,7 @@ const NoteList = (props: {
       noteId: uuid(),
       campaignId: campaignData.id,
       userId: userId,
-      privateNote: privateNotes ? true : false,
+      privateNote: isPrivateNotes ? true : false,
       title: "New Note",
       content: "",
     });
@@ -83,9 +88,9 @@ const NoteList = (props: {
   };
 
   const handleDeleteCampaignNote = async () => {
-    if (note?.id !== undefined) {
+    if (selectedNote?.id !== undefined) {
       await deleteCampaignNote({
-        noteId: note?.id,
+        noteId: selectedNote?.id,
         campaignId: campaignData.id,
       });
     }
@@ -94,10 +99,14 @@ const NoteList = (props: {
     <div className="flex h-screen w-1/6  flex-col items-center border-l-2 border-slate-600 bg-accent-foreground">
       <div className="flex w-full flex-col">
         <h2 className="mt-5 w-full border-b-2 border-slate-600 pb-3 text-center text-xl text-white">
-          Notes
+          {isPrivateNotes === true ? "My Notes" : "Notes"}
         </h2>
         <div className="my-2 flex flex-col items-center justify-center gap-5 xl:flex-row">
-          <Button disabled={isLoading} className="w-20" onClick={handleCreateNewCampaignNote}>
+          <Button
+            disabled={isLoading}
+            className="w-20"
+            onClick={handleCreateNewCampaignNote}
+          >
             Add
           </Button>
           <Button className="w-20" onClick={handleDeleteCampaignNote}>
@@ -106,12 +115,12 @@ const NoteList = (props: {
         </div>
       </div>
       <ul className="mt-1 w-full space-y-3 text-center">
-        {privateNotes
+        {isPrivateNotes
           ? optimisticMyNotes.map((note) => (
               <div
                 key={note.id}
                 className="hover:cursor-pointer hover:bg-slate-800"
-                onClick={() => onNoteClick(note.id)}
+                onClick={() => handleNoteClick(note.id)}
               >
                 <li key={note.id} className="text-lg text-white">
                   {note.title}
@@ -129,7 +138,7 @@ const NoteList = (props: {
               <div
                 key={note.id}
                 className="hover:cursor-pointer hover:bg-slate-800"
-                onClick={() => onNoteClick(note.id)}
+                onClick={() => handleNoteClick(note.id)}
               >
                 <li key={note.id} className="text-lg text-white">
                   {note.title}

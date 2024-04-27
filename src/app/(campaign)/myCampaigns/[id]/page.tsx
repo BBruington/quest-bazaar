@@ -43,7 +43,7 @@ export default async function CampaignPage({
   const myNotes = allNotes?.filter(
     (note) => note.private === true && note.userId === user?.id
   );
-  const publicNotes = allNotes?.filter((note) => note.private === false);
+
   if (!campaignData || !user) return <div>something went wrong</div>;
 
   return (
@@ -55,7 +55,7 @@ export default async function CampaignPage({
         campaignData={campaignData}
         scheduledEvents={campaignData?.schedules}
         myNotes={myNotes}
-        publicNotes={publicNotes}
+        allNotes={allNotes}
         campaignPlayers={campaignData?.players ? campaignData.players : null}
         campaignRequestingInvitePlayers={
           campaignData?.requestingInvitePlayers

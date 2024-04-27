@@ -56,11 +56,11 @@ import { userNameSchema } from "~/lib/validations/user";
 export default function CampaignComponent(props: {
   campaignData: Campaign;
   campaignPlayers: Players[] | null | undefined;
-  campaignPost: Post | null
+  campaignPost: Post | null;
   userId: string;
   campaignRequestingInvitePlayers: Players[] | null | undefined;
   myNotes: CampaignNote[];
-  publicNotes: CampaignNote[];
+  allNotes: CampaignNote[];
   scheduledEvents: CampaignSchedules[];
   campaignMessages: CampaignChat[];
 }) {
@@ -71,7 +71,7 @@ export default function CampaignComponent(props: {
     userId,
     campaignRequestingInvitePlayers,
     myNotes,
-    publicNotes,
+    allNotes,
     scheduledEvents,
     campaignMessages,
   } = props;
@@ -333,11 +333,16 @@ export default function CampaignComponent(props: {
                           disabled={userId !== campaignData.dmUserId}
                           className="h-8 w-28 text-xs"
                         >
-                          {campaignPost === null ? "Create Post" : "Update Post"}
+                          {campaignPost === null
+                            ? "Create Post"
+                            : "Update Post"}
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-h-[1000px] bg-black sm:max-w-[1200px]">
-                        <PostCreator campaignPost={campaignPost} campaignId={campaignData.id} />
+                        <PostCreator
+                          campaignPost={campaignPost}
+                          campaignId={campaignData.id}
+                        />
                       </DialogContent>
                     </Dialog>
                   </div>
@@ -399,15 +404,13 @@ export default function CampaignComponent(props: {
       </div>
       {uiToggle.editNotes && (
         <div className="w-full">
-          {publicNotes !== undefined && (
-            <NotesPage
-              userId={userId}
-              isPrivateNotes={isPrivateNotes}
-              campaignData={campaignData}
-              campaignNotes={publicNotes}
-              myNotes={myNotes}
-            />
-          )}
+          <NotesPage
+            userId={userId}
+            isPrivateNotes={isPrivateNotes}
+            campaignData={campaignData}
+            myNotes={myNotes}
+            campaignNotes={allNotes}
+          />
         </div>
       )}
       {uiToggle.schedules && (

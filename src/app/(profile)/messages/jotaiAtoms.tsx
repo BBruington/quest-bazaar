@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { SelectedFriendType } from "~/lib/validations/selectedFriend";
-import { Message, Friendship } from "@prisma/client";
+import { Message } from "@prisma/client";
 const selectedFriendAtom = atom<SelectedFriendType>({
   id: "",
   status: "",
