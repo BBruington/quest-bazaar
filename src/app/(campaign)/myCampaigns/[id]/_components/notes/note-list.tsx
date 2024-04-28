@@ -33,7 +33,6 @@ const NoteList = (props: {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleNoteClick = (noteId: string): CampaignNote | boolean => {
-    console.log("here");
     const selected = notes.find((note) => note.id === noteId);
     setSelectedNote(selected);
     if (selected) return selected;
