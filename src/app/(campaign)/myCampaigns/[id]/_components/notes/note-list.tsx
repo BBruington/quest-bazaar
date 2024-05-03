@@ -61,14 +61,8 @@ const NoteList = (props: {
         title: "New Note",
         content: "",
         private: false,
-        createdAt: new Date(Date.now()).toLocaleString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        updatedAt: new Date(Date.now()).toLocaleString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        createdAt: new Date(Date.now()).toISOString(),
+        updatedAt: new Date(Date.now()).toISOString(),
       });
     }
 
