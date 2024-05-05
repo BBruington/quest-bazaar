@@ -79,6 +79,7 @@ const NoteList = (props: {
 
   const handleDeleteCampaignNote = async () => {
     if (selectedNote?.id !== undefined) {
+      setSelectedNote(undefined);
       await deleteCampaignNote({
         noteId: selectedNote?.id,
         campaignId: campaignData.id,
