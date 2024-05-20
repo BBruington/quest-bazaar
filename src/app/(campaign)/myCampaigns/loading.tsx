@@ -1,5 +1,4 @@
 import Spinner from "~/components/spinner/spinner";
-import { Suspense } from "react";
 import Link from "next/link";
 
 export default async function MyCampaigns() {
