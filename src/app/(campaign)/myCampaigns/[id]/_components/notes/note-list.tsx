@@ -34,9 +34,10 @@ const NoteList = (props: {
 
   const handleNoteClick = (noteId: string): CampaignNote | boolean => {
     const selected = notes.find((note) => note.id === noteId);
-    setSelectedNote(selected);
-    if (selected) return selected;
-
+    if (selected !== undefined) {
+      setSelectedNote(selected);
+      return selected;
+}
     return false;
   };
 
