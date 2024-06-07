@@ -7,7 +7,7 @@ import { upsertCampaignNote, deleteCampaignNote } from "../../actions";
 import { Button } from "~/components/ui/button";
 import { useAtom } from "jotai";
 import { selectedNoteAtom } from "../../jotaiAtoms";
-import type { CampaignNote } from "./types";
+import type { CampaignNote } from "@prisma/client";
 
 const NoteList = (props: {
   notes: CampaignNote[];
@@ -46,24 +46,26 @@ const NoteList = (props: {
     if (isPrivateNotes === true) {
       setOptimisticMyNotes({
         id: uuid(),
+        userId,
         campaignId: campaignData.id,
         title: "New Note",
         content: "",
         private: true,
-        createdAt: new Date(Date.now()).toISOString(),
-        updatedAt: new Date(Date.now()).toISOString(),
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
       });
     }
 
     if (isPrivateNotes === false) {
       setOptimisticNotes({
         id: uuid(),
+        userId,
         campaignId: campaignData.id,
         title: "New Note",
         content: "",
         private: false,
-        createdAt: new Date(Date.now()).toISOString(),
-        updatedAt: new Date(Date.now()).toISOString(),
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
       });
     }
 
@@ -119,7 +121,7 @@ const NoteList = (props: {
                 </li>
                 <li className="text-xs text-white">
                   Last Modified:{" "}
-                  {new Date(note.updatedAt).toLocaleDateString("en-US", {
+                  {note.updatedAt.toLocaleDateString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
@@ -137,7 +139,7 @@ const NoteList = (props: {
                 </li>
                 <li className="text-xs text-white">
                   Last Modified:{" "}
-                  {new Date(note.updatedAt).toLocaleDateString("en-US", {
+                  {note.updatedAt.toLocaleDateString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}

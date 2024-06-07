@@ -25,7 +25,6 @@ const NotesPage = (props: {
         notes={campaignNotes}
         campaignData={campaignData}
         isPrivateNotes={isPrivateNotes}
-        myNotes={myNotes}
         userId={userId}
       />
     </div>
