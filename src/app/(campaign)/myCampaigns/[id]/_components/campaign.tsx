@@ -39,14 +39,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
-import type { Players } from "./types";
 import { useUser } from "@clerk/nextjs";
 import type {
   CampaignChat,
   CampaignNote,
   CampaignSchedules,
   Post,
-  Campaign
+  Campaign,
 } from "@prisma/client";
 import { deleteCampaign, handleRequestToJoinGame } from "../actions";
 import toast from "react-hot-toast";
@@ -54,12 +53,22 @@ import { z } from "zod";
 import { sendFriendRequest } from "~/app/(profile)/messages/actions";
 import { userNameSchema } from "~/lib/validations/user";
 
+type Player = {
+  id: string;
+  clerkId: string;
+  username: string | null;
+  imgUrl: string | null;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export default function CampaignComponent(props: {
   campaignData: Campaign;
-  campaignPlayers: Players[] | null | undefined;
+  campaignPlayers: Player[] | null | undefined;
   campaignPost: Post | null;
   userId: string;
-  campaignRequestingInvitePlayers: Players[] | null | undefined;
+  campaignRequestingInvitePlayers: Player[] | null | undefined;
   myNotes: CampaignNote[];
   allNotes: CampaignNote[];
   scheduledEvents: CampaignSchedules[];
