@@ -17,8 +17,7 @@ import Scheduler from "./scheduler";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { deleteCampaignScheduledEvent } from "../../actions";
-import type { Campaign } from "../types";
-import { CampaignSchedules } from "@prisma/client";
+import type { CampaignSchedules, Campaign } from "@prisma/client";
 import { convertMilitaryTime } from "../../../../../../../helpers/convertMilitaryTime";
 
 export default function CalendarComponent(props: {

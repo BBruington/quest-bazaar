@@ -8,7 +8,7 @@ import TimePicker from "react-time-picker";
 import { DialogTrigger } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { createCampaginScheduledEvent } from "../../actions";
-import type { Campaign } from "../types";
+import type { Campaign } from "@prisma/client";
 
 export default function Scheduler(props: {
   campaignData: Campaign;

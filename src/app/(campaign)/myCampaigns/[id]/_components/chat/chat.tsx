@@ -1,7 +1,6 @@
 "use client";
 
-import { CampaignChat } from "@prisma/client";
-import type { Campaign } from "../types";
+import type { CampaignChat, Campaign } from "@prisma/client";
 import ChatInput from "./chat-input";
 import { useState } from "react";
 

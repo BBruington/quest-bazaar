@@ -1,8 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Campaign, CampaignChat } from "@prisma/client";
-import { Dispatch, SetStateAction, useState } from "react";
+import type { Campaign, CampaignChat } from "@prisma/client";
+import { Dispatch, SetStateAction } from "react";
 import { Button } from "~/components/ui/button";
 import { useForm } from "react-hook-form";
 import { sendChatMessage } from "../../actions";
