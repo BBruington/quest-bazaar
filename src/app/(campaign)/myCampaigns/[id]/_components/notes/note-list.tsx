@@ -1,13 +1,12 @@
 "use client";
 
-import type { Campaign } from "../types";
 import uuid from "react-uuid";
 import { useOptimistic, useState } from "react";
 import { upsertCampaignNote, deleteCampaignNote } from "../../actions";
 import { Button } from "~/components/ui/button";
 import { useAtom } from "jotai";
 import { selectedNoteAtom } from "../../jotaiAtoms";
-import type { CampaignNote } from "@prisma/client";
+import type { CampaignNote, Campaign } from "@prisma/client";
 
 const NoteList = (props: {
   notes: CampaignNote[];

@@ -1,5 +1,5 @@
 "use-client";
-import type { Campaign } from "../types";
+import type { Campaign } from "@prisma/client";
 import { Textarea } from "~/components/ui/textarea";
 import { useEffect } from "react";
 import { upsertCampaignNote } from "../../actions";
