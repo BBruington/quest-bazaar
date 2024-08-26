@@ -3,6 +3,7 @@ import { prisma } from "~/utils/context";
 import { auth } from "@clerk/nextjs";
 import { Suspense } from "react";
 import Link from "next/link";
+import { Campaign } from "@prisma/client";
 
 export default async function MyCampaigns() {
   const { userId } = auth();
@@ -14,11 +15,15 @@ export default async function MyCampaigns() {
       campaigndm: true,
     },
   });
-  const userCampaigns = [
-    ...userCampaignsData!.campaigndm,
-    ...userCampaignsData!.campaignplayer,
-  ];
-  
+  let userCampaigns: Campaign[] = [];
+
+  if (userCampaignsData?.campaigndm) {
+    userCampaigns = [
+      ...userCampaignsData?.campaigndm,
+      ...userCampaignsData?.campaignplayer,
+    ];
+  }
+
   return (
     <>
       <h1 className="flex justify-center text-4xl font-bold text-white">

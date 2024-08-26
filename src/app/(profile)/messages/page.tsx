@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs";
 import { prisma } from "~/utils/context";
 import { Mail, User, Plus, PersonStandingIcon } from "lucide-react";
 import { Toaster } from "react-hot-toast";
+import { Campaign } from "@prisma/client";
 
 //components
 import CharacterSheets from "./_components/character-sheets";
@@ -31,10 +32,14 @@ export default async function Messages() {
       campaigndm: true,
     },
   });
-  const userCampaigns = [
-    ...userCampaignsData!.campaigndm,
-    ...userCampaignsData!.campaignplayer,
-  ];
+  let userCampaigns: Campaign[] = [];
+
+  if (userCampaignsData?.campaigndm) {
+    userCampaigns = [
+      ...userCampaignsData?.campaigndm,
+      ...userCampaignsData?.campaignplayer,
+    ];
+  }
 
   const myFriends = await prisma.friendship.findMany({
     where: {

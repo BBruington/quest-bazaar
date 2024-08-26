@@ -1,16 +1,5 @@
-import { currentUser } from "@clerk/nextjs";
-import { prisma } from "~/utils/context";
 import { Mail, User, Plus, PersonStandingIcon } from "lucide-react";
 import { Toaster } from "react-hot-toast";
-
-//components
-import CharacterSheets from "./messages/_components/character-sheets";
-import DisplayMessages from "./messages/_components/display-messages";
-import FriendRequest from "./messages/_components/friend-requests";
-import CampaignInvite from "./messages/_components/campaign-invites";
-import SelectedFriend from "./messages/_components/selected-friend";
-import AddFriendInput from "./messages/_components/add-friend-input";
-import FriendsList from "./messages/_components/friends-list";
 import {
   Accordion,
   AccordionContent,
@@ -19,7 +8,6 @@ import {
 } from "~/components/ui/accordion";
 import Spinner from "~/components/spinner/spinner";
 import { Input } from "~/components/ui/input";
-import selectedFriend from "./messages/_components/selected-friend";
 
 export default async function Messages() {
   return (
